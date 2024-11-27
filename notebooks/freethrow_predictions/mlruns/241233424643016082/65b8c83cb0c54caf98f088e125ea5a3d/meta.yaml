@@ -1,0 +1,15 @@
+artifact_uri: file:///workspaces/spl_freethrow_biomechanics_analysis_ml_prediction/notebooks/freethrow_predictions/mlruns/241233424643016082/65b8c83cb0c54caf98f088e125ea5a3d/artifacts
+end_time: 1732700142731
+entry_point_name: ''
+experiment_id: '241233424643016082'
+lifecycle_stage: active
+run_id: 65b8c83cb0c54caf98f088e125ea5a3d
+run_name: defiant-koi-858
+run_uuid: 65b8c83cb0c54caf98f088e125ea5a3d
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1732699970038
+status: 3
+tags: []
+user_id: root

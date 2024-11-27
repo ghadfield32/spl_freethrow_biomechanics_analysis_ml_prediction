@@ -1,0 +1,15 @@
+artifact_uri: file:///workspaces/spl_freethrow_biomechanics_analysis_ml_prediction/notebooks/freethrow_predictions/mlruns/241233424643016082/30726af032844b268f156f96b6a85c8d/artifacts
+end_time: 1732640037717
+entry_point_name: ''
+experiment_id: '241233424643016082'
+lifecycle_stage: active
+run_id: 30726af032844b268f156f96b6a85c8d
+run_name: polite-cub-428
+run_uuid: 30726af032844b268f156f96b6a85c8d
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1732639950058
+status: 4
+tags: []
+user_id: root

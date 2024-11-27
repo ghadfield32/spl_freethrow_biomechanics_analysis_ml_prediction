@@ -1,0 +1,23 @@
+{
+    "XGBoost": {
+        "Best Params": {
+            "colsample_bytree": 0.5,
+            "gamma": 3.4023629647378018,
+            "learning_rate": 0.3,
+            "max_depth": 21,
+            "n_estimators": 321,
+            "reg_alpha": 9.329571849890503e-05,
+            "reg_lambda": 0.1691134593488888,
+            "subsample": 1.0
+        },
+        "Best Cross-Validation Score": 0.7473333333333334,
+        "Evaluation Metrics": {
+            "Accuracy": 0.660377358490566,
+            "Precision": 0.6783690636135289,
+            "Recall": 0.660377358490566,
+            "F1 Score": 0.6534864643150123,
+            "ROC AUC": 0.7094017094017094,
+            "Log Loss": 0.6353349751249913
+        }
+    }
+}

@@ -1,0 +1,15 @@
+artifact_uri: file:///workspaces/spl_freethrow_biomechanics_analysis_ml_prediction/notebooks/freethrow_predictions/mlruns/241233424643016082/5f12d5bd21564128a268515dda33db47/artifacts
+end_time: 1732704116618
+entry_point_name: ''
+experiment_id: '241233424643016082'
+lifecycle_stage: active
+run_id: 5f12d5bd21564128a268515dda33db47
+run_name: exultant-skunk-884
+run_uuid: 5f12d5bd21564128a268515dda33db47
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1732704040798
+status: 3
+tags: []
+user_id: root

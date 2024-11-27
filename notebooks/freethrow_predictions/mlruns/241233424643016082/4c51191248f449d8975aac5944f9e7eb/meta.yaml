@@ -1,0 +1,15 @@
+artifact_uri: file:///workspaces/spl_freethrow_biomechanics_analysis_ml_prediction/notebooks/freethrow_predictions/mlruns/241233424643016082/4c51191248f449d8975aac5944f9e7eb/artifacts
+end_time: 1732555193656
+entry_point_name: ''
+experiment_id: '241233424643016082'
+lifecycle_stage: active
+run_id: 4c51191248f449d8975aac5944f9e7eb
+run_name: victorious-midge-817
+run_uuid: 4c51191248f449d8975aac5944f9e7eb
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1732555003455
+status: 3
+tags: []
+user_id: root

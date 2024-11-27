@@ -1,0 +1,15 @@
+artifact_uri: file:///workspaces/spl_freethrow_biomechanics_analysis_ml_prediction/notebooks/freethrow_predictions/mlruns/241233424643016082/6c080ca45ead42c996ad39ae0105cd28/artifacts
+end_time: 1732550051306
+entry_point_name: ''
+experiment_id: '241233424643016082'
+lifecycle_stage: active
+run_id: 6c080ca45ead42c996ad39ae0105cd28
+run_name: monumental-stoat-33
+run_uuid: 6c080ca45ead42c996ad39ae0105cd28
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1732549874329
+status: 4
+tags: []
+user_id: root

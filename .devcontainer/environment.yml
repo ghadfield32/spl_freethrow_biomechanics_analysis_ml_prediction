@@ -1,0 +1,32 @@
+name: data_science_ft_bio_predictions
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.10
+  - numpy
+  - pandas
+  - scikit-learn
+  - matplotlib
+  - seaborn
+  - jupyter
+  - ipykernel
+  - pytest
+  - black
+  - flake8
+  - mypy
+  - pip
+  - seaborn
+  - pip:
+    - pretty_errors 
+    - gdown
+    - xgboost
+    - CatBoost
+    - lightgbm
+    - pyspark
+    - mplbasketball
+    - imbalanced-learn
+    - optuna
+    - mlflow
+    - scikit-optimize
+    - shap

@@ -1,0 +1,15 @@
+artifact_uri: file:///workspaces/spl_freethrow_biomechanics_analysis_ml_prediction/notebooks/freethrow_predictions/mlruns/241233424643016082/eefb0adec174430eb650f1ff3acd443d/artifacts
+end_time: 1732717060191
+entry_point_name: ''
+experiment_id: '241233424643016082'
+lifecycle_stage: active
+run_id: eefb0adec174430eb650f1ff3acd443d
+run_name: flawless-donkey-878
+run_uuid: eefb0adec174430eb650f1ff3acd443d
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1732716992596
+status: 3
+tags: []
+user_id: root

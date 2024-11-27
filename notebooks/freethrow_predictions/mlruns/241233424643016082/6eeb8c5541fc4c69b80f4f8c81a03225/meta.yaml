@@ -1,0 +1,15 @@
+artifact_uri: file:///workspaces/spl_freethrow_biomechanics_analysis_ml_prediction/notebooks/freethrow_predictions/mlruns/241233424643016082/6eeb8c5541fc4c69b80f4f8c81a03225/artifacts
+end_time: 1732641529514
+entry_point_name: ''
+experiment_id: '241233424643016082'
+lifecycle_stage: active
+run_id: 6eeb8c5541fc4c69b80f4f8c81a03225
+run_name: burly-penguin-161
+run_uuid: 6eeb8c5541fc4c69b80f4f8c81a03225
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1732641296293
+status: 3
+tags: []
+user_id: root

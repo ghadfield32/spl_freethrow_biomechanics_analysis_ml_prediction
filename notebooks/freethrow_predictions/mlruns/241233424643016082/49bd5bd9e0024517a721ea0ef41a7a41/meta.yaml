@@ -1,0 +1,15 @@
+artifact_uri: file:///workspaces/spl_freethrow_biomechanics_analysis_ml_prediction/notebooks/freethrow_predictions/mlruns/241233424643016082/49bd5bd9e0024517a721ea0ef41a7a41/artifacts
+end_time: 1732702346063
+entry_point_name: ''
+experiment_id: '241233424643016082'
+lifecycle_stage: active
+run_id: 49bd5bd9e0024517a721ea0ef41a7a41
+run_name: big-kite-744
+run_uuid: 49bd5bd9e0024517a721ea0ef41a7a41
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1732702286357
+status: 3
+tags: []
+user_id: root

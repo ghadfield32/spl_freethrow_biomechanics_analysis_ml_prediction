@@ -1,0 +1,61 @@
+{
+    "Random Forest": {
+        "Best Params": {
+            "bootstrap": true,
+            "criterion": "entropy",
+            "max_depth": 2,
+            "max_features": "log2",
+            "min_samples_leaf": 1,
+            "min_samples_split": 2,
+            "n_estimators": 29
+        },
+        "Best Cross-Validation Score": 0.7130718954248366,
+        "Evaluation Metrics": {
+            "Accuracy": 0.7368421052631579,
+            "Precision": 0.7154984234780499,
+            "Recall": 0.7368421052631579,
+            "F1 Score": 0.716676749344626,
+            "ROC AUC": 0.7575757575757576,
+            "Log Loss": 0.5140181065564718
+        }
+    },
+    "XGBoost": {
+        "Best Params": {
+            "colsample_bytree": 0.961089579522305,
+            "gamma": 0.0,
+            "learning_rate": 0.0016294345452420626,
+            "max_depth": 40,
+            "n_estimators": 407,
+            "reg_alpha": 1.1634801514200729e-07,
+            "reg_lambda": 0.00044696497852416995,
+            "subsample": 0.5
+        },
+        "Best Cross-Validation Score": 0.7124183006535948,
+        "Evaluation Metrics": {
+            "Accuracy": 0.7105263157894737,
+            "Precision": 0.5048476454293628,
+            "Recall": 0.7105263157894737,
+            "F1 Score": 0.5902834008097166,
+            "ROC AUC": 0.7407407407407407,
+            "Log Loss": 0.5539171058545818
+        }
+    },
+    "Decision Tree": {
+        "Best Params": {
+            "criterion": "entropy",
+            "max_depth": 14,
+            "min_samples_leaf": 7,
+            "min_samples_split": 7,
+            "splitter": "best"
+        },
+        "Best Cross-Validation Score": 0.6908496732026144,
+        "Evaluation Metrics": {
+            "Accuracy": 0.6052631578947368,
+            "Precision": 0.6809941520467837,
+            "Recall": 0.6052631578947368,
+            "F1 Score": 0.623508514499749,
+            "ROC AUC": 0.5976430976430976,
+            "Log Loss": 4.305333830215683
+        }
+    }
+}

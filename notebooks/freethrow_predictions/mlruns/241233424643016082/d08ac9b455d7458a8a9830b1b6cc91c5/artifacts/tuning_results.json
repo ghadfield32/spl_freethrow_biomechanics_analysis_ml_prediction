@@ -1,0 +1,61 @@
+{
+    "Random Forest": {
+        "Best Params": {
+            "bootstrap": false,
+            "criterion": "entropy",
+            "max_depth": 23,
+            "max_features": "sqrt",
+            "min_samples_leaf": 1,
+            "min_samples_split": 2,
+            "n_estimators": 268
+        },
+        "Best Cross-Validation Score": 0.7714285714285714,
+        "Evaluation Metrics": {
+            "Accuracy": 0.7777777777777778,
+            "Precision": 0.7777777777777778,
+            "Recall": 0.7777777777777778,
+            "F1 Score": 0.7777777777777778,
+            "ROC AUC": 0.9259259259259259,
+            "Log Loss": 0.33616141722774057
+        }
+    },
+    "XGBoost": {
+        "Best Params": {
+            "colsample_bytree": 1.0,
+            "gamma": 0.0,
+            "learning_rate": 0.3,
+            "max_depth": 2,
+            "n_estimators": 246,
+            "reg_alpha": 5.358542256699511e-06,
+            "reg_lambda": 1.0,
+            "subsample": 0.5317792347126772
+        },
+        "Best Cross-Validation Score": 0.7928571428571428,
+        "Evaluation Metrics": {
+            "Accuracy": 0.6944444444444444,
+            "Precision": 0.7,
+            "Recall": 0.6944444444444444,
+            "F1 Score": 0.6923076923076923,
+            "ROC AUC": 0.7561728395061728,
+            "Log Loss": 0.6404891716488965
+        }
+    },
+    "Decision Tree": {
+        "Best Params": {
+            "criterion": "gini",
+            "max_depth": 41,
+            "min_samples_leaf": 3,
+            "min_samples_split": 2,
+            "splitter": "best"
+        },
+        "Best Cross-Validation Score": 0.7642857142857143,
+        "Evaluation Metrics": {
+            "Accuracy": 0.7777777777777778,
+            "Precision": 0.7777777777777778,
+            "Recall": 0.7777777777777778,
+            "F1 Score": 0.7777777777777778,
+            "ROC AUC": 0.8456790123456791,
+            "Log Loss": 4.145513704585658
+        }
+    }
+}

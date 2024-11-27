@@ -1,0 +1,61 @@
+{
+    "Random Forest": {
+        "Best Params": {
+            "bootstrap": false,
+            "criterion": "entropy",
+            "max_depth": 32,
+            "max_features": "sqrt",
+            "min_samples_leaf": 4,
+            "min_samples_split": 18,
+            "n_estimators": 229
+        },
+        "Best Cross-Validation Score": 0.7019607843137254,
+        "Evaluation Metrics": {
+            "Accuracy": 0.7368421052631579,
+            "Precision": 0.7243395845936681,
+            "Recall": 0.7368421052631579,
+            "F1 Score": 0.7283834586466165,
+            "ROC AUC": 0.7710437710437711,
+            "Log Loss": 0.5115572097683667
+        }
+    },
+    "XGBoost": {
+        "Best Params": {
+            "colsample_bytree": 0.9643213884240198,
+            "gamma": 1.3068880239452605,
+            "learning_rate": 0.001595174184188669,
+            "max_depth": 45,
+            "n_estimators": 329,
+            "reg_alpha": 0.0002971956275165124,
+            "reg_lambda": 0.0004972346162574507,
+            "subsample": 0.6166267299346503
+        },
+        "Best Cross-Validation Score": 0.7124183006535948,
+        "Evaluation Metrics": {
+            "Accuracy": 0.7105263157894737,
+            "Precision": 0.5048476454293628,
+            "Recall": 0.7105263157894737,
+            "F1 Score": 0.5902834008097166,
+            "ROC AUC": 0.7272727272727273,
+            "Log Loss": 0.5605604620225852
+        }
+    },
+    "Decision Tree": {
+        "Best Params": {
+            "criterion": "entropy",
+            "max_depth": 6,
+            "min_samples_leaf": 7,
+            "min_samples_split": 2,
+            "splitter": "best"
+        },
+        "Best Cross-Validation Score": 0.6908496732026144,
+        "Evaluation Metrics": {
+            "Accuracy": 0.6052631578947368,
+            "Precision": 0.6809941520467837,
+            "Recall": 0.6052631578947368,
+            "F1 Score": 0.623508514499749,
+            "ROC AUC": 0.5976430976430976,
+            "Log Loss": 4.305333830215683
+        }
+    }
+}

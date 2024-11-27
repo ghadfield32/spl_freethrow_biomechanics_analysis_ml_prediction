@@ -1,0 +1,15 @@
+artifact_uri: file:///workspaces/spl_freethrow_biomechanics_analysis_ml_prediction/notebooks/freethrow_predictions/mlruns/241233424643016082/1aaedbda7a4a4d54bb7d38ca604b86f9/artifacts
+end_time: 1732703263312
+entry_point_name: ''
+experiment_id: '241233424643016082'
+lifecycle_stage: active
+run_id: 1aaedbda7a4a4d54bb7d38ca604b86f9
+run_name: beautiful-mare-209
+run_uuid: 1aaedbda7a4a4d54bb7d38ca604b86f9
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1732703205416
+status: 3
+tags: []
+user_id: root

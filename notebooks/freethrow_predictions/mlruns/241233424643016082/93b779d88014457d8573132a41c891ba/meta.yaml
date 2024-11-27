@@ -1,0 +1,15 @@
+artifact_uri: file:///workspaces/spl_freethrow_biomechanics_analysis_ml_prediction/notebooks/freethrow_predictions/mlruns/241233424643016082/93b779d88014457d8573132a41c891ba/artifacts
+end_time: 1732729441679
+entry_point_name: ''
+experiment_id: '241233424643016082'
+lifecycle_stage: active
+run_id: 93b779d88014457d8573132a41c891ba
+run_name: bittersweet-grub-289
+run_uuid: 93b779d88014457d8573132a41c891ba
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1732729375984
+status: 4
+tags: []
+user_id: root

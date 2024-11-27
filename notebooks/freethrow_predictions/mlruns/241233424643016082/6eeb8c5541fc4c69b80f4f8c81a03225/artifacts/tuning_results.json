@@ -1,0 +1,61 @@
+{
+    "Random Forest": {
+        "Best Params": {
+            "bootstrap": true,
+            "criterion": "gini",
+            "max_depth": 19,
+            "max_features": null,
+            "min_samples_leaf": 10,
+            "min_samples_split": 20,
+            "n_estimators": 460
+        },
+        "Best Cross-Validation Score": 0.7285714285714286,
+        "Evaluation Metrics": {
+            "Accuracy": 0.7222222222222222,
+            "Precision": 0.7222222222222222,
+            "Recall": 0.7222222222222222,
+            "F1 Score": 0.7222222222222222,
+            "ROC AUC": 0.8549382716049383,
+            "Log Loss": 0.498642448044498
+        }
+    },
+    "XGBoost": {
+        "Best Params": {
+            "colsample_bytree": 0.7966737909943387,
+            "gamma": 0.07308542256808993,
+            "learning_rate": 0.004090865170442748,
+            "max_depth": 46,
+            "n_estimators": 266,
+            "reg_alpha": 0.000280983669528895,
+            "reg_lambda": 0.8868806636738794,
+            "subsample": 0.6446350219064877
+        },
+        "Best Cross-Validation Score": 0.7357142857142858,
+        "Evaluation Metrics": {
+            "Accuracy": 0.6944444444444444,
+            "Precision": 0.695046439628483,
+            "Recall": 0.6944444444444444,
+            "F1 Score": 0.6942084942084943,
+            "ROC AUC": 0.8580246913580247,
+            "Log Loss": 0.5383193761549085
+        }
+    },
+    "Decision Tree": {
+        "Best Params": {
+            "criterion": "gini",
+            "max_depth": 50,
+            "min_samples_leaf": 5,
+            "min_samples_split": 11,
+            "splitter": "best"
+        },
+        "Best Cross-Validation Score": 0.7571428571428571,
+        "Evaluation Metrics": {
+            "Accuracy": 0.75,
+            "Precision": 0.7507739938080494,
+            "Recall": 0.75,
+            "F1 Score": 0.7498069498069498,
+            "ROC AUC": 0.882716049382716,
+            "Log Loss": 1.3461612271360497
+        }
+    }
+}

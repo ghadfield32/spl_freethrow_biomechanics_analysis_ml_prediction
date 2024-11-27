@@ -1,0 +1,61 @@
+{
+    "Random Forest": {
+        "Best Params": {
+            "bootstrap": false,
+            "criterion": "gini",
+            "max_depth": 50,
+            "max_features": null,
+            "min_samples_leaf": 1,
+            "min_samples_split": 2,
+            "n_estimators": 111
+        },
+        "Best Cross-Validation Score": 0.7785714285714287,
+        "Evaluation Metrics": {
+            "Accuracy": 0.8055555555555556,
+            "Precision": 0.8065015479876161,
+            "Recall": 0.8055555555555556,
+            "F1 Score": 0.8054054054054054,
+            "ROC AUC": 0.8672839506172838,
+            "Log Loss": 4.103571598690632
+        }
+    },
+    "XGBoost": {
+        "Best Params": {
+            "colsample_bytree": 0.9272704209985919,
+            "gamma": 0.4332790145894594,
+            "learning_rate": 0.001,
+            "max_depth": 43,
+            "n_estimators": 500,
+            "reg_alpha": 1.7779692286759924e-05,
+            "reg_lambda": 0.021286084546390475,
+            "subsample": 1.0
+        },
+        "Best Cross-Validation Score": 0.7857142857142857,
+        "Evaluation Metrics": {
+            "Accuracy": 0.9166666666666666,
+            "Precision": 0.9179566563467492,
+            "Recall": 0.9166666666666666,
+            "F1 Score": 0.9166023166023165,
+            "ROC AUC": 0.9382716049382717,
+            "Log Loss": 0.5192618026222545
+        }
+    },
+    "Decision Tree": {
+        "Best Params": {
+            "criterion": "entropy",
+            "max_depth": 45,
+            "min_samples_leaf": 3,
+            "min_samples_split": 2,
+            "splitter": "best"
+        },
+        "Best Cross-Validation Score": 0.7857142857142857,
+        "Evaluation Metrics": {
+            "Accuracy": 0.8333333333333334,
+            "Precision": 0.8374999999999999,
+            "Recall": 0.8333333333333334,
+            "F1 Score": 0.8328173374613003,
+            "ROC AUC": 0.8935185185185186,
+            "Log Loss": 3.1217752711041724
+        }
+    }
+}

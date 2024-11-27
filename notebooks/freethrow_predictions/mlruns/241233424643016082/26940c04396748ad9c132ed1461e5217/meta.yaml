@@ -1,0 +1,15 @@
+artifact_uri: file:///workspaces/spl_freethrow_biomechanics_analysis_ml_prediction/notebooks/freethrow_predictions/mlruns/241233424643016082/26940c04396748ad9c132ed1461e5217/artifacts
+end_time: 1732702252585
+entry_point_name: ''
+experiment_id: '241233424643016082'
+lifecycle_stage: active
+run_id: 26940c04396748ad9c132ed1461e5217
+run_name: fearless-fish-46
+run_uuid: 26940c04396748ad9c132ed1461e5217
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1732702195524
+status: 3
+tags: []
+user_id: root

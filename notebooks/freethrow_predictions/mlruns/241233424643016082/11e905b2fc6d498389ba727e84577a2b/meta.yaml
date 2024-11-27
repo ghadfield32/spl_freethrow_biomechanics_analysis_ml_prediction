@@ -1,0 +1,15 @@
+artifact_uri: file:///workspaces/spl_freethrow_biomechanics_analysis_ml_prediction/notebooks/freethrow_predictions/mlruns/241233424643016082/11e905b2fc6d498389ba727e84577a2b/artifacts
+end_time: 1732699934733
+entry_point_name: ''
+experiment_id: '241233424643016082'
+lifecycle_stage: active
+run_id: 11e905b2fc6d498389ba727e84577a2b
+run_name: smiling-finch-51
+run_uuid: 11e905b2fc6d498389ba727e84577a2b
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1732699887622
+status: 3
+tags: []
+user_id: root
