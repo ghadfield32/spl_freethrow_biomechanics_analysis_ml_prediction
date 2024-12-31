@@ -1,4 +1,4 @@
-# GPU enabled Docker Image Template
+# SPL Biomechanical ML Feedback System
 
 This README provides a comprehensive guide to setting up a robust Docker environment for data science projects with GPU support. It includes detailed explanations and best practices to help you understand each component.
 

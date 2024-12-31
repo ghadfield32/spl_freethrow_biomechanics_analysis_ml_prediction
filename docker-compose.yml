@@ -3,12 +3,13 @@ services:
     build:
       context: .
       dockerfile: .devcontainer/Dockerfile
-    runtime: nvidia  # Ensure the NVIDIA runtime is used
+    runtime: nvidia
     volumes:
       - .:/workspace
     ports:
       - "8888:8888"  # For Jupyter Notebook
       - "6006:6006"  # For TensorBoard
+      - "8501:8501"  # For Streamlit
     deploy:
       resources:
         reservations:
@@ -19,6 +20,4 @@ services:
     environment:
       - ENV_NAME=data_science_ft_bio_predictions
       - PYTHON_VER=3.10
-    command: ["conda", "run", "-n", "data_science_ft_bio_predictions", "jupyter", "lab", "--ip", "0.0.0.0", "--port", "8888", "--no-browser", "--allow-root"]
-
-    
+    command: ["conda", "run", "-n", "data_science_ft_bio_predictions", "streamlit", "run", "app.py", "--server.port=8501", "--server.address=0.0.0.0"]

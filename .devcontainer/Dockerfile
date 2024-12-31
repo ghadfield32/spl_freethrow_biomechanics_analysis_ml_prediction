@@ -62,5 +62,5 @@ RUN /bin/bash -c ". /opt/conda/etc/profile.d/conda.sh && conda activate $ENV_NAM
 # Set working directory
 WORKDIR /workspace
 
-# Set the default command to bash
+# Set the default command to bash (overridden by docker-compose)
 CMD ["/bin/bash"]

@@ -1,7 +1,0 @@
-{
-  "criterion": "gini",
-  "max_depth": 50,
-  "min_samples_leaf": 3,
-  "min_samples_split": 7,
-  "splitter": "best"
-}

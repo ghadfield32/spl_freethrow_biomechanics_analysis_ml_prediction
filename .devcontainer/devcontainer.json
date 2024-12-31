@@ -39,7 +39,9 @@
         "source=${localWorkspaceFolder},target=/workspace,type=bind,consistency=cached"
     ],
     "remoteEnv": {
-        "MY_VAR": "${localEnv:MY_VAR:test_var}"
+        "MY_VAR": "${localEnv:MY_VAR:test_var}",
+        "MLFLOW_TRACKING_URI": "http://mlflow:5000",
+        "MLFLOW_EXPERIMENT_NAME": "Freethrow_Predictions_Experiment"
     },
     "runArgs": [
         "--gpus", "all",

@@ -1,0 +1,15 @@
+artifact_uri: file:///workspaces/spl_freethrow_biomechanics_analysis_ml_prediction/notebooks/freethrow_predictions/mlruns/764016161192596473/4b5dce4289e949369c1da53d29d2ffee/artifacts
+end_time: 1733845501248
+entry_point_name: ''
+experiment_id: '764016161192596473'
+lifecycle_stage: active
+run_id: 4b5dce4289e949369c1da53d29d2ffee
+run_name: welcoming-bear-631
+run_uuid: 4b5dce4289e949369c1da53d29d2ffee
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1733845500967
+status: 4
+tags: []
+user_id: root

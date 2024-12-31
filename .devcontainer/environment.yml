@@ -6,7 +6,7 @@ dependencies:
   - python=3.10
   - numpy
   - pandas
-  - scikit-learn
+  - scikit-learn=1.5.2        # Downgraded from 1.6.0
   - matplotlib
   - seaborn
   - jupyter
@@ -15,12 +15,15 @@ dependencies:
   - black
   - flake8
   - mypy
+  - omegaconf
+  - xgboost
+  - scikit-optimize
   - pip
-  - seaborn
+  - ffmpeg
+  - pyyaml
   - pip:
     - pretty_errors 
     - gdown
-    - xgboost
     - CatBoost
     - lightgbm
     - pyspark
@@ -28,5 +31,8 @@ dependencies:
     - imbalanced-learn
     - optuna
     - mlflow
-    - scikit-optimize
     - shap
+    - plotly
+    - python-dotenv
+    - joblib
+    - streamlit

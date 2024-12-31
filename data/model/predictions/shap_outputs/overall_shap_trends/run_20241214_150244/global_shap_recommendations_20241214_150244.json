@@ -1,0 +1,72 @@
+{
+    "release_ball_velocity_x": {
+        "range": "2.2\u20134.8",
+        "importance": 0.5788,
+        "direction": "positive"
+    },
+    "calculated_release_angle": {
+        "range": "59.9\u201365.0",
+        "importance": 0.5528,
+        "direction": "positive"
+    },
+    "release_ball_direction_x": {
+        "range": "0.3\u20130.4",
+        "importance": 0.4214,
+        "direction": "positive"
+    },
+    "wrist_release_angle": {
+        "range": "24.4\u201328.6",
+        "importance": 0.3759,
+        "direction": "negative"
+    },
+    "knee_release_angle": {
+        "range": "28.7\u201332.8",
+        "importance": 0.3721,
+        "direction": "positive"
+    },
+    "release_ball_speed": {
+        "range": "8.5\u201311.3",
+        "importance": 0.232,
+        "direction": "positive"
+    },
+    "release_ball_velocity_z": {
+        "range": "8.1\u201310.2",
+        "importance": 0.2231,
+        "direction": "negative"
+    },
+    "release_ball_direction_z": {
+        "range": "0.9\u20131.0",
+        "importance": 0.219,
+        "direction": "negative"
+    },
+    "elbow_max_angle": {
+        "range": "102.8\u2013105.3",
+        "importance": 0.1749,
+        "direction": "negative"
+    },
+    "release_ball_velocity_y": {
+        "range": "-1.1\u2013-0.3",
+        "importance": 0.1559,
+        "direction": "positive"
+    },
+    "elbow_release_angle": {
+        "range": "62.1\u201370.1",
+        "importance": 0.1258,
+        "direction": "positive"
+    },
+    "release_ball_direction_y": {
+        "range": "-0.1\u2013-0.0",
+        "importance": 0.0827,
+        "direction": "positive"
+    },
+    "wrist_max_angle": {
+        "range": "36.0\u201340.4",
+        "importance": 0.074,
+        "direction": "positive"
+    },
+    "knee_max_angle": {
+        "range": "60.6\u201363.5",
+        "importance": 0.043,
+        "direction": "positive"
+    }
+}
