@@ -4,7 +4,7 @@ channels:
   - defaults
 dependencies:
   - python=3.10
-  - numpy
+  - numpy==1.23.5
   - pandas
   - scikit-learn=1.5.2        # Downgraded from 1.6.0
   - matplotlib
@@ -36,3 +36,5 @@ dependencies:
     - python-dotenv
     - joblib
     - streamlit
+    - git+https://github.com/ghadfield32/ml_preprocessor # adding in custom preprocessing package
+    

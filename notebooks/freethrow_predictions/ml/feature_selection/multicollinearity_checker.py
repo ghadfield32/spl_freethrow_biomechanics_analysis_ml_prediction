@@ -43,7 +43,7 @@ def check_multicollinearity(df, threshold=0.8, debug=False):
 
 
 if __name__ == "__main__":
-    from feature_selection.categorize_categoricals import transform_features_with_bins
+    import pickle
     # Load the category bin configuration
     with open('../../data/model/pipeline/category_bin_config.pkl', 'rb') as f:
         loaded_category_bin_config = pickle.load(f)
@@ -51,13 +51,6 @@ if __name__ == "__main__":
     file_path = "../../data/processed/final_ml_dataset.csv"
     #import ml dataset from spl_dataset_prep
     final_ml_df = pd.read_csv(file_path)
-
-    # Step 1: Transform player features using the configuration
-    categorized_columns_df = transform_features_with_bins(final_ml_df, loaded_category_bin_config, debug=False)
-
-    # Step 2: Combine the original DataFrame with the categorized columns
-    final_ml_df_categoricals = pd.concat([final_ml_df, categorized_columns_df], axis=1)
-
     
     # Feature selection based on multi collinearity and random forest importance selection
     target_variable = 'result'
@@ -69,7 +62,7 @@ if __name__ == "__main__":
     
     # Step 1: Check for multicollinearity
     print("\nChecking for Multicollinearity...")
-    multicollinearity_df = check_multicollinearity(final_ml_df_categoricals, threshold=correlation_threshold, debug=debug)
+    multicollinearity_df = check_multicollinearity(final_ml_df, threshold=correlation_threshold, debug=debug)
 
     # Step 2: Handle multicollinearity
     if not multicollinearity_df.empty:

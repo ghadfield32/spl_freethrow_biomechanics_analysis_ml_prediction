@@ -1,61 +1,47 @@
 {
-    "Random Forest": {
-        "Best Params": {
-            "bootstrap": true,
-            "criterion": "gini",
-            "max_depth": 29,
-            "max_features": null,
-            "min_samples_leaf": 1,
-            "min_samples_split": 2,
-            "n_estimators": 500
-        },
-        "Best Cross-Validation Score": 0.7857142857142858,
-        "Evaluation Metrics": {
-            "Accuracy": 0.8055555555555556,
-            "Precision": 0.8065015479876161,
-            "Recall": 0.8055555555555556,
-            "F1 Score": 0.8054054054054054,
-            "ROC AUC": 0.9243827160493827,
-            "Log Loss": 0.38008470822853413
-        }
-    },
     "XGBoost": {
         "Best Params": {
-            "colsample_bytree": 0.6196812132590586,
-            "gamma": 0.8281463576942378,
-            "learning_rate": 0.3,
-            "max_depth": 2,
-            "n_estimators": 426,
+            "colsample_bytree": 1.0,
+            "gamma": 0.0,
+            "learning_rate": 0.026256876137016237,
+            "max_depth": 15,
+            "min_child_weight": 1,
+            "n_estimators": 500,
             "reg_alpha": 1.0,
-            "reg_lambda": 7.757598098253328e-07,
-            "subsample": 0.6751036878558564
+            "reg_lambda": 1.3733373179051223e-06,
+            "subsample": 1.0
         },
-        "Best Cross-Validation Score": 0.7785714285714287,
+        "Best CV Score": -0.5036265522560974,
         "Evaluation Metrics": {
-            "Accuracy": 0.6388888888888888,
-            "Precision": 0.6428571428571428,
-            "Recall": 0.6388888888888888,
-            "F1 Score": 0.6363636363636364,
-            "ROC AUC": 0.7314814814814814,
-            "Log Loss": 0.6164387505273572
+            "Accuracy": 0.6,
+            "Precision": 0.68,
+            "Recall": 0.6,
+            "F1 Score": 0.6264705882352941,
+            "ROC AUC": 0.6403508771929824,
+            "Log Loss": 0.6263972272453683
         }
     },
     "Decision Tree": {
         "Best Params": {
-            "criterion": "entropy",
-            "max_depth": 14,
-            "min_samples_leaf": 3,
-            "min_samples_split": 11,
+            "criterion": "gini",
+            "max_depth": 2,
+            "min_samples_leaf": 1,
+            "min_samples_split": 20,
             "splitter": "best"
         },
-        "Best Cross-Validation Score": 0.7714285714285715,
+        "Best CV Score": -0.6671156372614984,
         "Evaluation Metrics": {
-            "Accuracy": 0.8055555555555556,
-            "Precision": 0.8065015479876161,
-            "Recall": 0.8055555555555556,
-            "F1 Score": 0.8054054054054054,
-            "ROC AUC": 0.8919753086419753,
-            "Log Loss": 1.2962652706137656
+            "Accuracy": 0.6,
+            "Precision": 0.5428571428571428,
+            "Recall": 0.6,
+            "F1 Score": 0.57,
+            "ROC AUC": 0.631578947368421,
+            "Log Loss": 2.0175291162275175
         }
+    },
+    "Best Model": {
+        "model_name": "XGBoost",
+        "metric_value": 0.6263972272453683,
+        "path": "..\\..\\data\\model\\XGBoost\\trained_model.pkl"
     }
 }

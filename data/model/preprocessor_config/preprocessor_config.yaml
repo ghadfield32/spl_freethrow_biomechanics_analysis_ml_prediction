@@ -1,0 +1,493 @@
+# preprocessor_config.yaml
+
+# Root-level keys
+model_types:
+  - "Tree Based Classifier"
+  - "Logistic Regression"
+  - "K-Means"
+  - "Linear Regression"
+  - "Tree Based Regressor"
+  - "Support Vector Machine"
+
+model_sub_types:
+  Tree Based Classifier:
+    - "Random Forest"
+    - "XGBoost"
+    - "Decision Tree"
+  Logistic Regression:
+    - "Logistic Regression"
+  K-Means:
+    - "K-Means"
+  Linear Regression:
+    - "Linear Regression"
+  Tree Based Regressor:
+    - "Random Forest Regressor"
+    - "XGBoost Regressor"
+    - "Decision Tree Regressor"
+  Support Vector Machine:
+    - "Support Vector Machine"
+
+features:
+  ordinal_categoricals: []
+  nominal_categoricals: []
+  numericals:
+    - release_ball_direction_x
+    - release_ball_direction_z
+    - release_ball_direction_y
+    - elbow_release_angle
+    - elbow_max_angle
+    - wrist_release_angle
+    - wrist_max_angle
+    - knee_release_angle
+    - knee_max_angle
+    - release_ball_speed
+    - calculated_release_angle
+    - release_ball_velocity_x
+    - release_ball_velocity_y
+    - release_ball_velocity_z
+  y_variable:
+    - result
+
+
+paths:
+  # Base directories
+  data_dir: "../../data/processed"  # Changed from 'base_data_dir'
+  raw_data: "final_ml_dataset.csv"  # Changed from 'raw_data_file'
+  processed_data_dir: "preprocessor/processed"
+  features_metadata_file: "features_info/features_metadata.pkl"
+  predictions_output_dir: "preprocessor/predictions"
+  config_file: "../../data/model/preprocessor_config/preprocessor_config.yaml"
+  
+  # Output directories
+  log_dir: "preprocessor/logs"
+  model_save_base_dir: "preprocessor/models"
+  transformers_save_base_dir: "preprocessor/transformers"
+  plots_output_dir: "preprocessor/plots"
+  training_output_dir: "preprocessor/training_output"
+
+models:
+  # Configuration for each model type
+  Tree Based Classifier:
+    # Shared preprocessing steps for all tree-based classifiers
+    split_dataset:
+      test_size: 0.2
+      random_state: 42
+      stratify_for_classification: true
+
+    handle_missing_values:
+      numerical_strategy:
+        strategy: median
+        imputer: SimpleImputer
+      categorical_strategy:
+        strategy: most_frequent
+        imputer: SimpleImputer
+        fill_value: "Missing"
+
+    test_normality:
+      p_value_threshold: 0.05
+      skewness_threshold: 1.0
+      use_p_value_other_models: false
+
+    handle_outliers:
+      zscore_threshold: 3
+      iqr_multiplier: 1.5
+      apply_zscore: false
+      apply_iqr: true
+      apply_winsor: false
+      winsor_limits: [0.05, 0.05]
+      apply_isolation_forest: false
+      contamination: 0.05
+
+    choose_transformations:
+      method: power
+      power_method: yeo-johnson
+      skewness_threshold: 1.0
+
+    encode_categoricals:
+      ordinal_encoding: OrdinalEncoder
+      nominal_encoding: OneHotEncoder
+      handle_unknown: ignore
+
+    apply_scaling:
+      method: StandardScaler
+      # Features refer to 'numericals' defined above
+
+    implement_smote:
+      variant: SMOTENC
+      params:
+        k_neighbors: 5
+        sampling_strategy: 'auto'
+
+    inverse_transformations:
+      inverse_scaling: true
+      inverse_transformation: true
+      inverse_encoding: true
+
+    # Debug flags for each step
+    debug_split_dataset: true
+    debug_handle_missing_values: true
+    debug_test_normality: true
+    debug_handle_outliers: true
+    debug_choose_transformations: true
+    debug_encode_categoricals: true
+    debug_apply_scaling: true
+    debug_implement_smote: true
+    debug_final_inverse_transformations: true
+    debug_validate_inverse_transformations: true
+    debug_generate_recommendations: true
+
+  # -----------------------------------------------------------
+  # 2. Logistic Regression (Classification)
+  # -----------------------------------------------------------
+  "Logistic Regression":
+    split_dataset:
+      test_size: 0.2
+      random_state: 42
+      stratify_for_classification: true
+
+    handle_missing_values:
+      numerical_strategy:
+        strategy: mean
+        imputer: SimpleImputer
+      categorical_strategy:
+        strategy: most_frequent
+        imputer: SimpleImputer
+        fill_value: "Missing"
+
+    test_normality:
+      p_value_threshold: 0.05
+      skewness_threshold: 1.0
+      use_p_value_other_models: false
+
+    handle_outliers:
+      zscore_threshold: 3
+      iqr_multiplier: 1.5
+      apply_zscore: false
+      apply_iqr: true
+      apply_winsor: false
+      winsor_limits: [0.05, 0.05]
+      apply_isolation_forest: false
+      contamination: 0.05
+
+    choose_transformations:
+      method: power
+      power_method: yeo-johnson
+      skewness_threshold: 1.0
+
+    encode_categoricals:
+      ordinal_encoding: OrdinalEncoder
+      nominal_encoding: OneHotEncoder
+      handle_unknown: ignore
+
+    apply_scaling:
+      method: StandardScaler
+      # Features refer to 'numericals' defined above
+
+    implement_smote:
+      variant: SMOTENC
+      params:
+        k_neighbors: 5
+        sampling_strategy: 'auto'
+
+    inverse_transformations:
+      inverse_scaling: true
+      inverse_transformation: true
+      inverse_encoding: true
+
+    # Debug flags for each step
+    debug_split_dataset: true
+    debug_handle_missing_values: true
+    debug_test_normality: true
+    debug_handle_outliers: true
+    debug_choose_transformations: true
+    debug_encode_categoricals: true
+    debug_apply_scaling: true
+    debug_implement_smote: true
+    debug_final_inverse_transformations: true
+    debug_validate_inverse_transformations: true
+    debug_generate_recommendations: true
+
+  # -----------------------------------------------------------
+  # 3. K-Means Clustering (Clustering)
+  # -----------------------------------------------------------
+  "K-Means":
+    split_dataset:
+      test_size: null
+      random_state: 42
+      stratify_for_classification: false
+
+    handle_missing_values:
+      numerical_strategy:
+        strategy: mean
+        imputer: SimpleImputer
+      categorical_strategy:
+        strategy: most_frequent
+        imputer: SimpleImputer
+        fill_value: "Missing"
+
+    test_normality:
+      p_value_threshold: 0.05
+      skewness_threshold: 1.0
+      use_p_value_other_models: false
+
+    handle_outliers:
+      zscore_threshold: 3
+      iqr_multiplier: 1.5
+      apply_zscore: true
+      apply_iqr: true
+      apply_winsor: false
+      apply_isolation_forest: false  # Because we’re using our custom code to do multivariate ISOForest
+      contamination: 0.05
+
+
+    choose_transformations:
+      method: power
+      power_method: yeo-johnson
+      skewness_threshold: 1.0
+
+    encode_categoricals:
+      ordinal_encoding: OrdinalEncoder
+      nominal_encoding: OrdinalEncoder
+      handle_unknown: ignore
+
+    apply_scaling:
+      method: MinMaxScaler
+      # Features refer to 'numericals' defined above
+
+    implement_smote:
+      variant: null
+      params: {}
+
+    inverse_transformations:
+      inverse_scaling: true
+      inverse_transformation: true
+      inverse_encoding: true
+
+    clustering_model_params:
+      n_clusters: 3
+      init: 'k-means++'
+      n_init: 10
+      max_iter: 300
+
+    # Debug flags for each step
+    debug_split_dataset: true
+    debug_handle_missing_values: true
+    debug_test_normality: true
+    debug_handle_outliers: true
+    debug_choose_transformations: true
+    debug_encode_categoricals: true
+    debug_apply_scaling: true
+    debug_implement_smote: false
+    debug_final_inverse_transformations: true
+    debug_validate_inverse_transformations: true
+    debug_generate_recommendations: true
+
+  # -----------------------------------------------------------
+  # 4. Linear Regression (Regression)
+  # -----------------------------------------------------------
+  "Linear Regression":
+    split_dataset:
+      test_size: 0.2
+      random_state: 42
+      stratify_for_classification: false
+
+    handle_missing_values:
+      numerical_strategy:
+        strategy: mean
+        imputer: SimpleImputer
+      categorical_strategy:
+        strategy: most_frequent
+        imputer: SimpleImputer
+        fill_value: "Missing"
+
+    test_normality:
+      p_value_threshold: 0.05
+      skewness_threshold: 1.0
+      use_p_value_other_models: false
+
+    handle_outliers:
+      zscore_threshold: 3
+      iqr_multiplier: 1.5
+      apply_zscore: true
+      apply_iqr: true
+      apply_winsor: false
+      winsor_limits: [0.05, 0.05]
+      apply_isolation_forest: false
+      contamination: 0.05
+
+    choose_transformations:
+      method: power
+      power_method: yeo-johnson
+      skewness_threshold: 1.0
+
+    encode_categoricals:
+      ordinal_encoding: OrdinalEncoder
+      nominal_encoding: OneHotEncoder
+      handle_unknown: ignore
+
+    apply_scaling:
+      method: StandardScaler
+      # Features refer to 'numericals' defined above
+
+    implement_smote:
+      variant: null
+      params: {}
+
+    inverse_transformations:
+      inverse_scaling: true
+      inverse_transformation: true
+      inverse_encoding: true
+
+    # Debug flags for each step
+    debug_split_dataset: true
+    debug_handle_missing_values: true
+    debug_test_normality: true
+    debug_handle_outliers: true
+    debug_choose_transformations: true
+    debug_encode_categoricals: true
+    debug_apply_scaling: true
+    debug_implement_smote: false
+    debug_final_inverse_transformations: true
+    debug_validate_inverse_transformations: true
+    debug_generate_recommendations: true
+
+  # -----------------------------------------------------------
+  # 5. Tree Based Regressor (Regression)
+  # -----------------------------------------------------------
+  "Tree Based Regressor":
+    split_dataset:
+      test_size: 0.2
+      random_state: 42
+      stratify_for_classification: false
+
+    handle_missing_values:
+      numerical_strategy:
+        strategy: median
+        imputer: SimpleImputer
+      categorical_strategy:
+        strategy: most_frequent
+        imputer: SimpleImputer
+        fill_value: "Missing"
+
+    test_normality:
+      p_value_threshold: 0.05
+      skewness_threshold: 1.0
+      use_p_value_other_models: false
+
+    handle_outliers:
+      zscore_threshold: 3
+      iqr_multiplier: 1.5
+      apply_zscore: false
+      apply_iqr: true
+      apply_winsor: false
+      winsor_limits: [0.05, 0.05]
+      apply_isolation_forest: false
+      contamination: 0.05
+
+    choose_transformations:
+      method: none
+      skewness_threshold: 1.0
+      # power_method is not applicable when method is 'none'
+
+    encode_categoricals:
+      ordinal_encoding: OrdinalEncoder
+      nominal_encoding: OneHotEncoder
+      handle_unknown: ignore
+
+    apply_scaling:
+      method: none
+      # Features refer to 'numericals' defined above
+
+    implement_smote:
+      variant: null
+      params: {}
+
+    inverse_transformations:
+      inverse_scaling: true
+      inverse_transformation: true
+      inverse_encoding: true
+
+    # Debug flags for each step
+    debug_split_dataset: true
+    debug_handle_missing_values: true
+    debug_test_normality: true
+    debug_handle_outliers: true
+    debug_choose_transformations: true
+    debug_encode_categoricals: true
+    debug_apply_scaling: true
+    debug_implement_smote: false
+    debug_final_inverse_transformations: true
+    debug_validate_inverse_transformations: true
+    debug_generate_recommendations: true
+
+  # -----------------------------------------------------------
+  # 6. Support Vector Machine (Classification)
+  # -----------------------------------------------------------
+  "Support Vector Machine":
+    split_dataset:
+      test_size: 0.2
+      random_state: 42
+      stratify_for_classification: true
+
+    handle_missing_values:
+      numerical_strategy:
+        strategy: mean
+        imputer: KNNImputer
+        knn_neighbors: 5
+      categorical_strategy:
+        strategy: constant
+        imputer: SimpleImputer
+        fill_value: "Unknown"
+
+    test_normality:
+      p_value_threshold: 0.05
+      skewness_threshold: 1.0
+      use_p_value_other_models: false
+
+    handle_outliers:
+      zscore_threshold: 3
+      iqr_multiplier: 1.5
+      apply_zscore: false
+      apply_iqr: true
+      apply_winsor: false
+      winsor_limits: [0.05, 0.05]
+      apply_isolation_forest: false
+      contamination: 0.05
+
+    choose_transformations:
+      method: power
+      power_method: yeo-johnson
+      skewness_threshold: 1.0
+
+    encode_categoricals:
+      ordinal_encoding: OrdinalEncoder
+      nominal_encoding: OneHotEncoder
+      handle_unknown: ignore
+
+    apply_scaling:
+      method: StandardScaler
+      # Features refer to 'numericals' defined above
+
+    implement_smote:
+      variant: SMOTENC
+      params:
+        k_neighbors: 5
+        sampling_strategy: 'auto'
+
+    inverse_transformations:
+      inverse_scaling: true
+      inverse_transformation: true
+      inverse_encoding: true
+
+    # Debug flags for each step
+    debug_split_dataset: true
+    debug_handle_missing_values: true
+    debug_test_normality: true
+    debug_handle_outliers: true
+    debug_choose_transformations: true
+    debug_encode_categoricals: true
+    debug_apply_scaling: true
+    debug_implement_smote: true
+    debug_final_inverse_transformations: true
+    debug_validate_inverse_transformations: true
+    debug_generate_recommendations: true

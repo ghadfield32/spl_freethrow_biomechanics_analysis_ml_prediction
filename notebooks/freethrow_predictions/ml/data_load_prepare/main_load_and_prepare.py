@@ -2,14 +2,14 @@
 import os
 import pandas as pd
 import json
-from data_load_prepare.load_and_parse import load_single_ft_and_parse
-from data_load_prepare.dataframe_creation import main_create_dataframe
-from data_load_prepare.velocity_and_speed_calc import calculate_ball_speed_velocity_direction
-from data_load_prepare.phase_labeling import main_label_shot_phases
-from data_load_prepare.ball_trajectory_and_release_time_stats import main_ball_trajectory_analysis
-from data_load_prepare.joint_power_calc import main_calculate_joint_power
-from data_load_prepare.joint_angles_details import  calculate_joint_angles_over_motion
-from data_load_prepare.key_feature_extraction import main_prepare_ml_data, load_player_info, get_column_definitions
+from ml.data_load_prepare.load_and_parse import load_single_ft_and_parse
+from ml.data_load_prepare.dataframe_creation import main_create_dataframe
+from ml.data_load_prepare.velocity_and_speed_calc import calculate_ball_speed_velocity_direction
+from ml.data_load_prepare.phase_labeling import main_label_shot_phases
+from ml.data_load_prepare.ball_trajectory_and_release_time_stats import main_ball_trajectory_analysis
+from ml.data_load_prepare.joint_power_calc import main_calculate_joint_power
+from ml.data_load_prepare.joint_angles_details import  calculate_joint_angles_over_motion
+from ml.data_load_prepare.key_feature_extraction import main_prepare_ml_data, load_player_info, get_column_definitions
 
 def process_file(file_path, shot_id, player_info, debug=False):
     # Load and parse JSON data
