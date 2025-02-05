@@ -3,6 +3,9 @@
 Biomechanical Free Throw SHAP Feedback Application
 
 This application is designed to provide interpretable machine learning feedback for biomechanical data collected during free throw shooting. Using SHAP (SHapley Additive exPlanations) values, the tool not only predicts key metrics from each trial but also offers detailed, individualized feedback, including a "shot meter" for each measured metric.
+
+C:\Users\ghadf\vscode_projects\docker_projects\spl_freethrow_biomechanics_analysis_ml_prediction\notebooks\freethrow_predictions\animation.gif
+
 Table of Contents
 
     Overview
