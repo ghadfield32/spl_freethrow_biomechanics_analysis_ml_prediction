@@ -1,0 +1,22 @@
+name: Run ML Pipeline via Docker
+
+on:
+  push:
+    branches: [ "main" ]
+  workflow_dispatch:
+
+jobs:
+  ml-pipeline:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Build Docker Image
+        run: |
+          docker build -t mlops-pipeline:latest .
+
+      - name: Run ML Pipeline (e.g., run end-to-end tasks)
+        run: |
+          docker run --rm mlops-pipeline:latest run-pipeline

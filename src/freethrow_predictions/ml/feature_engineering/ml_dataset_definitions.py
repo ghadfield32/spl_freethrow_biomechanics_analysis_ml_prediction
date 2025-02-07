@@ -44,8 +44,8 @@ def get_ml_dataset_column_definitions():
         'knee_max_angle': "Maximum angle achieved by the knee during the motion.",
         'knee_release_angle': "Angle of the knee at the point of ball release.",
 
-        # Release ball dynamics
-        'release_ball_speed': "Speed of the ball at the point of release, derived from velocity components.",
+        # Release ball dynamics; defined by Meters Per Second
+        'release_ball_speed': "Speed (m/s) of the ball at the point of release, derived from velocity components.",
         'release_ball_velocity_x': "Velocity of the ball along the x-axis at the point of release.",
         'release_ball_velocity_y': "Velocity of the ball along the y-axis at the point of release.",
         'release_ball_velocity_z': "Velocity of the ball along the z-axis at the point of release.",

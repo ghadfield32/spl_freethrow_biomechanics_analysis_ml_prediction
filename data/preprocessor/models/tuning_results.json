@@ -1,0 +1,67 @@
+{
+    "XGBoost": {
+        "Best Params": {
+            "colsample_bytree": 1.0,
+            "gamma": 0.0,
+            "learning_rate": 0.019738624288481603,
+            "max_depth": 15,
+            "min_child_weight": 1,
+            "n_estimators": 100,
+            "reg_alpha": 0.09854452370287947,
+            "reg_lambda": 1e-08,
+            "subsample": 1.0
+        },
+        "Best CV Score": -0.4685556386210979,
+        "Evaluation Metrics": {
+            "Accuracy": 0.68,
+            "Precision": 0.7158823529411765,
+            "Recall": 0.68,
+            "F1 Score": 0.6939682539682539,
+            "ROC AUC": 0.6578947368421053,
+            "Log Loss": 0.6397387287211475
+        }
+    },
+    "Random Forest": {
+        "Best Params": {
+            "bootstrap": false,
+            "criterion": "entropy",
+            "max_depth": 50,
+            "max_features": "sqrt",
+            "min_samples_leaf": 1,
+            "min_samples_split": 2,
+            "n_estimators": 390
+        },
+        "Best CV Score": -0.46832888943323636,
+        "Evaluation Metrics": {
+            "Accuracy": 0.72,
+            "Precision": 0.7040000000000001,
+            "Recall": 0.72,
+            "F1 Score": 0.7108624708624709,
+            "ROC AUC": 0.793859649122807,
+            "Log Loss": 0.4793693298328305
+        }
+    },
+    "Decision Tree": {
+        "Best Params": {
+            "criterion": "entropy",
+            "max_depth": 2,
+            "min_samples_leaf": 1,
+            "min_samples_split": 20,
+            "splitter": "best"
+        },
+        "Best CV Score": -0.60521598697971,
+        "Evaluation Metrics": {
+            "Accuracy": 0.72,
+            "Precision": 0.8148051948051948,
+            "Recall": 0.72,
+            "F1 Score": 0.7399643493761141,
+            "ROC AUC": 0.7807017543859649,
+            "Log Loss": 1.9440237216830512
+        }
+    },
+    "Best Model": {
+        "model_name": "Random Forest",
+        "metric_value": 0.4793693298328305,
+        "path": "C:\\Users\\ghadf\\vscode_projects\\docker_projects\\spl_freethrow_biomechanics_analysis_ml_prediction\\notebooks\\freethrow_predictions\\preprocessor\\models\\Random_Forest\\trained_model.pkl"
+    }
+}

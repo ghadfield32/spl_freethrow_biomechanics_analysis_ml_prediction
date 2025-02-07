@@ -1,23 +1,27 @@
 
-
 import os
 import logging
 import pandas as pd
-from data_load_prepare.key_feature_extraction import load_player_info, get_column_definitions
-from data_load_prepare.main_load_and_prepare import bulk_process_directory
-from feature_engineering.ml_dataset_definitions import get_ml_dataset_column_definitions
-from feature_engineering.energy_exhaustion_metrics import (
+import numpy as np  # Added numpy import for consistency
+from ml.data_load_prepare.key_feature_extraction import load_player_info, get_column_definitions
+from ml.data_load_prepare.main_load_and_prepare import bulk_process_directory
+from ml.feature_engineering.ml_dataset_definitions import get_ml_dataset_column_definitions
+from ml.feature_engineering.energy_exhaustion_metrics import (
     main_granular_ongoing_exhaustion_pipeline,
     merge_joint_energy_with_ml_dataset,
     output_dataset
 )
-from feature_engineering.optimal_release_angle_metrics import (
+from ml.feature_engineering.optimal_release_angle_metrics import (
     log_trial_ids,
     check_duplicates,
     create_optimal_angle_reference_table,
     add_optimized_angles_to_granular,
     aggregate_angles,
     add_optimized_angles_to_ml
+)
+from ml.feature_engineering.categorize_categoricals import (
+    transform_features_with_bins,
+    load_default_bin_config
 )
 
 def process_basketball_data(
@@ -26,6 +30,7 @@ def process_basketball_data(
     output_ml_path,
     output_granular_path,
     power_columns=None,
+    bin_config=None,  # New parameter to accept custom bin configurations
     debug=False,
     log_level=logging.INFO,
     new_data=True  # New parameter added
@@ -40,6 +45,7 @@ def process_basketball_data(
     - output_ml_path (str): Path to save the final ML dataset CSV.
     - output_granular_path (str): Path to save the final granular dataset CSV.
     - power_columns (list, optional): List of power column names. Defaults to predefined list.
+    - bin_config (dict, optional): Custom bin configuration. If None, loads default configuration.
     - debug (bool, optional): Flag to enable debug mode. Defaults to False.
     - log_level (int, optional): Logging level. Defaults to logging.INFO.
     - new_data (bool, optional): If True, append to existing datasets. If False, overwrite. Defaults to True.
@@ -141,6 +147,29 @@ def process_basketball_data(
         )
         logger.info("Energy metrics merged into ML dataset.")
 
+        #-------------Categoricals Handling-------------
+        logger.debug("Starting categoricals handling.")
+
+        # Load bin configuration
+        if bin_config is None:
+            logger.debug("Loading default bin configuration.")
+            bin_config = load_default_bin_config()
+        else:
+            logger.debug("Using provided bin configuration.")
+
+        # Transform player features using the configuration
+        categorized_columns_df = transform_features_with_bins(final_ml_df_with_energy, bin_config, debug=debug)
+
+        # Combine the original ML DataFrame with the categorized columns
+        final_ml_df_categoricals = pd.concat([final_ml_df_with_energy, categorized_columns_df], axis=1)
+
+        # Debugging output
+        if debug:
+            logger.debug("\nFinal DataFrame with Categorized Features:")
+            logger.debug(final_ml_df_categoricals.head())
+            logger.debug("Categorized Columns:")
+            logger.debug(final_ml_df_categoricals.columns)
+
         # ---------Handle Appending or Overwriting----------
         if new_data:
             logger.info("Appending new data to existing datasets.")
@@ -149,12 +178,12 @@ def process_basketball_data(
             if os.path.exists(output_ml_path):
                 logger.debug(f"Loading existing ML dataset from {output_ml_path}.")
                 existing_ml_df = pd.read_csv(output_ml_path)
-                combined_ml_df = pd.concat([existing_ml_df, final_ml_df_with_energy], ignore_index=True)
+                combined_ml_df = pd.concat([existing_ml_df, final_ml_df_categoricals], ignore_index=True)
                 combined_ml_df.drop_duplicates(inplace=True)
                 logger.info("Appended new data to ML dataset and removed duplicates.")
             else:
                 logger.warning(f"ML dataset file {output_ml_path} does not exist. Creating a new one.")
-                combined_ml_df = final_ml_df_with_energy.copy()
+                combined_ml_df = final_ml_df_categoricals.copy()
 
             # Handle Granular Dataset
             if os.path.exists(output_granular_path):
@@ -176,7 +205,7 @@ def process_basketball_data(
             logger.info("Overwriting existing datasets with new data.")
 
             # Output the datasets to files, overwriting existing ones
-            output_dataset(final_ml_df_with_energy, filename=output_ml_path)
+            output_dataset(final_ml_df_categoricals, filename=output_ml_path)
             output_dataset(final_granular_df_with_energy, filename=output_granular_path)
             logger.info(f"Final datasets overwritten and saved to {output_ml_path} and {output_granular_path}.")
 
@@ -195,6 +224,15 @@ if __name__ == "__main__":
     output_ml_path = "../../../data/processed/final_ml_dataset.csv"
     output_granular_path = "../../../data/processed/final_granular_dataset.csv"
 
+    # Optional: Define a new bin configuration if needed
+    # new_bin_config = {
+    #     'player_height_in_meters': {
+    #         'bins': [0, 1.75, 1.95, np.inf],
+    #         'labels': ["Short", "Medium", "Tall"]
+    #     },
+    #     # Add or modify other columns as needed
+    # }
+
     # Call the processing function
     process_basketball_data(
         directory_path=directory_path,
@@ -203,5 +241,6 @@ if __name__ == "__main__":
         output_granular_path=output_granular_path,
         debug=True,  # Enable debug mode for detailed logs
         log_level=logging.DEBUG,  # Set logging level to DEBUG
-        new_data=False  # Set to True to append, False to overwrite
+        new_data=False,  # Set to True to append, False to overwrite
+        bin_config=None  # Pass `new_bin_config` here if using a custom configuration
     )

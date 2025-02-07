@@ -113,7 +113,7 @@ def extract_release_features(df, release_frame_index, debug=False):
     release_features['release_angle'] = math.degrees(math.atan2(release_features['release_ball_velocity_z'], horizontal_velocity))
 
     # Calculate time to peak height
-    g = -9.81  # Gravity
+    g = -9.81  # Gravity in METERS
     release_features['time_to_peak'] = -release_features['release_ball_velocity_z'] / g
 
     # Calculate peak height relative to release height
@@ -128,7 +128,7 @@ def project_ball_trajectory(df, release_index, debug=False):
     """
     Project the ball's trajectory based on release dynamics.
     """
-    g = -9.81  # Gravity
+    g = -9.81  # Gravity in METERS
     release_row = df.iloc[release_index]
 
     vx = release_row['ball_velocity_x']
