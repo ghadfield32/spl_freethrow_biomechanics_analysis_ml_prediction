@@ -124,6 +124,8 @@ def generate_feedback_table_all_metrics(feedback_mode, bayesian_metrics_dict, tr
     """
     try:
         feedback_records = []
+        if debug:
+            logger.debug("Trial data columns: %s", trial_data.columns.tolist())
 
         for metric_key, metric_info in bayesian_metrics_dict.items():
             # Use the metric key as the selected metric.
@@ -1286,6 +1288,9 @@ def run_shot_meter_animation(
             bayesian_metrics_dict = load_bayesian_metrics_dict(json_path=bayesian_metrics_json_path, debug=debug)
 
         trial_data = merged_data[merged_data['trial_id'] == trial_id].sort_values(by='frame_time').reset_index(drop=True)
+        print("DEBUG: trial_data.shape =", trial_data.shape)
+        print("DEBUG: columns in trial_data =", trial_data.columns.tolist())
+
         if trial_data.empty:
             raise ValueError(f"No data found for trial_id {trial_id}.")
         # After processing merged data and trial data:
@@ -1312,7 +1317,12 @@ def run_shot_meter_animation(
         if debug:
             print(f"[run_shot_meter_animation] Animating {len(shooting_frames)} frames.")
         
+        # --- NEW: Generate and validate the feedback table ---
         feedback_table = generate_feedback_table_all_metrics(feedback_mode, bayesian_metrics_dict, trial_data, debug=debug)
+        feedback_table = pd.DataFrame(feedback_table)
+        print("feedback_table shape: %s",feedback_table.shape)
+        print("feedback_table is type  %s",type(feedback_table))
+        
         # Pass notebook_mode to the animation function
         animation_html = animate_trial_with_calc_bayes_shap_angle_meter(
             df=trial_data,

@@ -108,7 +108,7 @@ def run_animation_pipeline(
         azim=azim,
         data_zoom=data_zoom
     )
-    
+    feedback_table = pd.DataFrame(feedback_table)
     # Add debugging outputs to verify the types and content of returned objects.
     if debug:
         st.write("run_shot_meter_animation returned:")
@@ -122,30 +122,6 @@ def run_animation_pipeline(
     
     return animation_html, feedback_table
 
-def display_feedback_table_debug(feedback_table):
-    """
-    Checks the type of feedback_table, attempts conversion to DataFrame if needed,
-    logs the details, and then displays it using st.dataframe().
-    """
-    st.write("Inside display_feedback_table_debug:")
-    st.write(" - Initial feedback_table type: %s", type(feedback_table))
-    
-    # Convert to DataFrame if necessary.
-    if not isinstance(feedback_table, pd.DataFrame):
-        try:
-            feedback_table = pd.DataFrame(data=feedback_table)
-            st.write("Converted feedback_table to DataFrame successfully.")
-            st.write(" - Conversion successful. New type: %s", type(feedback_table))
-        except Exception as e:
-            st.error(f"Error converting feedback_table to DataFrame: {e}")
-            logger.error("Error converting feedback_table: %s", e)
-            return
-    else:
-        logger.debug(" - feedback_table is already a DataFrame.")
-    
-    # Log additional details if available.
-    logger.debug(" - Final feedback_table shape: %s", feedback_table.shape)
-    st.dataframe(feedback_table)
 
 
 
@@ -478,7 +454,8 @@ with tab_animation:
     # Display the full feedback table in an expander for review.
     if feedback_table is not None:
         with st.expander("Feedback Table Preview"):
-            display_feedback_table_debug(feedback_table)
+            st.table(feedback_table)
+            st.write("Data Types:", feedback_table.dtypes)
     else:
         st.info("Feedback table not available yet.")
 
