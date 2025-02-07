@@ -40,6 +40,26 @@ The goal is to provide actionable, trial-level feedback based on free throw biom
 
 ---
 
+
+## Automation & Workflow
+
+The app features a fully automated repository that streamlines the process:
+
+    Feature Engineering:
+    Combines user-driven selection with automated feature generation.
+
+    Data Preprocessing:
+    Uses a custom preprocessor with SMOTE (via SMOTEN for mixed data) to balance datasets and reduce noise.
+
+    Model Training & MLOps:
+    Employs Bayesian training to select and retrain the best-performing tree-based classifier. MLflow manages experiment tracking, artifact logging, and model promotion—automatically advancing models that meet performance thresholds.
+
+    Prediction & SHAP Feedback:
+    Generates predictions and detailed SHAP insights.
+
+    Continuous Optimization:
+    Automated Bayesian retraining refines the model over time while ensuring version control and reproducibility.
+
 ## Features
 
 - **Configurable Inputs:** Specify YAML config and CSV dataset paths.
