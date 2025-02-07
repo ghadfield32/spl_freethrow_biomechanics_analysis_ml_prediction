@@ -404,7 +404,7 @@ with tab_animation:
 
     # Add the Quick Summary text above the feedback table
     st.markdown("""
-    ## Quick Summary (Animation Caption)
+    ## Quick Summary
     
     Visualize feedback types linked to key moments in the shooting animation:
     
