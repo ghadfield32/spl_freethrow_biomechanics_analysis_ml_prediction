@@ -1,4 +1,3 @@
-```markdown
 # SPL Biomechanical ML Feedback System
 
 **Basic Idea:**  
@@ -47,53 +46,31 @@ The goal is to provide actionable, trial-level feedback based on free throw biom
 
 The app features a fully automated pipeline that streamlines the process:
 
-- **Feature Engineering:**  
-  Combines user-driven selection with automated feature generation.
-
-- **Data Preprocessing:**  
-  Utilizes a custom preprocessor with SMOTE (via SMOTEN for mixed data) to balance datasets and reduce noise.
-
-- **Model Training & MLOps:**  
-  Employs Bayesian training to select and retrain the best-performing tree-based classifier. MLflow manages experiment tracking, artifact logging, and model promotion—automatically advancing models that meet performance thresholds.
-
-- **Prediction & SHAP Feedback:**  
-  Generates predictions and detailed SHAP insights.
-
-- **Continuous Optimization:**  
-  Automated Bayesian retraining refines the model over time while ensuring version control and reproducibility.
+- **Feature Engineering:** Combines user-driven selection with automated feature generation.
+- **Data Preprocessing:** Utilizes a custom preprocessor with SMOTE (via SMOTEN for mixed data) to balance datasets and reduce noise.
+- **Model Training & MLOps:** Employs Bayesian training to select and retrain the best-performing tree-based classifier. MLflow manages experiment tracking, artifact logging, and model promotion—automatically advancing models that meet performance thresholds.
+- **Prediction & SHAP Feedback:** Generates predictions and detailed SHAP insights.
+- **Continuous Optimization:** Automated Bayesian retraining refines the model over time while ensuring version control and reproducibility.
 
 ---
 
 ## Features
 
-- **Configurable Inputs:**  
-  Specify YAML config and CSV dataset paths.
-- **Prediction & SHAP Pipeline:**  
-  One-click execution to load configuration, process data, run predictions, and generate visualizations.
-- **Trial-Specific Feedback:**  
-  Retrieve detailed feedback and force plots by trial ID.
-- **Interactive Dashboard:**  
-  Sidebar options with tabs for global and trial-specific views.
-- **Automated Saving:**  
-  All outputs (predictions, feedback, plots) are saved automatically.
+- **Configurable Inputs:** Specify YAML config and CSV dataset paths.
+- **Prediction & SHAP Pipeline:** One-click execution to load configuration, process data, run predictions, and generate visualizations.
+- **Trial-Specific Feedback:** Retrieve detailed feedback and force plots by trial ID.
+- **Interactive Dashboard:** Sidebar options with tabs for global and trial-specific views.
+- **Automated Saving:** All outputs (predictions, feedback, plots) are saved automatically.
 
 ---
 
 ## Project Structure
 
-```plaintext
-.
-├── app.py                      # Main Streamlit app entry point
-├── ml/
-│   └── predict_with_shap_usage.py  # Unified prediction and SHAP function
-├── data/
-│   ├── model/
-│   │   └── preprocessor_config/
-│   │       └── preprocessor_config.yaml  # Preprocessing and model settings
-│   └── processed/
-│       └── final_ml_dataset.csv  # Sample processed ML dataset
-└── README.md                   # This file
-```
+- **app.py:** Main Streamlit app entry point.
+- **ml/predict_with_shap_usage.py:** Unified prediction and SHAP function.
+- **data/model/preprocessor_config/preprocessor_config.yaml:** Preprocessing and model settings.
+- **data/processed/final_ml_dataset.csv:** Sample processed ML dataset.
+- **README.md:** This file.
 
 ---
 
@@ -102,25 +79,21 @@ The app features a fully automated pipeline that streamlines the process:
 1. **Clone the Repository:**
 
    ```bash
-   git clone <repository-url>
-   cd your-repo-folder
+   git clone [<spl_freethrow_biomechanics_analysis_ml_prediction>](https://github.com/ghadfield32/spl_freethrow_biomechanics_analysis_ml_prediction)
+   cd spl_freethrow_biomechanics_analysis_ml_prediction
    ```
 
-2. **Install Dependencies**
+2. **Install Dependencies:**
 
-   - **Using Conda:**
-
+   - **Using Conda:**  
      Ensure you have Python 3.7+ and run:
-
      ```bash
      conda env create -f .devcontainer/environment.yml
-     conda activate <environment-name>
+     conda activate data_science_ft_bio_predictions
      ```
 
-   - **Using Docker:**
-
+   - **Using Docker:**  
      For a seamless setup, ensure Docker is installed and run:
-
      ```bash
      docker compose up --build
      ```
@@ -139,14 +112,10 @@ The app features a fully automated pipeline that streamlines the process:
 
 2. **Configure Options (via Sidebar):**
 
-   - **Config File Path:**  
-     Default is `data/model/preprocessor_config/preprocessor_config.yaml`
-   - **Data Path:**  
-     Default is `data/processed/final_ml_dataset.csv`
-   - **SHAP Plot Options:**  
-     Toggle summary, dependence, and force plots.
-   - **Trial ID:**  
-     Enter a specific trial for detailed feedback.
+   - **Config File Path:** Default is `data/model/preprocessor_config/preprocessor_config.yaml`
+   - **Data Path:** Default is `data/processed/final_ml_dataset.csv`
+   - **SHAP Plot Options:** Toggle summary, dependence, and force plots.
+   - **Trial ID:** Enter a specific trial for detailed feedback.
 
 3. **Run the Pipeline:**
 
@@ -155,7 +124,6 @@ The app features a fully automated pipeline that streamlines the process:
 4. **View the Dashboard:**
 
    Use the **"Show SHAP Dashboard"** tab to see:
-   
    - Global SHAP Plots (summary and dependence)
    - Trial Feedback (detailed metrics and shot meter)
    - Force Plot (feature contributions)
@@ -179,40 +147,29 @@ An `index_column` (typically `trial_id`) uniquely identifies each trial for targ
 
 The Streamlit dashboard is divided into three tabs:
 
-- **Global SHAP Plots:**  
-  Overview of SHAP summary and dependence plots.
-- **Trial Feedback:**  
-  Detailed prediction and feedback for selected trials.
-- **Force Plot:**  
-  In-depth view showing individual feature contributions.
+- **Global SHAP Plots:** Overview of SHAP summary and dependence plots.
+- **Trial Feedback:** Detailed prediction and feedback for selected trials.
+- **Force Plot:** In-depth view showing individual feature contributions.
 
 ---
 
 ## Future Enhancements
 
-- **Enhanced Shot Meter:**  
-  More granular feedback per performance metric.
-- **Expanded Feedback Module:**  
-  Integrate additional metrics and personalized coaching tips.
-- **User Authentication & Session Storage:**  
-  Maintain state across sessions for a dynamic experience.
-- **API Packaging:**  
-  Wrap the model and SHAP functions into an API for real-time feedback integration.
+- **Enhanced Shot Meter:** More granular feedback per performance metric.
+- **Expanded Feedback Module:** Integrate additional metrics and personalized coaching tips.
+- **User Authentication & Session Storage:** Maintain state across sessions for a dynamic experience.
+- **API Packaging:** Wrap the model and SHAP functions into an API for real-time feedback integration.
 
 ---
 
 ## License
 
-This project is licensed under the [MIT License](LICENSE).
+This project is licensed under the MIT License.
 
 ---
 
 ## Sources
 
 - "A Review on the Basketball Jump Shot" by Victor H.A. Okazaki, André L.F. Rodacki, and Miriam N. Satern (Sports Biomechanics, June 2015).
-- [ResearchGate Link](#) *(Insert the appropriate URL)*
-```
+- ResearchGate Link (Insert the appropriate URL)
 
----
-
-Simply replace `<repository-url>` and `<environment-name>` with your actual repository URL and Conda environment name, and update any placeholder links as needed. This format is clean, well-structured, and ready to be used as a GitHub README.
