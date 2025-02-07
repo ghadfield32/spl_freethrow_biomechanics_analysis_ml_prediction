@@ -61,11 +61,11 @@ def main():
     # ----------------------------
     paths = config.get('paths', {})
     feature_paths = {
-        'features': Path('../../data/model/pipeline/final_ml_df_selected_features_columns_test.pkl'),
-        'ordinal_categoricals': Path('../../data/model/pipeline/features_info/ordinal_categoricals.pkl'),
-        'nominal_categoricals': Path('../../data/model/pipeline/features_info/nominal_categoricals.pkl'),
-        'numericals': Path('../../data/model/pipeline/features_info/numericals.pkl'),
-        'y_variable': Path('../../data/model/pipeline/features_info/y_variable.pkl')
+        'features': Path('../../data/preprocessor/features_info/final_ml_df_selected_features_columns.pkl'),
+        'ordinal_categoricals': Path('../../data/preprocessor/features_info/ordinal_categoricals.pkl'),
+        'nominal_categoricals': Path('../../data/preprocessor/features_info/nominal_categoricals.pkl'),
+        'numericals': Path('../../data/preprocessor/features_info/numericals.pkl'),
+        'y_variable': Path('../../data/preprocessor/features_info/y_variable.pkl')
     }
 
     # Define other necessary paths

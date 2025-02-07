@@ -14,38 +14,54 @@ def initialize_elements(
     ball_color: str,
     ball_size: float,
     debug: bool = False
-) -> (dict, plt.Line2D, plt.Text, plt.Text, plt.Text):
+) -> (dict, plt.Line2D, plt.Text, plt.Text, plt.Text, dict):
     """
-    Initialize plot elements such as lines for the player skeleton and the ball.
-
+    Initialize plot elements for the player skeleton, ball, text annotations,
+    and now also creates a marker (small dot) for every unique joint.
+    
     Returns:
-    - lines (dict): Dictionary of line objects for each connection.
-    - ball (plt.Line2D): The ball plot object.
-    - release_text (plt.Text): Text object for release point indicator.
-    - motion_text (plt.Text): Text object for motion phase indicator.
-    - distance_text (plt.Text): Text object for distance to hoop.
+        lines (dict): Dictionary of line objects for each connection.
+        ball (plt.Line2D): The ball plot object.
+        release_text (plt.Text): Text object for release point indicator.
+        motion_text (plt.Text): Text object for motion phase indicator.
+        distance_text (plt.Text): Text object for distance to hoop.
+        joint_markers (dict): Dictionary of marker objects for each unique joint.
     """
     try:
-        # Initialize lines for each body connection
+        # 1) SKELETON LINES
         lines = {connection: ax.plot([], [], [], c=player_color, lw=player_lw)[0] for connection in connections}
         
-        # Initialize the ball as a point
+        # 2) BALL MARKER
         ball, = ax.plot([], [], [], "o", markersize=ball_size, c=ball_color)
         
-        # Text elements for annotations
-        release_text = ax.text2D(0.05, 0.95, "", transform=ax.transAxes, color="red", fontsize=14, weight="bold")
-        motion_text = ax.text2D(0.05, 0.90, "", transform=ax.transAxes, color="blue", fontsize=12, weight="bold")
+        # 3) TEXT ELEMENTS
+        release_text = ax.text2D(0.05, 0.95, "", transform=ax.transAxes,
+                                 color="red", fontsize=14, weight="bold")
+        motion_text = ax.text2D(0.05, 0.90, "", transform=ax.transAxes,
+                                color="blue", fontsize=12, weight="bold")
+        distance_text = ax.text2D(0.05, 0.85, "", transform=ax.transAxes,
+                                  color="green", fontsize=12, weight="bold")
         
-        # New text element for distance (positioned below motion_text)
-        distance_text = ax.text2D(0.05, 0.85, "", transform=ax.transAxes, color="green", fontsize=12, weight="bold")
-        
+        # 4) NEW: JOINT MARKERS
+        # Create a set of all unique joint names from the connections list.
+        unique_joints = set()
+        for (joint_a, joint_b) in connections:
+            unique_joints.add(joint_a)
+            unique_joints.add(joint_b)
+        joint_markers = {}
+        for joint in unique_joints:
+            marker_line, = ax.plot([], [], [], "o", color=player_color, markersize=5)
+            joint_markers[joint] = marker_line
+
         if debug:
-            logger.debug("Elements initialized (lines, ball, text labels).")
+            logger.debug("Elements initialized (lines, ball, texts, and joint markers).")
         
-        return lines, ball, release_text, motion_text, distance_text
+        return lines, ball, release_text, motion_text, distance_text, joint_markers
+    
     except Exception as e:
         logger.error(f"Error initializing elements: {e}")
         raise
+
 
 def initialize_plot(zlim=20, elev=30, azim=60, figsize=(12, 10), debug=False):
     """

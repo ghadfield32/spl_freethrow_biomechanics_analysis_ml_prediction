@@ -5,6 +5,8 @@ import logging
 import pickle
 from typing import Optional, List, Dict, Any, Tuple, Union
 import numpy as np
+from pathlib import Path
+import os
 
 def calculate_feature_importance(
     df: pd.DataFrame,
@@ -109,34 +111,41 @@ def manage_features(
     nominal_categoricals: Optional[List[str]] = None,
     numericals: Optional[List[str]] = None,
     y_variable: Optional[Union[str, List[str]]] = None,
-    paths: Optional[Dict[str, str]] = None
+    paths: Optional[Dict[str, str]] = None,
+    base_dir: Optional[Union[str, Path]] = None
 ) -> Optional[Dict[str, Any]]:
     """
     Save or load features and metadata.
-    
+
     Parameters:
-        mode (str): Operation mode - 'save' or 'load'.
-        features_df (pd.DataFrame, optional): DataFrame containing features to save (required for 'save').
+        mode (str): "save" or "load".
+        features_df (pd.DataFrame, optional): DataFrame containing features (required for "save").
         ordinal_categoricals (list, optional): List of ordinal categorical features.
         nominal_categoricals (list, optional): List of nominal categorical features.
         numericals (list, optional): List of numerical features.
         y_variable (str or list of str, optional): Target variable.
-        paths (dict, optional): Dictionary mapping each item to its file path.
-    
+        paths (dict, optional): Dictionary mapping item keys to file names.
+        base_dir (str or Path, optional): Base directory where files should be saved or loaded from.
+
     Returns:
-        If mode is 'load', returns a dictionary with loaded items.
-        If mode is 'save', returns None.
+        For "load" mode, returns a dictionary of loaded items; for "save" mode, returns None.
     """
-    # Define default paths if not provided.
+    # Ensure base_dir is a Path object and resolve it
+    if base_dir is None:
+        base_dir = Path.cwd()
+    else:
+        base_dir = Path(base_dir).resolve()
+
+    # Set default file names joined with the base directory.
     default_paths = {
-        'features': 'final_ml_df_selected_features_columns_test.pkl',
-        'ordinal_categoricals': 'ordinal_categoricals.pkl',
-        'nominal_categoricals': 'nominal_categoricals.pkl',
-        'numericals': 'numericals.pkl',
-        'y_variable': 'y_variable.pkl'
+        'features': str(base_dir / 'final_ml_df_selected_features_columns.pkl'),
+        'ordinal_categoricals': str(base_dir / 'ordinal_categoricals.pkl'),
+        'nominal_categoricals': str(base_dir / 'nominal_categoricals.pkl'),
+        'numericals': str(base_dir / 'numericals.pkl'),
+        'y_variable': str(base_dir / 'y_variable.pkl')
     }
 
-    # Update default paths with any provided paths.
+    # If a paths dictionary is provided, update the defaults.
     if paths:
         default_paths.update(paths)
 
@@ -145,7 +154,6 @@ def manage_features(
             if features_df is None:
                 raise ValueError("features_df must be provided in 'save' mode.")
 
-            # Prepare data to save
             data_to_save = {
                 'features': features_df.columns.tolist(),
                 'ordinal_categoricals': ordinal_categoricals,
@@ -154,21 +162,25 @@ def manage_features(
                 'y_variable': y_variable
             }
 
-            # Iterate and save each item.
-            for key, path in default_paths.items():
-                with open(path, 'wb') as f:
+            # Create necessary directories and save each item.
+            for key, file_path in default_paths.items():
+                file_path_obj = Path(file_path)
+                file_path_obj.parent.mkdir(parents=True, exist_ok=True)
+                with open(file_path_obj, 'wb') as f:
                     pickle.dump(data_to_save[key], f)
-                print(f"✅ {key.replace('_', ' ').capitalize()} saved to {path}")
+                print(f"✅ {key.replace('_', ' ').capitalize()} saved to {file_path_obj}")
 
         elif mode == 'load':
             loaded_data = {}
-
-            # Iterate and load each item.
-            for key, path in default_paths.items():
-                with open(path, 'rb') as f:
-                    loaded_data[key] = pickle.load(f)
-                print(f"✅ {key.replace('_', ' ').capitalize()} loaded from {path}")
-
+            for key, file_path in default_paths.items():
+                file_path_obj = Path(file_path)
+                if not file_path_obj.exists():
+                    print(f"❌ {key.replace('_', ' ').capitalize()} file not found at {file_path_obj}")
+                    loaded_data[key] = None
+                else:
+                    with open(file_path_obj, 'rb') as f:
+                        loaded_data[key] = pickle.load(f)
+                    print(f"✅ {key.replace('_', ' ').capitalize()} loaded from {file_path_obj}")
             return loaded_data
 
         else:
@@ -178,11 +190,12 @@ def manage_features(
         print(f"❌ Error during '{mode}' operation: {e}")
         if mode == 'load':
             return {key: None for key in default_paths.keys()}
+        
 
 if __name__ == "__main__":
     # For testing purposes: load dataset and run feature importance.
 
-    final_ml_features_path = '../../data/model/pipeline/final_ml_df_selected_features_columns_test.pkl'
+    final_ml_features_path = str(Path("../../data/preprocessor") / "features_info" / "final_ml_df_selected_features_columns.pkl")
     # (Other paths omitted for brevity.)
 
     file_path = "../../data/processed/final_ml_dataset.csv"
@@ -229,7 +242,7 @@ if __name__ == "__main__":
         'elbow_release_angle', 'elbow_max_angle',
         'wrist_release_angle', 'wrist_max_angle',
         'knee_release_angle', 'knee_max_angle',
-        'release_ball_speed',
+        'release_ball_speed', 'calculated_release_angle',
         'release_ball_velocity_x', 'release_ball_velocity_y','release_ball_velocity_z']
     y_variable = ['result']
     final_keep_list = ordinal_categoricals + nominal_categoricals + numericals + y_variable
@@ -244,42 +257,38 @@ if __name__ == "__main__":
 
     print(f"Retained {len(final_keep_list)} features: {', '.join(final_keep_list)}")
 
-    # Define paths (optional, will use defaults if not provided)
+    # You might also load your config and then get base_dir from config.paths.processed_data_dir joined with config.paths.data_dir
+    base_dir = Path("../../data") / "preprocessor" / "features_info"
     paths = {
-        'features': '../../data/model/pipeline/final_ml_df_selected_features_columns_test.pkl',
-        'ordinal_categoricals': '../../data/model/pipeline/features_info/ordinal_categoricals.pkl',
-        'nominal_categoricals': '../../data/model/pipeline/features_info/nominal_categoricals.pkl',
-        'numericals': '../../data/model/pipeline/features_info/numericals.pkl',
-        'y_variable': '../../data/model/pipeline/features_info/y_variable.pkl'
+        "features": str(base_dir / "final_ml_df_selected_features_columns.pkl"),
+        "ordinal_categoricals": str(base_dir / "ordinal_categoricals.pkl"),
+        'nominal_categoricals': str(base_dir /'nominal_categoricals.pkl'),
+        'numericals': str(base_dir /'numericals.pkl'),
+        'y_variable': str(base_dir /'y_variable.pkl')
     }
+
     # Save features and metadata
     manage_features(
         mode='save',
-        features_df=final_ml_df,
+        features_df=final_ml_df_selected_features,
         ordinal_categoricals=ordinal_categoricals,
         nominal_categoricals=nominal_categoricals,
         numericals=numericals,
         y_variable=y_variable,
-        paths=paths
+        paths=paths,
+        base_dir=base_dir
     )
-    
-    # Load features and metadata
+
+    # Later, load features and metadata
     loaded = manage_features(
         mode='load',
-        paths=paths
+        paths=paths,
+        base_dir=base_dir
     )
-    
-    # Access loaded data
-    if loaded:
-        features = loaded.get('features')
-        ordinals = loaded.get('ordinal_categoricals')
-        nominals = loaded.get('nominal_categoricals')
-        nums = loaded.get('numericals')
-        y_var = loaded.get('y_variable')
-        
-        print("\n📥 Loaded Data:")
-        print("Features:", features)
-        print("Ordinal Categoricals:", ordinals)
-        print("Nominal Categoricals:", nominals)
-        print("Numericals:", nums)
-        print("Y Variable:", y_var)
+    print("\n📥 Loaded Data from:", base_dir)
+    print("\n📥 Loaded Data:")
+    print("Features:", loaded.get('features'))
+    print("Ordinal Categoricals:", loaded.get('ordinal_categoricals'))
+    print("Nominal Categoricals:", loaded.get('nominal_categoricals'))
+    print("Numericals:", loaded.get('numericals'))
+    print("Y Variable:", loaded.get('y_variable'))

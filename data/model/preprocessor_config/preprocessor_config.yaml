@@ -1,5 +1,6 @@
 # preprocessor_config.yaml
 
+
 # Root-level keys
 model_types:
   - "Tree Based Classifier"
@@ -14,6 +15,7 @@ model_sub_types:
     - "Random Forest"
     - "XGBoost"
     - "Decision Tree"
+    - "CatBoost"
   Logistic Regression:
     - "Logistic Regression"
   K-Means:
@@ -50,22 +52,44 @@ features:
 
 
 paths:
-  # Base directories
-  data_dir: "../../data/processed"  # Changed from 'base_data_dir'
-  raw_data: "final_ml_dataset.csv"  # Changed from 'raw_data_file'
-  processed_data_dir: "preprocessor/processed"
-  features_metadata_file: "features_info/features_metadata.pkl"
-  predictions_output_dir: "preprocessor/predictions"
+  # Use the unified data output directory as the base directory.
+  data_dir: "../../data/preprocessor"
+  
+  # If your raw data is stored elsewhere, adjust the relative path accordingly.
+  raw_data: "../../data/processed/final_ml_dataset.csv"
+  
+  # Within the preprocessor folder, if you have extra processed data:
+  processed_data_dir: "processed"
+  
+  # Features and metadata are stored in the features_info folder.
+  features_metadata_file: "features_info/final_ml_df_selected_features_columns.pkl"
+  
+  # For predictions, we want them in a folder outside preprocessor:
+  predictions_output_dir: "../../data/predictions"
+  
+  # The configuration file itself remains where it is.
   config_file: "../../data/model/preprocessor_config/preprocessor_config.yaml"
   
-  # Output directories
-  log_dir: "preprocessor/logs"
-  model_save_base_dir: "preprocessor/models"
-  transformers_save_base_dir: "preprocessor/transformers"
-  plots_output_dir: "preprocessor/plots"
-  training_output_dir: "preprocessor/training_output"
+  # Output directories inside the unified preprocessor folder:
+  log_dir: "../../data/preprocessor/logs"
+  model_save_base_dir: "../../data/model"
+  transformers_save_base_dir: "../../data/preprocessor/transformers"
+  plots_output_dir: "../../data/preprocessor/plots"
+  training_output_dir: "../../data/preprocessor/training_output"
+  log_file: "../../data/preprocessor/prediction.log"
 
+logging:
+  level: "INFO"
+  debug: false
+  
 models:
+  selected_models:
+    - "XGBoost"
+    - "Random Forest"
+    - "Decision Tree"
+    - "CatBoost" 
+  selection_metric: "accuracy"  # or "log loss", or whatever metric you want to use.
+
   # Configuration for each model type
   Tree Based Classifier:
     # Shared preprocessing steps for all tree-based classifiers

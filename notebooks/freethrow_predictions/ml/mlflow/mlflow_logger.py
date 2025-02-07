@@ -3,23 +3,13 @@ import mlflow.sklearn
 from mlflow.data import from_pandas
 import os
 import logging
+import pandas as pd
 
 class MLflowLogger:
     def __init__(self, tracking_uri=None, experiment_name="Default Experiment", enable_mlflow=True):
-        """
-        Initialize MLflowLogger.
-
-        Args:
-            tracking_uri (str): URI for MLflow Tracking Server.
-            experiment_name (str): Name of the experiment.
-            enable_mlflow (bool): Flag to enable or disable MLflow logging.
-        """
         self.enable_mlflow = enable_mlflow
-
-        # Set up basic logging
         self.logger = logging.getLogger(__name__)
         if not self.logger.handlers:
-            # Prevent adding multiple handlers in interactive environments
             handler = logging.StreamHandler()
             formatter = logging.Formatter("%(asctime)s - %(levelname)s - %(message)s")
             handler.setFormatter(formatter)
@@ -32,12 +22,20 @@ class MLflowLogger:
                 self.logger.info(f"MLflow Tracking URI set to: {tracking_uri}")
             else:
                 self.logger.warning("MLflow Tracking URI not provided. Using default.")
-
             self.experiment_name = experiment_name
             mlflow.set_experiment(self.experiment_name)
             self.logger.info(f"MLflow Experiment set to: {self.experiment_name}")
+
+    def run_context(self, run_name, nested=False, tags=None):
+        """
+        Returns a context manager wrapping mlflow.start_run(...).
+        """
+        if self.enable_mlflow:
+            return mlflow.start_run(run_name=run_name, nested=nested, tags=tags)
         else:
-            self.logger.info("MLflow logging is disabled. Using basic logging.")
+            # Dummy context manager when MLflow is disabled.
+            from contextlib import nullcontext
+            return nullcontext()
 
     def log_run(self, run_name, params, metrics, artifacts=None, tags=None, datasets=None, nested=False):
         """

@@ -1,4 +1,0 @@
-# data/model/mlflow/confs/mlflow.yaml
-mlflow:
-  tracking_uri: ${MLFLOW_TRACKING_URI}
-  experiment_name: ${MLFLOW_EXPERIMENT_NAME}

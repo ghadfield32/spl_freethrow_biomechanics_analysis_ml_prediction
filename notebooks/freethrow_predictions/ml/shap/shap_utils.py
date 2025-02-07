@@ -228,55 +228,99 @@ def generate_global_recommendations(shap_values, X_original: pd.DataFrame, top_n
         raise
 
 
-def generate_individual_feedback(trial: pd.Series, shap_values_trial: np.ndarray, feature_metadata: dict = None, 
-                                 logger: logging.Logger = None) -> dict:
+def generate_individual_feedback(trial: pd.Series, shap_values_trial: np.ndarray,
+                                 feature_metadata: dict = None, logger: logging.Logger = None) -> dict:
     """
-    Generate specific feedback for a single trial based on its SHAP values and feature metadata.
-
-    Args:
-        trial (pd.Series): A single trial's data.
-        shap_values_trial (np.ndarray): SHAP values for the trial.
-        feature_metadata (dict, optional): Additional metadata for features (e.g., units).
-        logger (logging.Logger, optional): Logger instance for logging.
-
-    Returns:
-        dict: Feedback messages for each feature.
+    Generate individual feedback for a single trial and break it out into several pieces for each feature.
+    
+    For each feature, three keys will be generated:
+      1. shap_{sign}_direction_{feature}: A recommendation such as "decrease" or "maintain or increase"
+      2. shap_importance_{feature}: The absolute SHAP value (rounded) for that feature in this trial
+      3. shap_{sign}_unit_change_{feature}: The computed unit–change (with unit) for that feature.
+    
+    :param trial: A pandas Series containing the trial's feature values.
+    :param shap_values_trial: A numpy array with the SHAP values for the trial.
+    :param feature_metadata: A dictionary with metadata per feature (e.g. units).
+    :param logger: Optional logger for debugging.
+    :return: A dictionary containing the feedback.
     """
     feedback = {}
-    feature_names = trial.index.tolist()
-
-    for feature, shap_value in zip(feature_names, shap_values_trial):
-        if shap_value > 0:
-            adjustment = "maintain or increase"
-            direction = "positively"
-        elif shap_value < 0:
-            adjustment = "decrease"
-            direction = "positively"
+    
+    # Loop over each feature and its associated SHAP value.
+    for feature, shap_val in zip(trial.index.tolist(), shap_values_trial):
+        # Choose the sign and suggestion based on the SHAP value.
+        if shap_val > 0:
+            sign = "positive"
+            suggestion = "increase"
+        elif shap_val < 0:
+            sign = "negative"
+            suggestion = "decrease"
         else:
-            feedback[feature] = f"{feature.replace('_', ' ').capitalize()} has no impact on the prediction."
+            # If SHAP is zero, mark it as no impact.
+            feedback[f"shap_{feature}_impact"] = "no impact"
             continue
 
-        # Map SHAP values to meaningful adjustment magnitudes
-        # Example: 10% of the current feature value
+        # Compute the adjustment amount as (e.g.) 10% of the current value's absolute.
         current_value = trial[feature]
         adjustment_factor = 0.1
-        adjustment_amount = adjustment_factor * abs(current_value)
-
-        # Incorporate feature metadata if available
+        unit_change_value = adjustment_factor * abs(current_value)
+        
+        # Retrieve unit from feature_metadata, if available.
+        unit = ""
         if feature_metadata and feature in feature_metadata:
             unit = feature_metadata[feature].get('unit', '')
-            adjustment_str = f"{adjustment_amount:.2f} {unit}" if unit else f"{adjustment_amount:.2f}"
-        else:
-            adjustment_str = f"{adjustment_amount:.2f}"
+        # Format the unit change as a string.
+        unit_change_str = f"{unit_change_value:.2f} {unit}".strip()
 
-        # Construct feedback message
-        feedback_message = (
-            f"Consider to {adjustment} '{feature.replace('_', ' ')}' by approximately {adjustment_str} "
-            f"to {direction} influence the result."
-        )
-        feedback[feature] = feedback_message
+        # The importance for the feature in this trial is simply the absolute value of the SHAP value.
+        importance = abs(shap_val)
+        
+        # Create key names.
+        key_direction = f"shap_direction_{feature}"
+        key_importance = f"shap_importance_{feature}"
+        key_unit_change = f"shap_unit_change_{feature}"
+        
+        # Set values.
+        feedback[key_direction] = suggestion
+        feedback[key_importance] = round(importance, 4)
+        feedback[key_unit_change] = unit_change_str
 
+        if logger and logger.isEnabledFor(logging.DEBUG):
+            logger.debug(f"For feature '{feature}': {key_direction}='{suggestion}', "
+                         f"{key_importance}={round(importance, 4)}, {key_unit_change}='{unit_change_str}'")
     return feedback
+
+
+
+def expand_specific_feedback(df: pd.DataFrame, logger: Optional[logging.Logger] = None) -> pd.DataFrame:
+    """
+    Expand the 'specific_feedback' column from dictionaries to separate columns.
+
+    :param df: Original DataFrame containing the 'specific_feedback' column.
+    :param logger: Optional logger for debugging.
+    :return: Expanded DataFrame with separate feedback columns.
+    """
+    if 'specific_feedback' not in df.columns:
+        logger.error("'specific_feedback' column not found in DataFrame.")
+        raise KeyError("'specific_feedback' column not found.")
+    
+    logger.info("Expanding 'specific_feedback' into separate columns.")
+    try:
+        feedback_df = df['specific_feedback'].apply(pd.Series)
+        logger.debug(f"Feedback DataFrame shape after expansion: {feedback_df.shape}")
+        
+        # Optional: Handle missing values
+        feedback_df.fillna('No feedback available', inplace=True)
+        
+        # Merge with original DataFrame
+        df_expanded = pd.concat([df.drop(columns=['specific_feedback']), feedback_df], axis=1)
+        logger.info("'specific_feedback' expanded successfully.")
+        return df_expanded
+    except Exception as e:
+        logger.error(f"Failed to expand 'specific_feedback': {e}")
+        raise
+
+
 
 
 def compute_individual_shap_values(explainer, X_transformed: pd.DataFrame, trial_index: int, 
@@ -429,46 +473,45 @@ def get_shap_row(shap_values, df: pd.DataFrame, trial_id: Any, logger: Optional[
 def plot_shap_force(shap_explainer, shap_values, X_original, trial_index, 
                     save_path: Path, debug: bool = False, logger: Optional[logging.Logger] = None):
     try:
-        # Retrieve the SHAP values row for the specified trial.
+        # Retrieve the correct SHAP row and trial features
         if isinstance(trial_index, int):
             shap_value = shap_values[trial_index]
-            trial_features = X_original.iloc[trial_index]
+            trial_features = X_original.iloc[[trial_index]]  # Pass as DataFrame (1-row)
             if logger and debug:
-                logger.debug(f"Index {trial_index} is integer. Using it directly.")
+                logger.debug(f"Using integer index {trial_index} for force plot.")
         else:
-            if logger and debug:
-                logger.debug(f"Index {trial_index} is string; attempting to map it.")
             shap_value = get_shap_row(shap_values, X_original, trial_index, logger=logger)
             if shap_value is None:
                 if logger:
-                    logger.warning(f"Cannot generate force plot. SHAP row not found for '{trial_index}'.")
+                    logger.warning(f"SHAP row not found for trial '{trial_index}'.")
                 return
-            trial_features = X_original.loc[trial_index]
+            trial_features = X_original.loc[[trial_index]]  # keep as DataFrame
 
-        # Determine the base value.
+        # Determine the expected value and ensure it is a scalar (or select the first element if iterable)
         if hasattr(shap_explainer.expected_value, '__iter__'):
             base_value = shap_explainer.expected_value[0]
             if logger and debug:
-                logger.debug(f"Expected value is iterable; using first element: {base_value}")
+                logger.debug(f"Expected value is iterable; using {base_value}.")
         else:
             base_value = shap_explainer.expected_value
             if logger and debug:
                 logger.debug(f"Expected value is scalar: {base_value}")
 
-        # Generate the SHAP force plot.
+        # **Key change:** Use matplotlib=False so that the returned object is an interactive Visualizer
         shap_plot = shap.force_plot(
-            base_value,  # Use scalar base_value
+            base_value, 
             shap_value, 
             trial_features,
-            matplotlib=False
+            matplotlib=False  # Ensures an interactive (HTML/JS) plot is returned
         )
         
-        # Convert save_path to a string before saving.
+        # Save the interactive plot as an HTML file.
+        # (It’s a best practice to convert save_path to string)
         shap.save_html(str(save_path), shap_plot)
         if logger and debug:
-            logger.debug(f"SHAP force plot saved to {save_path}.")
+            logger.debug(f"Interactive SHAP force plot saved to {save_path}.")
         if logger:
-            logger.info(f"✅ SHAP force plot generated for trial {trial_index}.")
+            logger.info(f"✅ Interactive SHAP force plot generated for trial {trial_index}.")
     
     except Exception as e:
         if logger:
@@ -476,7 +519,156 @@ def plot_shap_force(shap_explainer, shap_values, X_original, trial_index,
         raise
 
 
+# Below is an updated version of shap_utils.py that includes additional functionality.
+# This functionality helps compute a percentile-based error limit (unit_change_error_limit)
+# for each feature (metric), then uses that limit alongside the computed shap_unit_change_{metric}
+# and shap_direction_{metric} to determine a trial-based feedback label such as "early", "good",
+# or "late".
+#
+# The new function introduced at the end is `compute_feedback_with_thresholds`. Inside it, we:
+# 1) Collect a data distribution for each metric from the entire dataset (or a relevant subset).
+# 2) Compute a chosen percentile (like the 90th percentile) for each metric to determine an error limit.
+# 3) Retrieve shap_unit_change_{metric} and shap_direction_{metric} from the feedback.
+#    - If "increase" -> the "goal" is current_value + shap_unit_change.
+#    - If "decrease" -> the "goal" is current_value - shap_unit_change.
+# 4) Compare the difference (or ratio) between the goal and the actual distribution of that metric to see
+#    if the difference is within or beyond the error limit.
+# 5) Mark trial-based feedback as "early", "good", or "late" accordingly.
+#
+# NOTE: This is sample logic and can be adapted to match your exact domain definitions.
+#       Additional logging or debugging can be added as needed.
 
+import logging
+import shap
+import pandas as pd
+import matplotlib.pyplot as plt
+import numpy as np
+import os
+import pickle
+from pathlib import Path
+from typing import Any, Dict, List, Optional
 
+logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
+logger = logging.getLogger(__name__)
 
+# Other functions omitted for brevity...
 
+###########################################
+# NEW FUNCTION: compute_feedback_with_thresholds
+###########################################
+
+def compute_feedback_with_thresholds(
+    df: pd.DataFrame,
+    features: List[str],
+    percentile: float = 90,
+    logger: Optional[logging.Logger] = None
+) -> pd.DataFrame:
+    """
+    This function demonstrates how to add percentile-based thresholds for each metric.
+
+    Steps:
+    1) For each metric in 'features', calculate the chosen percentile (e.g. 90th) across all trials.
+       This is our 'unit_change_error_limit' for that metric.
+    2) We look for the shap_direction_{metric} and shap_unit_change_{metric} columns in df.
+       If they say "increase" or "decrease", we can compute the 'goal' metric as:
+         - If direction is 'increase':  goal = actual_value + shap_unit_change (numerical interpretation)
+         - If direction is 'decrease':  goal = actual_value - shap_unit_change
+    3) Compare the difference between this 'goal' and the actual_value to see if it is within
+       the 'unit_change_error_limit'. Then assign feedback: 'early', 'good', or 'late'.
+       (The user can define the exact rules for these categories. We'll show an example.)
+
+    Returns:
+       The same DataFrame 'df', but with new columns:
+         - {feature}_threshold
+         - shap_feedback_{feature}
+       which store the threshold used and the final feedback label.
+    """
+    df_out = df.copy()
+
+    # 1) Compute the percentile for each feature across the dataset.
+    thresholds = {}
+    for metric in features:
+        if metric not in df_out.columns:
+            if logger:
+                logger.warning(f"Metric '{metric}' not found in df columns, skipping.")
+            continue
+        threshold_value = np.percentile(df_out[metric].dropna(), percentile)
+        thresholds[metric] = threshold_value
+        if logger:
+            logger.info(f"{percentile}th percentile for '{metric}' is {threshold_value:.3f}.")
+
+    # 2) For each metric, retrieve direction & unit_change columns if they exist.
+    for metric in features:
+        dir_col = f"shap_direction_{metric}"
+        uc_col = f"shap_unit_change_{metric}"
+
+        threshold_col = f"{metric}_threshold"
+        feedback_col = f"shap_feedback_{metric}"
+
+        # We'll store the threshold for reference.
+        if metric in thresholds:
+            df_out[threshold_col] = thresholds[metric]
+        else:
+            df_out[threshold_col] = np.nan
+
+        # If direction or unit change columns are absent, skip.
+        if dir_col not in df_out.columns or uc_col not in df_out.columns:
+            if logger:
+                logger.debug(f"Either {dir_col} or {uc_col} not found in df columns. Skipping feedback.")
+            df_out[feedback_col] = "No feedback"
+            continue
+
+        # We'll parse the numeric portion from shap_unit_change_{metric} because that might be something like '0.45 meters'.
+        # Let's define a helper to parse the numeric part.
+        def parse_value_with_unit(value_str: Any) -> float:
+            if isinstance(value_str, (int, float)):
+                return float(value_str)
+            try:
+                # example: "0.45 meters", split by space, parse first item
+                parts = str(value_str).split()
+                return float(parts[0])
+            except:
+                return 0.0
+
+        # Now define an inline function to compute feedback row by row.
+        def compute_row_feedback(row):
+            # If we have no actual metric col in the row, skip.
+            if pd.isnull(row.get(metric, np.nan)):
+                return "No actual metric"
+
+            actual_val = row[metric]
+            direction = row[dir_col]
+            # shap_unit_change_{metric} might be numeric or str with unit, parse.
+            shap_delta = parse_value_with_unit(row[uc_col])
+
+            # compute "goal"
+            if direction == "increase":
+                goal_val = actual_val + shap_delta
+            elif direction == "decrease":
+                goal_val = actual_val - shap_delta
+            else:
+                # e.g. 'no feedback available' or something else.
+                return "No direction"
+
+            # difference from goal
+            diff = abs(goal_val - actual_val)
+
+            # compare with threshold
+            limit = thresholds.get(metric, np.nan)
+            if pd.isnull(limit) or limit == 0:
+                # fallback if threshold not found.
+                return "No threshold"
+
+            # Define rules based on percentiles:
+            if diff <= 0.05 * limit:
+                return "good"
+            elif diff > 0.05 * limit and goal_val > actual_val:
+                return "early"
+            elif diff > 0.05 * limit and goal_val < actual_val:
+                return "late"
+            else:
+                return "No feedback"
+
+        df_out[feedback_col] = df_out.apply(compute_row_feedback, axis=1)
+
+    return df_out

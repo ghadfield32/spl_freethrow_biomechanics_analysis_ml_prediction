@@ -42,6 +42,7 @@ def check_multicollinearity(df, threshold=0.8, debug=False):
 
 
 
+
 if __name__ == "__main__":
     import pickle
     # Load the category bin configuration

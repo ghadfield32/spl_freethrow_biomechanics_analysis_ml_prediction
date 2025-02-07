@@ -239,7 +239,7 @@ def animate_trial_from_df(
 
         # Set plot title to include the viewpoint name
         ax.set_title(f"Animation - {viewpoint_name}", fontsize=16)
-        if debug:
+        if debug: 
             logger.debug(f"Set plot title to 'Animation - {viewpoint_name}'")
 
         # Create custom legend handles for static court features

@@ -1,5 +1,5 @@
 services:
-  datascience:
+  mlops:
     build:
       context: .
       dockerfile: .devcontainer/Dockerfile
@@ -7,9 +7,13 @@ services:
     volumes:
       - .:/workspace
     ports:
-      - "8888:8888"  # For Jupyter Notebook
-      - "6006:6006"  # For TensorBoard
-      - "8501:8501"  # For Streamlit
+      - "8888:8888"    # Jupyter Notebook, if needed
+      - "6006:6006"    # TensorBoard, if used
+      - "8501:8501"    # Streamlit app port (for serving ML predictions)
+      - "5000:5000"    # MLflow Tracking UI (if you run mlflow server)
+    environment:
+      - ENV_NAME=data_science_ft_bio_predictions
+      - PYTHON_VER=3.10
     deploy:
       resources:
         reservations:
@@ -17,7 +21,10 @@ services:
             - driver: nvidia
               count: all
               capabilities: [gpu]
-    environment:
-      - ENV_NAME=data_science_ft_bio_predictions
-      - PYTHON_VER=3.10
-    command: ["conda", "run", "-n", "data_science_ft_bio_predictions", "streamlit", "run", "app.py", "--server.port=8501", "--server.address=0.0.0.0"]
+    # Command options:
+    # Option 1 (run Streamlit app): Use this command if you have a Streamlit interface (for example, app.py in your project)
+    # command: ["conda", "run", "-n", "data_science_ft_bio_predictions"]
+    command: ["/workspace/entrypoint.sh"]
+
+    # Option 2 (run MLflow UI server): Uncomment to start MLflow UI
+    # command: ["conda", "run", "-n", "data_science_ft_bio_predictions", "mlflow", "ui", "--host", "0.0.0.0", "--port", "5000"]

@@ -6,6 +6,8 @@ from skopt import BayesSearchCV
 from skopt.space import Real, Integer, Categorical
 from sklearn.ensemble import RandomForestClassifier
 from xgboost import XGBClassifier
+import xgboost as xgb
+from catboost import CatBoostClassifier
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.metrics import (
     accuracy_score,
@@ -30,6 +32,7 @@ import os
 import logging
 import pandas as pd
 from pathlib import Path
+from typing import Any
 
 # Local imports
 from ml.feature_selection.data_loader_post_select_features import load_selected_features_data
@@ -276,3 +279,196 @@ def tune_decision_tree(X_train, y_train, scoring_metric="neg_log_loss"):
     logger.info(f"Best parameters found: {search.best_params_}")
     logger.info(f"Best cross-validation score: {search.best_score_}")
     return search.best_params_, search.best_score_, search.best_estimator_
+
+# Hyperparameter tuning for CatBoost
+def tune_catboost(X_train, y_train, scoring_metric="neg_log_loss"):
+    logger.info("Starting hyperparameter tuning for CatBoost...")
+    param_space = {
+        'learning_rate': Real(0.01, 0.3, prior='log-uniform'),
+        'iterations': Integer(100, 500),
+        'depth': Integer(3, 10),
+        'l2_leaf_reg': Real(1, 10),
+        'bagging_temperature': Real(0, 1),
+        'border_count': Integer(32, 255)
+    }
+    logger.info(f"Parameter space for CatBoost: {param_space}")
+
+    # Note: CatBoostClassifier might print a lot of output by default.
+    # We disable verbose by setting verbose=0.
+    search = BayesSearchCV(
+        CatBoostClassifier(random_state=42, thread_count=-1, verbose=0),
+        param_space,
+        n_iter=60,
+        scoring=scoring_metric,
+        cv=cv,
+        n_jobs=-1,
+        random_state=42
+    )
+    search.fit(X_train, y_train)
+    logger.info(f"Best parameters found for CatBoost: {search.best_params_}")
+    logger.info(f"Best cross-validation score for CatBoost: {search.best_score_}")
+    return search.best_params_, search.best_score_, search.best_estimator_
+
+
+
+
+def bayes_best_model_train(
+    X_train: pd.DataFrame,
+    y_train: pd.Series,
+    X_test: pd.DataFrame,
+    y_test: pd.Series,
+    selection_metric: str,
+    model_save_dir: Path,
+    classification_save_path: Path,
+    tuning_results_save: Path,
+    selected_models: Any,
+    use_pca: bool = False
+):
+    """
+    Streamlined function for model tuning, evaluation, and saving the best model.
+    """
+    logger.info("Starting the Bayesian hyperparameter tuning process...")
+
+    # Scoring metric selection
+    scoring_metric = "neg_log_loss" if selection_metric.lower() == "log loss" else "accuracy"
+
+    # Prepare model registry
+    model_registry = {
+        "XGBoost": tune_xgboost,
+        "Random Forest": tune_random_forest,
+        "Decision Tree": tune_decision_tree,
+        "CatBoost": tune_catboost
+    }
+
+    # Normalize selected_models input
+    if isinstance(selected_models, str):
+        selected_models = [selected_models]
+    elif not selected_models:
+        selected_models = list(model_registry.keys())
+        logger.info(f"No models specified. Using all available: {selected_models}")
+
+    tuning_results = {}
+    best_model_name = None
+    best_model = None
+    best_metric_value = None
+
+    # Ensure model_save_dir exists
+    model_save_dir.mkdir(parents=True, exist_ok=True)
+    logger.debug(f"Ensured that the model save directory '{model_save_dir}' exists.")
+
+    # Define metric key mapping
+    metric_key_mapping = {
+        "log loss": "Log Loss",
+        "accuracy": "Accuracy",
+        "precision": "Precision",
+        "recall": "Recall",
+        "f1 score": "F1 Score",
+        "roc auc": "ROC AUC"
+    }
+
+    # Loop over requested models
+    for model_name in selected_models:
+        if model_name not in model_registry:
+            logger.warning(f"Unsupported model: {model_name}. Skipping.")
+            continue
+        try:
+            logger.info(f"📌 Tuning hyperparameters for {model_name}...")
+            tuner_func = model_registry[model_name]
+
+            best_params, best_score, best_estimator = tuner_func(
+                X_train, y_train, scoring_metric=scoring_metric
+            )
+            logger.info(f"✅ {model_name} tuning done. Best Params: {best_params}, Best CV Score: {best_score}")
+
+            # Evaluate on X_test
+            metrics = evaluate_model(best_estimator, X_test, y_test, save_path=classification_save_path)
+            metric_key = metric_key_mapping.get(selection_metric.lower(), selection_metric)
+            metric_value = metrics.get(metric_key)
+
+            # Debugging
+            logger.debug(f"Selection Metric Key: {metric_key}")
+            logger.debug(f"Available Metrics: {metrics.keys()}")
+
+            if metric_value is not None:
+                logger.debug(f"Metric value for {selection_metric}: {metric_value}")
+                if best_metric_value is None:
+                    best_metric_value = metric_value
+                    best_model_name = model_name
+                    best_model = best_estimator
+                    logger.debug(f"Best model set to {best_model_name} with {selection_metric}={best_metric_value}")
+                else:
+                    # For log loss, lower is better
+                    if selection_metric.lower() == "log loss" and metric_value < best_metric_value:
+                        best_metric_value = metric_value
+                        best_model_name = model_name
+                        best_model = best_estimator
+                        logger.debug(f"Best model updated to {best_model_name} with {selection_metric}={best_metric_value}")
+                    # For other metrics (accuracy, f1, etc.), higher is better
+                    elif selection_metric.lower() != "log loss" and metric_value > best_metric_value:
+                        best_metric_value = metric_value
+                        best_model_name = model_name
+                        best_model = best_estimator
+                        logger.debug(f"Best model updated to {best_model_name} with {selection_metric}={best_metric_value}")
+            else:
+                logger.debug(f"Metric value for {selection_metric} is None. Best model not updated.")
+
+            # Save partial results
+            tuning_results[model_name] = {
+                "Best Params": best_params,
+                "Best CV Score": best_score,
+                "Evaluation Metrics": metrics,
+            }
+
+            # Plot boundary (optional for tree-based with PCA)
+            try:
+                plot_decision_boundary(best_estimator, X_test, y_test, f"{model_name} Decision Boundary", use_pca=use_pca)
+            except ValueError as e:
+                logger.warning(f"Skipping decision boundary plot for {model_name}: {e}")
+
+            # Add feature importance plots for XGBoost
+            if model_name.lower() == "xgboost":
+                logger.info("Generating feature importance plots for XGBoost...")
+                try:
+                    xgb.plot_importance(best_model, importance_type="weight")
+                    plt.title("Feature Importance by Weight")
+                    plt.show()
+
+                    xgb.plot_importance(best_model, importance_type="cover")
+                    plt.title("Feature Importance by Cover")
+                    plt.show()
+
+                    xgb.plot_importance(best_model, importance_type="gain")
+                    plt.title("Feature Importance by Gain")
+                    plt.show()
+                except Exception as e:
+                    logger.error(f"Error generating feature importance plots: {e}")
+        except Exception as e:
+            logger.error(f"❌ Error tuning {model_name}: {e}")
+            continue
+
+    # Save best model information
+    if best_model_name:
+        logger.info(f"✅ Best model is {best_model_name} with {selection_metric}={best_metric_value}")
+        try:
+            save_model(best_model, best_model_name, save_dir=model_save_dir)
+            logger.info(f"✅ Model '{best_model_name}' saved successfully in '{model_save_dir}'.")
+        except Exception as e:
+            logger.error(f"❌ Failed to save best model {best_model_name}: {e}")
+            raise  # Ensure the exception is propagated
+
+        # Add Best Model info to tuning_results
+        tuning_results["Best Model"] = {
+            "model_name": best_model_name,
+            "metric_value": best_metric_value,
+            "path": str(Path(model_save_dir) / best_model_name.replace(" ", "_") / 'trained_model.pkl')
+        }
+    else:
+        logger.warning("⚠️ No best model was selected. Tuning might have failed for all models.")
+
+    # Save tuning results
+    try:
+        with tuning_results_save.open("w") as f:
+            json.dump(tuning_results, f, indent=4)
+        logger.info(f"✅ Tuning results saved to {tuning_results_save}.")
+    except Exception as e:
+        logger.error(f"❌ Error saving tuning results: {e}")

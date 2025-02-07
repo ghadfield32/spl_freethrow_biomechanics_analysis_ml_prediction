@@ -8,6 +8,7 @@ dependencies:
   - pandas
   - scikit-learn=1.5.2        # Downgraded from 1.6.0
   - matplotlib
+  - ipympl
   - seaborn
   - jupyter
   - ipykernel
@@ -22,19 +23,24 @@ dependencies:
   - ffmpeg
   - pyyaml
   - pip:
-    - pretty_errors 
-    - gdown
-    - CatBoost
-    - lightgbm
-    - pyspark
-    - mplbasketball
-    - imbalanced-learn
-    - optuna
-    - mlflow
-    - shap
-    - plotly
-    - python-dotenv
-    - joblib
-    - streamlit
-    - git+https://github.com/ghadfield32/ml_preprocessor # adding in custom preprocessing package
-    
+      - pretty_errors 
+      - gdown
+      - CatBoost
+      - lightgbm
+      - pyspark
+      - mplbasketball
+      - imbalanced-learn
+      - optuna
+      - mlflow
+      - shap
+      - plotly
+      - python-dotenv
+      - joblib
+      - streamlit
+      - git+https://github.com/ghadfield32/ml_preprocessor
+      - databricks-sdk
+      - invoke
+      - tensorflow
+      - keras
+      - mitosheet
+      - mito-ai

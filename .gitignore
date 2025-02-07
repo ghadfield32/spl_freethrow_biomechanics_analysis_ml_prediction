@@ -1,1 +1,21 @@
-.env
+# Exclude version control directories and caches
+.git
+.gitignore
+.mypy_cache
+__pycache__
+
+# Exclude large data directories if they are not needed in the image
+data/model/mlruns
+data/raw
+data/processed
+data/...
+
+# Exclude local IDE or build files
+*.pyc
+*.pyo
+*.pyd
+*.swp
+.DS_Store
+
+# Exclude any temporary or large files not needed for the image
+tmp/

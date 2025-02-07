@@ -1,5 +1,22 @@
 # SPL Biomechanical ML Feedback System
 
+
+Basic idea: Test out Different Feedback systems with foundational calculation feedback to see
+if we can team up Bayesian Optimization with SHAP to get the most successful metrics and compare to foundational method to show improvements.
+
+Foundational metrics are found through taking successful shots, getting the range for those and filter them to a better percentile within a comfortable range to see if what metrics result within range.
+
+SHAP metrics found through individual shap feedback showing how far off from a good prediction the model would make we were
+
+Bayesian optimization takes the min and max and mean and then uses bayesian optimization to test through the metrics and their different combinations to see what would result in the most likely to be successful according to the model 
+    requirements: a successful model on makes or else this is just finding the most successful for a bad model. I've achieved 83% accuracy on 125 trials, bound to get better and is solid to start for non linear statistics
+
+
+
+![animation](https://github.com/user-attachments/assets/63d8c67c-9ed5-41f3-a5a9-5c98b8f219d0)
+
+
+
 Biomechanical Free Throw SHAP Feedback Application
 
 This application is designed to provide interpretable machine learning feedback for biomechanical data collected during free throw shooting. Using SHAP (SHapley Additive exPlanations) values, the tool not only predicts key metrics from each trial but also offers detailed, individualized feedback, including a "shot meter" for each measured metric.
@@ -49,7 +66,7 @@ Setup and Installation
 
     Clone the Repository:
 
-git clone https://your-repo-url.git
+git clone 
 cd your-repo-folder
 
 Install Dependencies:

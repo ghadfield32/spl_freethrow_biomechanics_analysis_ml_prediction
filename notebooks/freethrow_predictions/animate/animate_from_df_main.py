@@ -8,36 +8,36 @@ from animate.animate_from_df import animate_trial_from_df
 joint_configs = [
     {
         'name': 'knee',
-        'min_angle_key': 'max_knee_angle_filtered_optimal_min',
-        'max_angle_key': 'max_knee_angle_filtered_optimal_max',
-        'release_min_angle_key': 'release_knee_angle_filtered_optimal_min',
-        'release_max_angle_key': 'release_knee_angle_filtered_optimal_max',
+        'min_angle_key': 'knee_max_angle_filtered_optimal_min',
+        'max_angle_key': 'knee_max_angle_filtered_optimal_max',
+        'release_min_angle_key': 'knee_release_angle_filtered_optimal_min',
+        'release_max_angle_key': 'knee_release_angle_filtered_optimal_max',
         'angle_key': 'knee_angle',
-        'is_max_key': 'is_max_knee_angle',
-        'classification_key': 'max_knee_shot_classification',
-        'release_classification_key': 'release_knee_shot_classification'
+        'is_max_key': 'is_knee_max_angle',
+        'classification_key': 'knee_max_angle_shot_classification',
+        'release_classification_key': 'knee_release_angle_shot_classification'
     },
     {
         'name': 'elbow',
-        'min_angle_key': 'max_elbow_angle_filtered_optimal_min',
-        'max_angle_key': 'max_elbow_angle_filtered_optimal_max',
-        'release_min_angle_key': 'release_elbow_angle_filtered_optimal_min',
-        'release_max_angle_key': 'release_elbow_angle_filtered_optimal_max',
+        'min_angle_key': 'elbow_max_angle_filtered_optimal_min',
+        'max_angle_key': 'elbow_max_angle_filtered_optimal_max',
+        'release_min_angle_key': 'elbow_release_angle_filtered_optimal_min',
+        'release_max_angle_key': 'elbow_release_angle_filtered_optimal_max',
         'angle_key': 'elbow_angle',
-        'is_max_key': 'is_max_elbow_angle',
-        'classification_key': 'max_elbow_shot_classification',
-        'release_classification_key': 'release_elbow_shot_classification'
+        'is_max_key': 'is_elbow_max_angle',
+        'classification_key': 'elbow_max_angle_shot_classification',
+        'release_classification_key': 'elbow_release_angle_shot_classification'
     },
     {
         'name': 'wrist',
         'min_angle_key': 'max_wrist_angle_filtered_optimal_min',
         'max_angle_key': 'max_wrist_angle_filtered_optimal_max',
-        'release_min_angle_key': 'release_wrist_angle_filtered_optimal_min',
-        'release_max_angle_key': 'release_wrist_angle_filtered_optimal_max',
+        'release_min_angle_key': 'wrist_release_angle_filtered_optimal_min',
+        'release_max_angle_key': 'wrist_release_angle_filtered_optimal_max',
         'angle_key': 'wrist_angle',
         'is_max_key': 'is_max_wrist_angle',
-        'classification_key': 'max_wrist_shot_classification',
-        'release_classification_key': 'release_wrist_shot_classification'
+        'classification_key': 'max_wrist_angle_shot_classification',
+        'release_classification_key': 'wrist_release_angle_shot_classification'
     }
 ]
 
