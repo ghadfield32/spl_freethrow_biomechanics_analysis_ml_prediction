@@ -455,7 +455,6 @@ with tab_animation:
     if feedback_table is not None:
         with st.expander("Feedback Table Preview"):
             st.table(feedback_table)
-            st.write("Data Types:", feedback_table.dtypes)
     else:
         st.info("Feedback table not available yet.")
 
