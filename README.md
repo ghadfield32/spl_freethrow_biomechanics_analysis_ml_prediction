@@ -97,10 +97,16 @@ The app features a fully automated repository that streamlines the process:
    cd your-repo-folder
    ```
 
-2. **Install Dependencies:**  
+2. **Install Dependencies for Conda Trial:**  
    Ensure you have Python 3.7+ and run:
    ```bash
-   pip install -r requirements.txt
+    conda env create -f .devcontainer/environment.yml
+    conda activate <name>
+   ```
+2. **Run in Docker For ease:** 
+    Use Docker to run the environment seamlessly. Ensure you have Docker installed and then run:
+   ```bash
+    docker compose up --build
    ```
 
 3. **Directory Structure:**  
