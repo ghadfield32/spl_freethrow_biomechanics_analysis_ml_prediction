@@ -20,6 +20,10 @@ Bayesian optimization takes the min and max and mean and then uses bayesian opti
 Biomechanical Free Throw SHAP Feedback Application
 
 This application is designed to provide interpretable machine learning feedback for biomechanical data collected during free throw shooting. Using SHAP (SHapley Additive exPlanations) values, the tool not only predicts key metrics from each trial but also offers detailed, individualized feedback, including a "shot meter" for each measured metric.
+
+![animation](https://github.com/user-attachments/assets/63d8c67c-9ed5-41f3-a5a9-5c98b8f219d0)
+
+
 Table of Contents
 
     Overview
