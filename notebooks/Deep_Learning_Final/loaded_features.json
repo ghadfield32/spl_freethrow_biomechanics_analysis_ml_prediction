@@ -1,0 +1,117 @@
+{
+    "L_ANKLE_injury_risk": [
+        "rolling_exhaustion",
+        "ema_exhaustion",
+        "rolling_hr_mean",
+        "R_KNEE_ROM_deviation",
+        "R_KNEE_ROM",
+        "exhaustion_lag1",
+        "L_ANKLE_ROM_deviation",
+        "R_SHOULDER_ROM",
+        "L_ANKLE_ROM",
+        "L_SHOULDER_ROM"
+    ],
+    "R_ANKLE_injury_risk": [
+        "ema_exhaustion",
+        "exhaustion_lag1",
+        "R_KNEE_ROM_deviation",
+        "ankle_asymmetry",
+        "rolling_hr_mean",
+        "1stfinger_power_ratio",
+        "L_HIP_ROM",
+        "knee_asymmetry"
+    ],
+    "L_WRIST_injury_risk": [
+        "rolling_exhaustion",
+        "exhaustion_lag1",
+        "ema_exhaustion",
+        "power_avg_5",
+        "energy_acceleration",
+        "hip_asymmetry",
+        "knee_power_ratio",
+        "ankle_asymmetry",
+        "R_HIP_ROM"
+    ],
+    "R_WRIST_injury_risk": [
+        "rolling_exhaustion",
+        "ema_exhaustion",
+        "exhaustion_lag1",
+        "simulated_HR",
+        "R_KNEE_ROM_deviation",
+        "power_avg_5",
+        "R_SHOULDER_ROM",
+        "joint_energy",
+        "knee_asymmetry",
+        "joint_power"
+    ],
+    "L_ELBOW_injury_risk": [
+        "rolling_exhaustion",
+        "exhaustion_lag1",
+        "simulated_HR",
+        "ankle_asymmetry",
+        "rolling_hr_mean",
+        "1stfinger_power_ratio",
+        "wrist_power_ratio",
+        "ema_exhaustion",
+        "energy_acceleration",
+        "L_HIP_ROM"
+    ],
+    "R_ELBOW_injury_risk": [
+        "rolling_exhaustion",
+        "exhaustion_lag1",
+        "rolling_hr_mean",
+        "ema_exhaustion",
+        "simulated_HR",
+        "R_KNEE_ROM",
+        "knee_asymmetry",
+        "R_SHOULDER_ROM",
+        "power_avg_5",
+        "ankle_asymmetry"
+    ],
+    "L_KNEE_injury_risk": [
+        "rolling_exhaustion",
+        "ema_exhaustion",
+        "R_KNEE_ROM",
+        "exhaustion_lag1",
+        "R_KNEE_ROM_deviation",
+        "simulated_HR",
+        "rolling_hr_mean",
+        "knee_asymmetry",
+        "L_ANKLE_ROM"
+    ],
+    "R_KNEE_injury_risk": [
+        "rolling_exhaustion",
+        "ema_exhaustion",
+        "exhaustion_lag1",
+        "R_KNEE_ROM_deviation",
+        "R_KNEE_ROM",
+        "L_SHOULDER_ROM",
+        "simulated_HR",
+        "knee_power_ratio",
+        "energy_acceleration"
+    ],
+    "L_HIP_injury_risk": [
+        "rolling_exhaustion",
+        "ema_exhaustion",
+        "R_KNEE_ROM_deviation",
+        "exhaustion_lag1",
+        "R_KNEE_ROM",
+        "knee_asymmetry",
+        "rolling_hr_mean",
+        "simulated_HR",
+        "ankle_asymmetry",
+        "wrist_power_ratio"
+    ],
+    "R_HIP_injury_risk": [
+        "rolling_exhaustion",
+        "exhaustion_lag1",
+        "ema_exhaustion",
+        "power_avg_5",
+        "R_KNEE_ROM",
+        "R_KNEE_ROM_deviation",
+        "energy_acceleration",
+        "rolling_hr_mean",
+        "knee_asymmetry",
+        "L_SHOULDER_ROM"
+    ]
+}
