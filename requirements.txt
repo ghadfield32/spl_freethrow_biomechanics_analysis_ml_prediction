@@ -1,11 +1,13 @@
 streamlit
 pandas
-numpy=1.23.5
+numpy==1.23.5
 pyyaml
 shap
-scikit-learn=1.5.2 
+scikit-learn==1.5.2
 matplotlib
 xgboost
 scikit-optimize
 mplbasketball  # if your animation module uses it
 joblib
+# pickle is a built-in module; no need to install
+typing  # generally not required to install; part of standard library in recent Python versions
