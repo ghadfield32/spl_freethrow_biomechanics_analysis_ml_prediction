@@ -9,5 +9,3 @@ xgboost
 scikit-optimize
 mplbasketball  # if your animation module uses it
 joblib
-pickle
-typing
