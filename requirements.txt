@@ -1,9 +1,9 @@
 streamlit
 pandas
-numpy
+numpy=1.23.5
 pyyaml
 shap
-scikit-learn
+scikit-learn=1.5.2 
 matplotlib
 xgboost
 scikit-optimize
@@ -11,4 +11,3 @@ mplbasketball  # if your animation module uses it
 joblib
 pickle
 typing
-    
