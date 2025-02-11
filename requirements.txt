@@ -15,3 +15,4 @@ omegaconf
 pydantic
 catboost
 git+https://github.com/ghadfield32/ml_preprocessor
+IPython
