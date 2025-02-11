@@ -13,3 +13,4 @@ joblib
 typing  # generally not required to install; part of standard library in recent Python versions
 omegaconf
 pydantic
+catboost
