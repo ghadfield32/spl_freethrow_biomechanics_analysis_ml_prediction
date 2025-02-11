@@ -14,3 +14,4 @@ typing  # generally not required to install; part of standard library in recent 
 omegaconf
 pydantic
 catboost
+git+https://github.com/ghadfield32/ml_preprocessor
