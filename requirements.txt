@@ -10,3 +10,6 @@ scikit-optimize
 mplbasketball  # if your animation module uses it
 git+https://github.com/ghadfield32/ml_preprocessor
 joblib
+pickle
+typing
+    
