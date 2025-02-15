@@ -156,9 +156,9 @@ st.sidebar.header("Prediction & SHAP Options")
 project_root = Path(__file__).resolve().parent.parent.parent
 project_root2 = Path(__file__).resolve().parent.parent
 project_root3 = Path(__file__).resolve().parent
-print(f"project_root: {project_root}")
-print(f"project_root2: {project_root2}")
-print(f"project_root3: {project_root3}")
+# print(f"project_root: {project_root}")
+# print(f"project_root2: {project_root2}")
+# print(f"project_root3: {project_root3}")
 
 # Update default file paths as needed.
 default_config_path = project_root / "data" / "model" / "preprocessor_config" / "preprocessor_config_app.yaml"

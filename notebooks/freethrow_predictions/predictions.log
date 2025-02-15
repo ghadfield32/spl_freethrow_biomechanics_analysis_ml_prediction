@@ -3705,3 +3705,15 @@
 2025-02-07 00:07:13,463 - PredictAndAttachLogger - DEBUG - Attached column: Probability_1
 2025-02-07 00:07:13,464 - PredictAndAttachLogger - DEBUG - Final shape of X_inversed: (125, 17)
 2025-02-07 00:07:13,465 - PredictAndAttachLogger - DEBUG - Final columns in X_inversed: ['release_ball_direction_x', 'release_ball_direction_z', 'release_ball_direction_y', 'elbow_release_angle', 'elbow_max_angle', 'wrist_release_angle', 'wrist_max_angle', 'knee_release_angle', 'knee_max_angle', 'release_ball_speed', 'calculated_release_angle', 'release_ball_velocity_x', 'release_ball_velocity_y', 'release_ball_velocity_z', 'Prediction', 'Probability_0', 'Probability_1']
+2025-02-10 10:49:31,708 - PredictAndAttachLogger - INFO - ✅ Predictions made successfully.
+2025-02-10 10:49:31,829 - PredictAndAttachLogger - DEBUG - Predictions sample: [0 1 0 0 1]
+2025-02-10 10:49:31,849 - PredictAndAttachLogger - INFO - ✅ Prediction probabilities computed successfully.
+2025-02-10 10:49:31,854 - PredictAndAttachLogger - DEBUG - Prediction probabilities sample:
+[[0.9108718  0.08912821]
+ [0.08208466 0.91791534]]
+2025-02-10 10:49:31,854 - PredictAndAttachLogger - DEBUG - Predictions attached to inverse-transformed DataFrame.
+2025-02-10 10:49:31,859 - PredictAndAttachLogger - DEBUG - Prediction probabilities attached to inverse-transformed DataFrame.
+2025-02-10 10:49:31,862 - PredictAndAttachLogger - DEBUG - Attached column: Probability_0
+2025-02-10 10:49:31,865 - PredictAndAttachLogger - DEBUG - Attached column: Probability_1
+2025-02-10 10:49:31,870 - PredictAndAttachLogger - DEBUG - Final shape of X_inversed: (125, 17)
+2025-02-10 10:49:31,871 - PredictAndAttachLogger - DEBUG - Final columns in X_inversed: ['release_ball_direction_x', 'release_ball_direction_z', 'release_ball_direction_y', 'elbow_release_angle', 'elbow_max_angle', 'wrist_release_angle', 'wrist_max_angle', 'knee_release_angle', 'knee_max_angle', 'release_ball_speed', 'calculated_release_angle', 'release_ball_velocity_x', 'release_ball_velocity_y', 'release_ball_velocity_z', 'Prediction', 'Probability_0', 'Probability_1']
