@@ -440,7 +440,9 @@ if __name__ == "__main__":
         'L_ELBOW_ongoing_power', 'R_ELBOW_ongoing_power',  # Elbows
         'L_WRIST_ongoing_power', 'R_WRIST_ongoing_power',  # Wrists
         'L_1STFINGER_ongoing_power', 'R_1STFINGER_ongoing_power',  # Index fingers
-        'L_5THFINGER_ongoing_power', 'R_5THFINGER_ongoing_power'   # Pinky fingers
+        'L_5THFINGER_ongoing_power', 'R_5THFINGER_ongoing_power',   # Pinky fingers
+        'L_1STTOE_ongoing_power', 'R_1STTOE_ongoing_power',  # Index fingers
+        'L_5THTOE_ongoing_power', 'R_5THTOE_ongoing_power'   # Pinky fingers
     ]
 
     # Assuming final_granular_df_with_optimal_release_angles and final_ml_df_with_optimal_release_angles

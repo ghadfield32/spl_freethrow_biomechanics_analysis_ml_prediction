@@ -1,4 +1,5 @@
 
+import logging
 import os
 import pandas as pd
 import json
@@ -8,7 +9,7 @@ from ml.data_load_prepare.velocity_and_speed_calc import calculate_ball_speed_ve
 from ml.data_load_prepare.phase_labeling import main_label_shot_phases
 from ml.data_load_prepare.ball_trajectory_and_release_time_stats import main_ball_trajectory_analysis
 from ml.data_load_prepare.joint_power_calc import main_calculate_joint_power
-from ml.data_load_prepare.joint_angles_details import  calculate_joint_angles_over_motion
+from ml.data_load_prepare.joint_angles_details import  calculate_joint_angles_over_motion, split_shooting_phases_dynamic
 from ml.data_load_prepare.key_feature_extraction import main_prepare_ml_data, load_player_info, get_column_definitions
 
 def process_file(file_path, shot_id, player_info, debug=False):
@@ -37,7 +38,14 @@ def process_file(file_path, shot_id, player_info, debug=False):
     # Step 4: Calculate joint power and joint angle metrics
     df, joint_power_metrics_df = main_calculate_joint_power(df, release_frame_index, debug=debug)
     df, joint_angle_metrics_df = calculate_joint_angles_over_motion(df, release_frame_index, debug=debug)
+    if debug:
+        print("Debug: player_info should have hand info===========", player_info)
+    handedness = player_info["player_dominant_hand"]
+    if debug:
+        print(handedness)  # This will output: R
 
+    df = split_shooting_phases_dynamic(df, handedness=handedness, debug=True)
+    
     # Step 5: Prepare ML features combining shot details, joint power, angles, release metrics, and player info
     key_features_dataframe = main_prepare_ml_data(df, joint_power_metrics_df, joint_angle_metrics_df, ml_metrics_df, player_info, debug=debug)
     key_features_dataframe['trial_id'] = trial_id
@@ -79,8 +87,8 @@ def bulk_process_directory(directory_path, player_info_path, debug=False):
     return final_granular_df, final_ml_df
 
 if __name__ == "__main__":
-    directory_path = "../../../../SPL-Open-Data/basketball/freethrow/data/P0001"
-    player_info_path = "../../../../SPL-Open-Data/basketball/freethrow/participant_information.json"
+    directory_path = "../../SPL-Open-Data/basketball/freethrow/data/P0001"
+    player_info_path = "../../SPL-Open-Data/basketball/freethrow/participant_information.json"
 
     # Run the bulk processing with player info integration
     final_granular_df, final_ml_df = bulk_process_directory(directory_path, player_info_path, debug=False)

@@ -44,3 +44,6 @@ dependencies:
       - keras
       - mitosheet
       - mito-ai
+      - feature-engine
+      - autots
+      - darts

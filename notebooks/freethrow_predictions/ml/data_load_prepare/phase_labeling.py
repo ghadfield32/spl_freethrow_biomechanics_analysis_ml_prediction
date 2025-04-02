@@ -195,12 +195,12 @@ def main_label_shot_phases(df, debug=False):
 if __name__ == "__main__":
     import logging
     # from src.animation_dataframe_addons import animate_trial_from_df
-    # from data_loading.load_and_parse import load_single_ft_and_parse
-    # from data_preprocessing.dataframe_creation import main_create_dataframe
-    # from velocity_and_speed_calc import calculate_ball_speed_velocity_direction
-    # from shot_phase_labeling import main_label_shot_phases
+    from ml.data_load_prepare.load_and_parse import load_single_ft_and_parse
+    from ml.data_load_prepare.dataframe_creation import main_create_dataframe
+    from ml.data_load_prepare.velocity_and_speed_calc import calculate_ball_speed_velocity_direction
+    # from ml.data_load_prepare.shot_phase_labeling import main_label_shot_phases
     from IPython.display import display
-    # from animate.animation import animate_trial_from_df
+    from animate.animation import animate_trial_from_df
 
     # Default connections between joints
     connections = [
