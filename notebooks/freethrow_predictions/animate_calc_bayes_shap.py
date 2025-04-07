@@ -43,16 +43,6 @@ mpl.rcParams['animation.embed_limit'] = 30.0  # Value is in MB
 # Global constant for converting degrees to radians
 DEG_TO_RAD = np.pi / 180.0
 
-# Define calculated metrics list
-CALCULATED_METRICS = [
-    'release_knee_angle',
-    'release_wrist_angle',
-    'release_elbow_angle',
-    'wrist_max_angle',
-    'elbow_max_angle',
-    'knee_max_angle'
-]
-
 
 def display_separate_outputs(feedback_table, animation_html, feedback_mode):
     """
@@ -864,7 +854,7 @@ def animate_trial_with_calc_bayes_shap_angle_meter(
         )
 
         # Retrieve selected metric filter name.
-        metric_info = bayesian_metrics_dict.get(selected_metric.lower())
+        metric_info = bayesian_metrics_dict.get(selected_metric)
         if not metric_info:
             raise ValueError(f"Metric '{selected_metric}' not found in bayesian_metrics_dict.")
         selected_metric_filter_name = metric_info.get("filter_name", selected_metric)
@@ -1297,7 +1287,7 @@ def run_shot_meter_animation(
         if debug:
             print(f"[run_shot_meter_animation] Trial data for {trial_id} contains {len(trial_data)} frames (shape {trial_data.shape}).")
         
-        metric_info = bayesian_metrics_dict.get(selected_metric.lower())
+        metric_info = bayesian_metrics_dict.get(selected_metric)
         if not metric_info:
             raise ValueError(f"Selected metric '{selected_metric}' not found in bayesian_metrics_dict.")
         selected_metric_filter_name = metric_info.get('filter_name', selected_metric)
@@ -1485,7 +1475,7 @@ if __name__ == "__main__":
     bayesian_metrics_json_path = "../../data/model/shot_meter_docs/bayesian_metrics_dict.json"
     merged_data_path = "../../data/processed/final_granular_dataset.csv"
     selected_trial_id = "T0001"
-    selected_metric = "elbow_max_angle"
+    selected_metric = "R_ELBOW_max_angle"
     
     # Define connections for the player skeleton (example list)
 
@@ -1496,7 +1486,7 @@ if __name__ == "__main__":
         bayesian_metrics_json_path=bayesian_metrics_json_path,
         merged_data_path=merged_data_path,  # changed here
         trial_id="T0001",
-        selected_metric="elbow_max_angle",
+        selected_metric="R_ELBOW_max_angle",
         feedback_mode="shap", # bayesian, calculated, shap
         viewpoint_name="diagonal_player_centric",
         debug=True,

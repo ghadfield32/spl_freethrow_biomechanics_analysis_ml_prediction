@@ -20127,3 +20127,603 @@ could not convert string to float: 'R'
 2025-02-04 16:31:06,617 - ml.shap.shap_utils - INFO - Final dataset and global recommendations saved.
 2025-02-04 16:31:06,618 - ml.shap.shap_utils - INFO - Predict+SHAP pipeline completed successfully.
 2025-02-04 16:31:06,618 - ml.shap.shap_utils - INFO - Unified predict_and_shap function executed successfully for model CatBoost.
+2025-04-05 00:04:16,077 - ml.shap.shap_utils - INFO - Starting prediction module (unified predict_and_shap).
+2025-04-05 00:04:16,101 - ml.shap.shap_utils - INFO - Prediction input data loaded from /workspaces/spl_freethrow_biomechanics_analysis_ml_prediction/data/preprocessor/../../data/processed/final_ml_dataset.csv.
+2025-04-05 00:04:16,113 - ml.shap.shap_utils - INFO - Overriding best model selection; using model: XGBoost
+2025-04-05 00:04:16,137 - ml.train_utils.train_utils - INFO - Model loaded from /workspaces/spl_freethrow_biomechanics_analysis_ml_prediction/data/model/XGBoost_model.pkl
+2025-04-05 00:04:16,138 - ml.shap.shap_utils - INFO - Trained model loaded from '/workspaces/spl_freethrow_biomechanics_analysis_ml_prediction/data/model' using model name 'XGBoost'.
+2025-04-05 00:04:16,150 - DataPreprocessor - INFO - Starting: Final Preprocessing Pipeline in 'predict' mode.
+2025-04-05 00:04:16,152 - DataPreprocessor - INFO - Step: filter_columns
+2025-04-05 00:04:16,155 - DataPreprocessor - INFO - ✅ Filtered DataFrame to include only specified features. Shape: (125, 14)
+2025-04-05 00:04:16,156 - DataPreprocessor - INFO - ✅ Column filtering completed successfully.
+2025-04-05 00:04:16,158 - DataPreprocessor - INFO - Step: Preprocess Predict
+2025-04-05 00:04:16,160 - DataPreprocessor - INFO - Step: Load Transformers
+2025-04-05 00:04:16,171 - DataPreprocessor - INFO - Transformers loaded successfully from '/workspaces/spl_freethrow_biomechanics_analysis_ml_prediction/data/preprocessor/transformers/transformers.pkl'.
+2025-04-05 00:04:16,173 - DataPreprocessor - INFO - Step: filter_columns
+2025-04-05 00:04:16,175 - DataPreprocessor - INFO - ✅ Filtered DataFrame to include only specified features. Shape: (125, 14)
+2025-04-05 00:04:16,182 - DataPreprocessor - INFO - Step: Handle Missing Values
+2025-04-05 00:04:16,211 - DataPreprocessor - INFO - Step: Generate Preprocessor Recommendations
+2025-04-05 00:04:16,213 - DataPreprocessor - INFO - Preprocessing Recommendations generated.
+2025-04-05 00:04:16,214 - DataPreprocessor - INFO - Step 'Generate Preprocessor Recommendations' completed: Recommendations generated.
+2025-04-05 00:04:16,215 - DataPreprocessor - INFO - ✅ Preprocessing completed successfully in predict mode.
+2025-04-05 00:04:16,217 - ml.shap.shap_utils - INFO - Preprocessing completed successfully in predict mode.
+2025-04-05 00:04:16,230 - PredictAndAttachLogger - INFO - ✅ Predictions made successfully.
+2025-04-05 00:04:16,244 - PredictAndAttachLogger - INFO - ✅ Prediction probabilities computed successfully.
+2025-04-05 00:04:16,251 - ml.shap.shap_utils - INFO - Predictions generated and attached to the dataset.
+2025-04-05 00:04:16,252 - ml.shap.shap_utils - INFO - Initializing SHAP explainer...
+2025-04-05 00:04:16,419 - ml.shap.shap_utils - INFO - SHAP values computed successfully.
+2025-04-05 00:04:16,421 - ml.shap.shap_utils - INFO - [Step A] Generating feedback for each trial with detailed debug information.
+2025-04-05 00:04:16,534 - ml.shap.shap_utils - INFO - [Step B] Computing original metric error with corrected feature extraction.
+2025-04-05 00:04:16,535 - ml.shap.shap_utils - INFO - [Step C] Computing original metric error with corrected feature extraction.
+2025-04-05 00:04:16,569 - ml.shap.shap_utils - INFO - Feedback generation and metric threshold application completed.
+2025-04-05 00:04:16,570 - ml.shap.shap_utils - INFO - Generating SHAP summary plot...
+2025-04-05 00:04:16,867 - ml.shap.shap_utils - INFO - SHAP summary plot generated successfully.
+2025-04-05 00:04:16,868 - ml.shap.shap_utils - INFO - SHAP summary plot saved at /workspaces/spl_freethrow_biomechanics_analysis_ml_prediction/data/predictions/shap_results/XGBoost/shap_summary.png.
+2025-04-05 00:04:16,869 - ml.shap.shap_utils - INFO - Generating feature importance based on SHAP values...
+2025-04-05 00:04:16,887 - ml.shap.shap_utils - INFO - Generating SHAP dependence plot for feature 'num__release_ball_direction_y'...
+2025-04-05 00:04:17,008 - ml.shap.shap_utils - INFO - SHAP dependence plot for feature 'num__release_ball_direction_y' generated successfully.
+2025-04-05 00:04:17,009 - ml.shap.shap_utils - INFO - Generating SHAP dependence plot for feature 'num__R_ELBOW_max_angle'...
+2025-04-05 00:04:17,111 - ml.shap.shap_utils - INFO - SHAP dependence plot for feature 'num__R_ELBOW_max_angle' generated successfully.
+2025-04-05 00:04:17,113 - ml.shap.shap_utils - INFO - Generating SHAP dependence plot for feature 'num__R_WRIST_release_angle'...
+2025-04-05 00:04:17,205 - ml.shap.shap_utils - INFO - SHAP dependence plot for feature 'num__R_WRIST_release_angle' generated successfully.
+2025-04-05 00:04:17,207 - ml.shap.shap_utils - INFO - Generating SHAP dependence plot for feature 'num__calculated_release_angle'...
+2025-04-05 00:04:17,301 - ml.shap.shap_utils - INFO - SHAP dependence plot for feature 'num__calculated_release_angle' generated successfully.
+2025-04-05 00:04:17,302 - ml.shap.shap_utils - INFO - Generating SHAP dependence plot for feature 'num__R_KNEE_max_angle'...
+2025-04-05 00:04:17,402 - ml.shap.shap_utils - INFO - SHAP dependence plot for feature 'num__R_KNEE_max_angle' generated successfully.
+2025-04-05 00:04:17,404 - ml.shap.shap_utils - INFO - Generating SHAP dependence plot for feature 'num__R_ELBOW_release_angle'...
+2025-04-05 00:04:17,522 - ml.shap.shap_utils - INFO - SHAP dependence plot for feature 'num__R_ELBOW_release_angle' generated successfully.
+2025-04-05 00:04:17,524 - ml.shap.shap_utils - INFO - Generating SHAP dependence plot for feature 'num__R_WRIST_max_angle'...
+2025-04-05 00:04:17,622 - ml.shap.shap_utils - INFO - SHAP dependence plot for feature 'num__R_WRIST_max_angle' generated successfully.
+2025-04-05 00:04:17,623 - ml.shap.shap_utils - INFO - Generating SHAP dependence plot for feature 'num__release_ball_velocity_z'...
+2025-04-05 00:04:17,712 - ml.shap.shap_utils - INFO - SHAP dependence plot for feature 'num__release_ball_velocity_z' generated successfully.
+2025-04-05 00:04:17,713 - ml.shap.shap_utils - INFO - Generating SHAP dependence plot for feature 'num__R_KNEE_release_angle'...
+2025-04-05 00:04:17,801 - ml.shap.shap_utils - INFO - SHAP dependence plot for feature 'num__R_KNEE_release_angle' generated successfully.
+2025-04-05 00:04:17,802 - ml.shap.shap_utils - INFO - Generating SHAP dependence plot for feature 'num__release_ball_speed'...
+2025-04-05 00:04:17,900 - ml.shap.shap_utils - INFO - SHAP dependence plot for feature 'num__release_ball_speed' generated successfully.
+2025-04-05 00:04:17,901 - ml.shap.shap_utils - INFO - SHAP dependence plots saved at /workspaces/spl_freethrow_biomechanics_analysis_ml_prediction/data/predictions/shap_results/XGBoost/shap_dependence_plots.
+2025-04-05 00:04:17,907 - ml.shap.shap_utils - INFO - Generating SHAP force plot for trial 0...
+2025-04-05 00:04:17,920 - ml.shap.shap_utils - INFO - SHAP force plot for trial 0 generated successfully.
+2025-04-05 00:04:17,921 - ml.shap.shap_utils - INFO - SHAP force plots saved at /workspaces/spl_freethrow_biomechanics_analysis_ml_prediction/data/predictions/shap_results/XGBoost/shap_force_plots.
+2025-04-05 00:04:17,922 - ml.shap.shap_utils - INFO - Adding columns from df_input to final_df: ['trial_id']
+2025-04-05 00:04:17,924 - ml.shap.shap_utils - INFO - Columns added successfully: ['trial_id']
+2025-04-05 00:04:17,924 - ml.shap.shap_utils - INFO - Saving final dataset with SHAP annotations to /workspaces/spl_freethrow_biomechanics_analysis_ml_prediction/data/predictions/shap_results/XGBoost/final_predictions_with_shap.csv.
+2025-04-05 00:04:17,962 - ml.shap.shap_utils - INFO - Final dataset and global recommendations saved.
+2025-04-05 00:04:17,963 - ml.shap.shap_utils - INFO - Predict+SHAP pipeline completed successfully.
+2025-04-05 00:04:17,964 - ml.shap.shap_utils - INFO - Unified predict_and_shap function executed successfully for model XGBoost.
+2025-04-05 00:04:17,997 - ml.shap.shap_utils - INFO - Overriding best model selection; using model: Random Forest
+2025-04-05 00:04:18,011 - ml.train_utils.train_utils - INFO - Model loaded from /workspaces/spl_freethrow_biomechanics_analysis_ml_prediction/data/model/Random Forest_model.pkl
+2025-04-05 00:04:18,011 - ml.shap.shap_utils - INFO - Trained model loaded from '/workspaces/spl_freethrow_biomechanics_analysis_ml_prediction/data/model' using model name 'Random Forest'.
+2025-04-05 00:04:18,025 - ml.shap.shap_utils - WARNING - Unable to infer model type. Defaulting to 'tree'.
+2025-04-05 00:04:18,027 - DataPreprocessor - INFO - Starting: Final Preprocessing Pipeline in 'predict' mode.
+2025-04-05 00:04:18,028 - DataPreprocessor - INFO - Step: filter_columns
+2025-04-05 00:04:18,030 - DataPreprocessor - INFO - ✅ Filtered DataFrame to include only specified features. Shape: (125, 14)
+2025-04-05 00:04:18,032 - DataPreprocessor - INFO - ✅ Column filtering completed successfully.
+2025-04-05 00:04:18,033 - DataPreprocessor - INFO - Step: Preprocess Predict
+2025-04-05 00:04:18,035 - DataPreprocessor - INFO - Step: Load Transformers
+2025-04-05 00:04:18,045 - DataPreprocessor - INFO - Transformers loaded successfully from '/workspaces/spl_freethrow_biomechanics_analysis_ml_prediction/data/preprocessor/transformers/transformers.pkl'.
+2025-04-05 00:04:18,046 - DataPreprocessor - INFO - Step: filter_columns
+2025-04-05 00:04:18,048 - DataPreprocessor - INFO - ✅ Filtered DataFrame to include only specified features. Shape: (125, 14)
+2025-04-05 00:04:18,050 - DataPreprocessor - INFO - Step: Handle Missing Values
+2025-04-05 00:04:18,070 - DataPreprocessor - INFO - Step: Generate Preprocessor Recommendations
+2025-04-05 00:04:18,072 - DataPreprocessor - INFO - Preprocessing Recommendations generated.
+2025-04-05 00:04:18,073 - DataPreprocessor - INFO - Step 'Generate Preprocessor Recommendations' completed: Recommendations generated.
+2025-04-05 00:04:18,075 - DataPreprocessor - INFO - ✅ Preprocessing completed successfully in predict mode.
+2025-04-05 00:04:18,076 - ml.shap.shap_utils - INFO - Preprocessing completed successfully in predict mode.
+2025-04-05 00:04:18,077 - PredictAndAttachLogger - ERROR - ❌ Prediction failed: The feature names should match those that were passed during fit.
+Feature names unseen at fit time:
+- num__R_ELBOW_max_angle
+- num__R_ELBOW_release_angle
+- num__R_KNEE_max_angle
+- num__R_KNEE_release_angle
+- num__R_WRIST_max_angle
+- ...
+Feature names seen at fit time, yet now missing:
+- num__elbow_max_angle
+- num__elbow_release_angle
+- num__knee_max_angle
+- num__knee_release_angle
+- num__wrist_max_angle
+- ...
+
+2025-04-05 00:04:18,078 - ml.shap.shap_utils - ERROR - Unified predict_and_shap function failed for model Random Forest: cannot unpack non-iterable NoneType object
+2025-04-05 00:04:18,091 - ml.shap.shap_utils - INFO - Overriding best model selection; using model: CatBoost
+2025-04-05 00:04:18,100 - ml.train_utils.train_utils - INFO - Model loaded from /workspaces/spl_freethrow_biomechanics_analysis_ml_prediction/data/model/CatBoost_model.pkl
+2025-04-05 00:04:18,101 - ml.shap.shap_utils - INFO - Trained model loaded from '/workspaces/spl_freethrow_biomechanics_analysis_ml_prediction/data/model' using model name 'CatBoost'.
+2025-04-05 00:04:18,118 - ml.shap.shap_utils - WARNING - Unable to infer model type. Defaulting to 'tree'.
+2025-04-05 00:04:18,120 - DataPreprocessor - INFO - Starting: Final Preprocessing Pipeline in 'predict' mode.
+2025-04-05 00:04:18,121 - DataPreprocessor - INFO - Step: filter_columns
+2025-04-05 00:04:18,123 - DataPreprocessor - INFO - ✅ Filtered DataFrame to include only specified features. Shape: (125, 14)
+2025-04-05 00:04:18,125 - DataPreprocessor - INFO - ✅ Column filtering completed successfully.
+2025-04-05 00:04:18,127 - DataPreprocessor - INFO - Step: Preprocess Predict
+2025-04-05 00:04:18,129 - DataPreprocessor - INFO - Step: Load Transformers
+2025-04-05 00:04:18,140 - DataPreprocessor - INFO - Transformers loaded successfully from '/workspaces/spl_freethrow_biomechanics_analysis_ml_prediction/data/preprocessor/transformers/transformers.pkl'.
+2025-04-05 00:04:18,141 - DataPreprocessor - INFO - Step: filter_columns
+2025-04-05 00:04:18,143 - DataPreprocessor - INFO - ✅ Filtered DataFrame to include only specified features. Shape: (125, 14)
+2025-04-05 00:04:18,146 - DataPreprocessor - INFO - Step: Handle Missing Values
+2025-04-05 00:04:18,172 - DataPreprocessor - INFO - Step: Generate Preprocessor Recommendations
+2025-04-05 00:04:18,174 - DataPreprocessor - INFO - Preprocessing Recommendations generated.
+2025-04-05 00:04:18,175 - DataPreprocessor - INFO - Step 'Generate Preprocessor Recommendations' completed: Recommendations generated.
+2025-04-05 00:04:18,176 - DataPreprocessor - INFO - ✅ Preprocessing completed successfully in predict mode.
+2025-04-05 00:04:18,178 - ml.shap.shap_utils - INFO - Preprocessing completed successfully in predict mode.
+2025-04-05 00:04:18,195 - PredictAndAttachLogger - ERROR - ❌ Prediction failed: catboost/libs/data/model_dataset_compatibility.cpp:81: At position 3 should be feature with name num__elbow_release_angle (found num__R_ELBOW_release_angle).
+2025-04-05 00:04:18,197 - ml.shap.shap_utils - ERROR - Unified predict_and_shap function failed for model CatBoost: cannot unpack non-iterable NoneType object
+2025-04-07 13:58:38,644 - ml.shap.shap_utils - INFO - Starting prediction module (unified predict_and_shap).
+2025-04-07 13:58:38,666 - ml.shap.shap_utils - INFO - Prediction input data loaded from /workspaces/spl_freethrow_biomechanics_analysis_ml_prediction/data/preprocessor/../../data/processed/final_ml_dataset.csv.
+2025-04-07 13:58:38,681 - ml.shap.shap_utils - INFO - Overriding best model selection; using model: XGBoost
+2025-04-07 13:58:38,719 - ml.train_utils.train_utils - INFO - Model loaded from /workspaces/spl_freethrow_biomechanics_analysis_ml_prediction/data/model/XGBoost_model.pkl
+2025-04-07 13:58:38,721 - ml.shap.shap_utils - INFO - Trained model loaded from '/workspaces/spl_freethrow_biomechanics_analysis_ml_prediction/data/model' using model name 'XGBoost'.
+2025-04-07 13:58:38,737 - DataPreprocessor - INFO - Starting: Final Preprocessing Pipeline in 'predict' mode.
+2025-04-07 13:58:38,739 - DataPreprocessor - INFO - Step: filter_columns
+2025-04-07 13:58:38,744 - DataPreprocessor - INFO - ✅ Filtered DataFrame to include only specified features. Shape: (125, 14)
+2025-04-07 13:58:38,745 - DataPreprocessor - INFO - ✅ Column filtering completed successfully.
+2025-04-07 13:58:38,747 - DataPreprocessor - INFO - Step: Preprocess Predict
+2025-04-07 13:58:38,749 - DataPreprocessor - INFO - Step: Load Transformers
+2025-04-07 13:58:38,760 - DataPreprocessor - INFO - Transformers loaded successfully from '/workspaces/spl_freethrow_biomechanics_analysis_ml_prediction/data/preprocessor/transformers/transformers.pkl'.
+2025-04-07 13:58:38,762 - DataPreprocessor - INFO - Step: filter_columns
+2025-04-07 13:58:38,765 - DataPreprocessor - INFO - ✅ Filtered DataFrame to include only specified features. Shape: (125, 14)
+2025-04-07 13:58:38,768 - DataPreprocessor - INFO - Step: Handle Missing Values
+2025-04-07 13:58:38,795 - DataPreprocessor - INFO - Step: Generate Preprocessor Recommendations
+2025-04-07 13:58:38,797 - DataPreprocessor - INFO - Preprocessing Recommendations generated.
+2025-04-07 13:58:38,798 - DataPreprocessor - INFO - Step 'Generate Preprocessor Recommendations' completed: Recommendations generated.
+2025-04-07 13:58:38,800 - DataPreprocessor - INFO - ✅ Preprocessing completed successfully in predict mode.
+2025-04-07 13:58:38,801 - ml.shap.shap_utils - INFO - Preprocessing completed successfully in predict mode.
+2025-04-07 13:58:38,828 - PredictAndAttachLogger - INFO - ✅ Predictions made successfully.
+2025-04-07 13:58:38,858 - PredictAndAttachLogger - INFO - ✅ Prediction probabilities computed successfully.
+2025-04-07 13:58:38,870 - ml.shap.shap_utils - INFO - Predictions generated and attached to the dataset.
+2025-04-07 13:58:38,871 - ml.shap.shap_utils - INFO - Initializing SHAP explainer...
+2025-04-07 13:58:39,097 - ml.shap.shap_utils - INFO - SHAP values computed successfully.
+2025-04-07 13:58:39,098 - ml.shap.shap_utils - INFO - [Step A] Generating feedback for each trial with detailed debug information.
+2025-04-07 13:58:39,229 - ml.shap.shap_utils - INFO - [Step B] Computing original metric error with corrected feature extraction.
+2025-04-07 13:58:39,230 - ml.shap.shap_utils - INFO - [Step C] Computing original metric error with corrected feature extraction.
+2025-04-07 13:58:39,268 - ml.shap.shap_utils - INFO - Feedback generation and metric threshold application completed.
+2025-04-07 13:58:39,269 - ml.shap.shap_utils - INFO - Generating SHAP summary plot...
+2025-04-07 13:58:39,590 - ml.shap.shap_utils - INFO - SHAP summary plot generated successfully.
+2025-04-07 13:58:39,591 - ml.shap.shap_utils - INFO - SHAP summary plot saved at /workspaces/spl_freethrow_biomechanics_analysis_ml_prediction/data/predictions/shap_results/XGBoost/shap_summary.png.
+2025-04-07 13:58:39,592 - ml.shap.shap_utils - INFO - Generating feature importance based on SHAP values...
+2025-04-07 13:58:39,610 - ml.shap.shap_utils - INFO - Generating SHAP dependence plot for feature 'num__release_ball_direction_y'...
+2025-04-07 13:58:39,723 - ml.shap.shap_utils - INFO - SHAP dependence plot for feature 'num__release_ball_direction_y' generated successfully.
+2025-04-07 13:58:39,724 - ml.shap.shap_utils - INFO - Generating SHAP dependence plot for feature 'num__R_ELBOW_max_angle'...
+2025-04-07 13:58:39,825 - ml.shap.shap_utils - INFO - SHAP dependence plot for feature 'num__R_ELBOW_max_angle' generated successfully.
+2025-04-07 13:58:39,826 - ml.shap.shap_utils - INFO - Generating SHAP dependence plot for feature 'num__R_WRIST_release_angle'...
+2025-04-07 13:58:39,939 - ml.shap.shap_utils - INFO - SHAP dependence plot for feature 'num__R_WRIST_release_angle' generated successfully.
+2025-04-07 13:58:39,940 - ml.shap.shap_utils - INFO - Generating SHAP dependence plot for feature 'num__calculated_release_angle'...
+2025-04-07 13:58:40,057 - ml.shap.shap_utils - INFO - SHAP dependence plot for feature 'num__calculated_release_angle' generated successfully.
+2025-04-07 13:58:40,058 - ml.shap.shap_utils - INFO - Generating SHAP dependence plot for feature 'num__R_KNEE_max_angle'...
+2025-04-07 13:58:40,192 - ml.shap.shap_utils - INFO - SHAP dependence plot for feature 'num__R_KNEE_max_angle' generated successfully.
+2025-04-07 13:58:40,194 - ml.shap.shap_utils - INFO - Generating SHAP dependence plot for feature 'num__R_ELBOW_release_angle'...
+2025-04-07 13:58:40,332 - ml.shap.shap_utils - INFO - SHAP dependence plot for feature 'num__R_ELBOW_release_angle' generated successfully.
+2025-04-07 13:58:40,333 - ml.shap.shap_utils - INFO - Generating SHAP dependence plot for feature 'num__R_WRIST_max_angle'...
+2025-04-07 13:58:40,431 - ml.shap.shap_utils - INFO - SHAP dependence plot for feature 'num__R_WRIST_max_angle' generated successfully.
+2025-04-07 13:58:40,432 - ml.shap.shap_utils - INFO - Generating SHAP dependence plot for feature 'num__release_ball_velocity_z'...
+2025-04-07 13:58:40,538 - ml.shap.shap_utils - INFO - SHAP dependence plot for feature 'num__release_ball_velocity_z' generated successfully.
+2025-04-07 13:58:40,539 - ml.shap.shap_utils - INFO - Generating SHAP dependence plot for feature 'num__R_KNEE_release_angle'...
+2025-04-07 13:58:40,634 - ml.shap.shap_utils - INFO - SHAP dependence plot for feature 'num__R_KNEE_release_angle' generated successfully.
+2025-04-07 13:58:40,635 - ml.shap.shap_utils - INFO - Generating SHAP dependence plot for feature 'num__release_ball_speed'...
+2025-04-07 13:58:40,734 - ml.shap.shap_utils - INFO - SHAP dependence plot for feature 'num__release_ball_speed' generated successfully.
+2025-04-07 13:58:40,736 - ml.shap.shap_utils - INFO - SHAP dependence plots saved at /workspaces/spl_freethrow_biomechanics_analysis_ml_prediction/data/predictions/shap_results/XGBoost/shap_dependence_plots.
+2025-04-07 13:58:40,739 - ml.shap.shap_utils - INFO - Generating SHAP force plot for trial 0...
+2025-04-07 13:58:40,746 - ml.shap.shap_utils - INFO - SHAP force plot for trial 0 generated successfully.
+2025-04-07 13:58:40,747 - ml.shap.shap_utils - INFO - SHAP force plots saved at /workspaces/spl_freethrow_biomechanics_analysis_ml_prediction/data/predictions/shap_results/XGBoost/shap_force_plots.
+2025-04-07 13:58:40,748 - ml.shap.shap_utils - INFO - Adding columns from df_input to final_df: ['trial_id']
+2025-04-07 13:58:40,749 - ml.shap.shap_utils - INFO - Columns added successfully: ['trial_id']
+2025-04-07 13:58:40,749 - ml.shap.shap_utils - INFO - Saving final dataset with SHAP annotations to /workspaces/spl_freethrow_biomechanics_analysis_ml_prediction/data/predictions/shap_results/XGBoost/final_predictions_with_shap.csv.
+2025-04-07 13:58:40,785 - ml.shap.shap_utils - INFO - Final dataset and global recommendations saved.
+2025-04-07 13:58:40,786 - ml.shap.shap_utils - INFO - Predict+SHAP pipeline completed successfully.
+2025-04-07 13:58:40,787 - ml.shap.shap_utils - INFO - Unified predict_and_shap function executed successfully for model XGBoost.
+2025-04-07 13:58:40,821 - ml.shap.shap_utils - INFO - Overriding best model selection; using model: Random Forest
+2025-04-07 13:58:40,834 - ml.train_utils.train_utils - INFO - Model loaded from /workspaces/spl_freethrow_biomechanics_analysis_ml_prediction/data/model/Random Forest_model.pkl
+2025-04-07 13:58:40,835 - ml.shap.shap_utils - INFO - Trained model loaded from '/workspaces/spl_freethrow_biomechanics_analysis_ml_prediction/data/model' using model name 'Random Forest'.
+2025-04-07 13:58:40,852 - ml.shap.shap_utils - WARNING - Unable to infer model type. Defaulting to 'tree'.
+2025-04-07 13:58:40,854 - DataPreprocessor - INFO - Starting: Final Preprocessing Pipeline in 'predict' mode.
+2025-04-07 13:58:40,855 - DataPreprocessor - INFO - Step: filter_columns
+2025-04-07 13:58:40,857 - DataPreprocessor - INFO - ✅ Filtered DataFrame to include only specified features. Shape: (125, 14)
+2025-04-07 13:58:40,858 - DataPreprocessor - INFO - ✅ Column filtering completed successfully.
+2025-04-07 13:58:40,860 - DataPreprocessor - INFO - Step: Preprocess Predict
+2025-04-07 13:58:40,862 - DataPreprocessor - INFO - Step: Load Transformers
+2025-04-07 13:58:40,871 - DataPreprocessor - INFO - Transformers loaded successfully from '/workspaces/spl_freethrow_biomechanics_analysis_ml_prediction/data/preprocessor/transformers/transformers.pkl'.
+2025-04-07 13:58:40,872 - DataPreprocessor - INFO - Step: filter_columns
+2025-04-07 13:58:40,874 - DataPreprocessor - INFO - ✅ Filtered DataFrame to include only specified features. Shape: (125, 14)
+2025-04-07 13:58:40,876 - DataPreprocessor - INFO - Step: Handle Missing Values
+2025-04-07 13:58:40,898 - DataPreprocessor - INFO - Step: Generate Preprocessor Recommendations
+2025-04-07 13:58:40,900 - DataPreprocessor - INFO - Preprocessing Recommendations generated.
+2025-04-07 13:58:40,902 - DataPreprocessor - INFO - Step 'Generate Preprocessor Recommendations' completed: Recommendations generated.
+2025-04-07 13:58:40,904 - DataPreprocessor - INFO - ✅ Preprocessing completed successfully in predict mode.
+2025-04-07 13:58:40,905 - ml.shap.shap_utils - INFO - Preprocessing completed successfully in predict mode.
+2025-04-07 13:58:40,906 - PredictAndAttachLogger - ERROR - ❌ Prediction failed: The feature names should match those that were passed during fit.
+Feature names unseen at fit time:
+- num__R_ELBOW_max_angle
+- num__R_ELBOW_release_angle
+- num__R_KNEE_max_angle
+- num__R_KNEE_release_angle
+- num__R_WRIST_max_angle
+- ...
+Feature names seen at fit time, yet now missing:
+- num__elbow_max_angle
+- num__elbow_release_angle
+- num__knee_max_angle
+- num__knee_release_angle
+- num__wrist_max_angle
+- ...
+
+2025-04-07 13:58:40,909 - ml.shap.shap_utils - ERROR - Unified predict_and_shap function failed for model Random Forest: cannot unpack non-iterable NoneType object
+2025-04-07 13:58:40,922 - ml.shap.shap_utils - INFO - Overriding best model selection; using model: CatBoost
+2025-04-07 13:58:40,935 - ml.train_utils.train_utils - INFO - Model loaded from /workspaces/spl_freethrow_biomechanics_analysis_ml_prediction/data/model/CatBoost_model.pkl
+2025-04-07 13:58:40,937 - ml.shap.shap_utils - INFO - Trained model loaded from '/workspaces/spl_freethrow_biomechanics_analysis_ml_prediction/data/model' using model name 'CatBoost'.
+2025-04-07 13:58:40,951 - ml.shap.shap_utils - WARNING - Unable to infer model type. Defaulting to 'tree'.
+2025-04-07 13:58:40,953 - DataPreprocessor - INFO - Starting: Final Preprocessing Pipeline in 'predict' mode.
+2025-04-07 13:58:40,954 - DataPreprocessor - INFO - Step: filter_columns
+2025-04-07 13:58:40,956 - DataPreprocessor - INFO - ✅ Filtered DataFrame to include only specified features. Shape: (125, 14)
+2025-04-07 13:58:40,958 - DataPreprocessor - INFO - ✅ Column filtering completed successfully.
+2025-04-07 13:58:40,960 - DataPreprocessor - INFO - Step: Preprocess Predict
+2025-04-07 13:58:40,962 - DataPreprocessor - INFO - Step: Load Transformers
+2025-04-07 13:58:40,972 - DataPreprocessor - INFO - Transformers loaded successfully from '/workspaces/spl_freethrow_biomechanics_analysis_ml_prediction/data/preprocessor/transformers/transformers.pkl'.
+2025-04-07 13:58:40,974 - DataPreprocessor - INFO - Step: filter_columns
+2025-04-07 13:58:40,976 - DataPreprocessor - INFO - ✅ Filtered DataFrame to include only specified features. Shape: (125, 14)
+2025-04-07 13:58:40,979 - DataPreprocessor - INFO - Step: Handle Missing Values
+2025-04-07 13:58:41,002 - DataPreprocessor - INFO - Step: Generate Preprocessor Recommendations
+2025-04-07 13:58:41,004 - DataPreprocessor - INFO - Preprocessing Recommendations generated.
+2025-04-07 13:58:41,005 - DataPreprocessor - INFO - Step 'Generate Preprocessor Recommendations' completed: Recommendations generated.
+2025-04-07 13:58:41,007 - DataPreprocessor - INFO - ✅ Preprocessing completed successfully in predict mode.
+2025-04-07 13:58:41,008 - ml.shap.shap_utils - INFO - Preprocessing completed successfully in predict mode.
+2025-04-07 13:58:41,040 - PredictAndAttachLogger - ERROR - ❌ Prediction failed: catboost/libs/data/model_dataset_compatibility.cpp:81: At position 3 should be feature with name num__elbow_release_angle (found num__R_ELBOW_release_angle).
+2025-04-07 13:58:41,042 - ml.shap.shap_utils - ERROR - Unified predict_and_shap function failed for model CatBoost: cannot unpack non-iterable NoneType object
+2025-04-07 14:02:42,013 - ml.shap.shap_utils - INFO - Starting prediction module (unified predict_and_shap).
+2025-04-07 14:02:42,024 - ml.shap.shap_utils - INFO - Prediction input data loaded from /workspaces/spl_freethrow_biomechanics_analysis_ml_prediction/data/preprocessor/../../data/processed/final_ml_dataset.csv.
+2025-04-07 14:02:42,039 - ml.shap.shap_utils - INFO - Overriding best model selection; using model: XGBoost
+2025-04-07 14:02:42,056 - ml.train_utils.train_utils - INFO - Model loaded from /workspaces/spl_freethrow_biomechanics_analysis_ml_prediction/data/model/XGBoost_model.pkl
+2025-04-07 14:02:42,057 - ml.shap.shap_utils - INFO - Trained model loaded from '/workspaces/spl_freethrow_biomechanics_analysis_ml_prediction/data/model' using model name 'XGBoost'.
+2025-04-07 14:02:42,077 - DataPreprocessor - INFO - Starting: Final Preprocessing Pipeline in 'predict' mode.
+2025-04-07 14:02:42,079 - DataPreprocessor - INFO - Step: filter_columns
+2025-04-07 14:02:42,081 - DataPreprocessor - INFO - ✅ Filtered DataFrame to include only specified features. Shape: (125, 14)
+2025-04-07 14:02:42,082 - DataPreprocessor - INFO - ✅ Column filtering completed successfully.
+2025-04-07 14:02:42,084 - DataPreprocessor - INFO - Step: Preprocess Predict
+2025-04-07 14:02:42,085 - DataPreprocessor - INFO - Step: Load Transformers
+2025-04-07 14:02:42,096 - DataPreprocessor - INFO - Transformers loaded successfully from '/workspaces/spl_freethrow_biomechanics_analysis_ml_prediction/data/preprocessor/transformers/transformers.pkl'.
+2025-04-07 14:02:42,098 - DataPreprocessor - INFO - Step: filter_columns
+2025-04-07 14:02:42,099 - DataPreprocessor - INFO - ✅ Filtered DataFrame to include only specified features. Shape: (125, 14)
+2025-04-07 14:02:42,102 - DataPreprocessor - INFO - Step: Handle Missing Values
+2025-04-07 14:02:42,125 - DataPreprocessor - INFO - Step: Generate Preprocessor Recommendations
+2025-04-07 14:02:42,127 - DataPreprocessor - INFO - Preprocessing Recommendations generated.
+2025-04-07 14:02:42,129 - DataPreprocessor - INFO - Step 'Generate Preprocessor Recommendations' completed: Recommendations generated.
+2025-04-07 14:02:42,130 - DataPreprocessor - INFO - ✅ Preprocessing completed successfully in predict mode.
+2025-04-07 14:02:42,131 - ml.shap.shap_utils - INFO - Preprocessing completed successfully in predict mode.
+2025-04-07 14:02:42,137 - PredictAndAttachLogger - INFO - ✅ Predictions made successfully.
+2025-04-07 14:02:42,159 - PredictAndAttachLogger - INFO - ✅ Prediction probabilities computed successfully.
+2025-04-07 14:02:42,167 - ml.shap.shap_utils - INFO - Predictions generated and attached to the dataset.
+2025-04-07 14:02:42,169 - ml.shap.shap_utils - INFO - Initializing SHAP explainer...
+2025-04-07 14:02:42,229 - ml.shap.shap_utils - INFO - SHAP values computed successfully.
+2025-04-07 14:02:42,232 - ml.shap.shap_utils - INFO - [Step A] Generating feedback for each trial with detailed debug information.
+2025-04-07 14:02:42,352 - ml.shap.shap_utils - INFO - [Step B] Computing original metric error with corrected feature extraction.
+2025-04-07 14:02:42,354 - ml.shap.shap_utils - INFO - [Step C] Computing original metric error with corrected feature extraction.
+2025-04-07 14:02:42,390 - ml.shap.shap_utils - INFO - Feedback generation and metric threshold application completed.
+2025-04-07 14:02:42,391 - ml.shap.shap_utils - INFO - Generating SHAP summary plot...
+2025-04-07 14:02:42,667 - ml.shap.shap_utils - INFO - SHAP summary plot generated successfully.
+2025-04-07 14:02:42,668 - ml.shap.shap_utils - INFO - SHAP summary plot saved at /workspaces/spl_freethrow_biomechanics_analysis_ml_prediction/data/predictions/shap_results/XGBoost/shap_summary.png.
+2025-04-07 14:02:42,669 - ml.shap.shap_utils - INFO - Generating feature importance based on SHAP values...
+2025-04-07 14:02:42,683 - ml.shap.shap_utils - INFO - Generating SHAP dependence plot for feature 'num__release_ball_direction_y'...
+2025-04-07 14:02:42,790 - ml.shap.shap_utils - INFO - SHAP dependence plot for feature 'num__release_ball_direction_y' generated successfully.
+2025-04-07 14:02:42,791 - ml.shap.shap_utils - INFO - Generating SHAP dependence plot for feature 'num__R_ELBOW_max_angle'...
+2025-04-07 14:02:42,885 - ml.shap.shap_utils - INFO - SHAP dependence plot for feature 'num__R_ELBOW_max_angle' generated successfully.
+2025-04-07 14:02:42,886 - ml.shap.shap_utils - INFO - Generating SHAP dependence plot for feature 'num__R_WRIST_release_angle'...
+2025-04-07 14:02:42,981 - ml.shap.shap_utils - INFO - SHAP dependence plot for feature 'num__R_WRIST_release_angle' generated successfully.
+2025-04-07 14:02:42,982 - ml.shap.shap_utils - INFO - Generating SHAP dependence plot for feature 'num__calculated_release_angle'...
+2025-04-07 14:02:43,071 - ml.shap.shap_utils - INFO - SHAP dependence plot for feature 'num__calculated_release_angle' generated successfully.
+2025-04-07 14:02:43,073 - ml.shap.shap_utils - INFO - Generating SHAP dependence plot for feature 'num__R_KNEE_max_angle'...
+2025-04-07 14:02:43,174 - ml.shap.shap_utils - INFO - SHAP dependence plot for feature 'num__R_KNEE_max_angle' generated successfully.
+2025-04-07 14:02:43,175 - ml.shap.shap_utils - INFO - Generating SHAP dependence plot for feature 'num__R_ELBOW_release_angle'...
+2025-04-07 14:02:43,289 - ml.shap.shap_utils - INFO - SHAP dependence plot for feature 'num__R_ELBOW_release_angle' generated successfully.
+2025-04-07 14:02:43,290 - ml.shap.shap_utils - INFO - Generating SHAP dependence plot for feature 'num__R_WRIST_max_angle'...
+2025-04-07 14:02:43,396 - ml.shap.shap_utils - INFO - SHAP dependence plot for feature 'num__R_WRIST_max_angle' generated successfully.
+2025-04-07 14:02:43,397 - ml.shap.shap_utils - INFO - Generating SHAP dependence plot for feature 'num__release_ball_velocity_z'...
+2025-04-07 14:02:43,501 - ml.shap.shap_utils - INFO - SHAP dependence plot for feature 'num__release_ball_velocity_z' generated successfully.
+2025-04-07 14:02:43,502 - ml.shap.shap_utils - INFO - Generating SHAP dependence plot for feature 'num__R_KNEE_release_angle'...
+2025-04-07 14:02:43,608 - ml.shap.shap_utils - INFO - SHAP dependence plot for feature 'num__R_KNEE_release_angle' generated successfully.
+2025-04-07 14:02:43,609 - ml.shap.shap_utils - INFO - Generating SHAP dependence plot for feature 'num__release_ball_speed'...
+2025-04-07 14:02:43,702 - ml.shap.shap_utils - INFO - SHAP dependence plot for feature 'num__release_ball_speed' generated successfully.
+2025-04-07 14:02:43,704 - ml.shap.shap_utils - INFO - SHAP dependence plots saved at /workspaces/spl_freethrow_biomechanics_analysis_ml_prediction/data/predictions/shap_results/XGBoost/shap_dependence_plots.
+2025-04-07 14:02:43,707 - ml.shap.shap_utils - INFO - Generating SHAP force plot for trial 0...
+2025-04-07 14:02:43,717 - ml.shap.shap_utils - INFO - SHAP force plot for trial 0 generated successfully.
+2025-04-07 14:02:43,718 - ml.shap.shap_utils - INFO - SHAP force plots saved at /workspaces/spl_freethrow_biomechanics_analysis_ml_prediction/data/predictions/shap_results/XGBoost/shap_force_plots.
+2025-04-07 14:02:43,719 - ml.shap.shap_utils - INFO - Adding columns from df_input to final_df: ['trial_id']
+2025-04-07 14:02:43,720 - ml.shap.shap_utils - INFO - Columns added successfully: ['trial_id']
+2025-04-07 14:02:43,721 - ml.shap.shap_utils - INFO - Saving final dataset with SHAP annotations to /workspaces/spl_freethrow_biomechanics_analysis_ml_prediction/data/predictions/shap_results/XGBoost/final_predictions_with_shap.csv.
+2025-04-07 14:02:43,751 - ml.shap.shap_utils - INFO - Final dataset and global recommendations saved.
+2025-04-07 14:02:43,752 - ml.shap.shap_utils - INFO - Predict+SHAP pipeline completed successfully.
+2025-04-07 14:02:43,754 - ml.shap.shap_utils - INFO - Unified predict_and_shap function executed successfully for model XGBoost.
+2025-04-07 14:02:43,780 - ml.shap.shap_utils - INFO - Overriding best model selection; using model: Random Forest
+2025-04-07 14:02:43,788 - ml.train_utils.train_utils - INFO - Model loaded from /workspaces/spl_freethrow_biomechanics_analysis_ml_prediction/data/model/Random Forest_model.pkl
+2025-04-07 14:02:43,789 - ml.shap.shap_utils - INFO - Trained model loaded from '/workspaces/spl_freethrow_biomechanics_analysis_ml_prediction/data/model' using model name 'Random Forest'.
+2025-04-07 14:02:43,798 - ml.shap.shap_utils - WARNING - Unable to infer model type. Defaulting to 'tree'.
+2025-04-07 14:02:43,800 - DataPreprocessor - INFO - Starting: Final Preprocessing Pipeline in 'predict' mode.
+2025-04-07 14:02:43,801 - DataPreprocessor - INFO - Step: filter_columns
+2025-04-07 14:02:43,802 - DataPreprocessor - INFO - ✅ Filtered DataFrame to include only specified features. Shape: (125, 14)
+2025-04-07 14:02:43,803 - DataPreprocessor - INFO - ✅ Column filtering completed successfully.
+2025-04-07 14:02:43,805 - DataPreprocessor - INFO - Step: Preprocess Predict
+2025-04-07 14:02:43,807 - DataPreprocessor - INFO - Step: Load Transformers
+2025-04-07 14:02:43,813 - DataPreprocessor - INFO - Transformers loaded successfully from '/workspaces/spl_freethrow_biomechanics_analysis_ml_prediction/data/preprocessor/transformers/transformers.pkl'.
+2025-04-07 14:02:43,815 - DataPreprocessor - INFO - Step: filter_columns
+2025-04-07 14:02:43,816 - DataPreprocessor - INFO - ✅ Filtered DataFrame to include only specified features. Shape: (125, 14)
+2025-04-07 14:02:43,819 - DataPreprocessor - INFO - Step: Handle Missing Values
+2025-04-07 14:02:43,840 - DataPreprocessor - INFO - Step: Generate Preprocessor Recommendations
+2025-04-07 14:02:43,842 - DataPreprocessor - INFO - Preprocessing Recommendations generated.
+2025-04-07 14:02:43,843 - DataPreprocessor - INFO - Step 'Generate Preprocessor Recommendations' completed: Recommendations generated.
+2025-04-07 14:02:43,845 - DataPreprocessor - INFO - ✅ Preprocessing completed successfully in predict mode.
+2025-04-07 14:02:43,847 - ml.shap.shap_utils - INFO - Preprocessing completed successfully in predict mode.
+2025-04-07 14:02:43,848 - PredictAndAttachLogger - ERROR - ❌ Prediction failed: The feature names should match those that were passed during fit.
+Feature names unseen at fit time:
+- num__R_ELBOW_max_angle
+- num__R_ELBOW_release_angle
+- num__R_KNEE_max_angle
+- num__R_KNEE_release_angle
+- num__R_WRIST_max_angle
+- ...
+Feature names seen at fit time, yet now missing:
+- num__elbow_max_angle
+- num__elbow_release_angle
+- num__knee_max_angle
+- num__knee_release_angle
+- num__wrist_max_angle
+- ...
+
+2025-04-07 14:02:43,849 - ml.shap.shap_utils - ERROR - Unified predict_and_shap function failed for model Random Forest: cannot unpack non-iterable NoneType object
+2025-04-07 14:02:43,861 - ml.shap.shap_utils - INFO - Overriding best model selection; using model: CatBoost
+2025-04-07 14:02:43,868 - ml.train_utils.train_utils - INFO - Model loaded from /workspaces/spl_freethrow_biomechanics_analysis_ml_prediction/data/model/CatBoost_model.pkl
+2025-04-07 14:02:43,869 - ml.shap.shap_utils - INFO - Trained model loaded from '/workspaces/spl_freethrow_biomechanics_analysis_ml_prediction/data/model' using model name 'CatBoost'.
+2025-04-07 14:02:43,888 - ml.shap.shap_utils - WARNING - Unable to infer model type. Defaulting to 'tree'.
+2025-04-07 14:02:43,890 - DataPreprocessor - INFO - Starting: Final Preprocessing Pipeline in 'predict' mode.
+2025-04-07 14:02:43,891 - DataPreprocessor - INFO - Step: filter_columns
+2025-04-07 14:02:43,893 - DataPreprocessor - INFO - ✅ Filtered DataFrame to include only specified features. Shape: (125, 14)
+2025-04-07 14:02:43,894 - DataPreprocessor - INFO - ✅ Column filtering completed successfully.
+2025-04-07 14:02:43,897 - DataPreprocessor - INFO - Step: Preprocess Predict
+2025-04-07 14:02:43,899 - DataPreprocessor - INFO - Step: Load Transformers
+2025-04-07 14:02:43,909 - DataPreprocessor - INFO - Transformers loaded successfully from '/workspaces/spl_freethrow_biomechanics_analysis_ml_prediction/data/preprocessor/transformers/transformers.pkl'.
+2025-04-07 14:02:43,910 - DataPreprocessor - INFO - Step: filter_columns
+2025-04-07 14:02:43,912 - DataPreprocessor - INFO - ✅ Filtered DataFrame to include only specified features. Shape: (125, 14)
+2025-04-07 14:02:43,915 - DataPreprocessor - INFO - Step: Handle Missing Values
+2025-04-07 14:02:43,940 - DataPreprocessor - INFO - Step: Generate Preprocessor Recommendations
+2025-04-07 14:02:43,942 - DataPreprocessor - INFO - Preprocessing Recommendations generated.
+2025-04-07 14:02:43,943 - DataPreprocessor - INFO - Step 'Generate Preprocessor Recommendations' completed: Recommendations generated.
+2025-04-07 14:02:43,945 - DataPreprocessor - INFO - ✅ Preprocessing completed successfully in predict mode.
+2025-04-07 14:02:43,946 - ml.shap.shap_utils - INFO - Preprocessing completed successfully in predict mode.
+2025-04-07 14:02:43,949 - PredictAndAttachLogger - ERROR - ❌ Prediction failed: catboost/libs/data/model_dataset_compatibility.cpp:81: At position 3 should be feature with name num__elbow_release_angle (found num__R_ELBOW_release_angle).
+2025-04-07 14:02:43,951 - ml.shap.shap_utils - ERROR - Unified predict_and_shap function failed for model CatBoost: cannot unpack non-iterable NoneType object
+2025-04-07 14:12:43,135 - ml.shap.shap_utils - INFO - Starting prediction module (unified predict_and_shap).
+2025-04-07 14:12:43,148 - ml.shap.shap_utils - INFO - Prediction input data loaded from /workspaces/spl_freethrow_biomechanics_analysis_ml_prediction/data/preprocessor/../../data/processed/final_ml_dataset.csv.
+2025-04-07 14:12:43,161 - ml.shap.shap_utils - INFO - Overriding best model selection; using model: XGBoost
+2025-04-07 14:12:43,178 - ml.train_utils.train_utils - INFO - Model loaded from /workspaces/spl_freethrow_biomechanics_analysis_ml_prediction/data/model/XGBoost_model.pkl
+2025-04-07 14:12:43,180 - ml.shap.shap_utils - INFO - Trained model loaded from '/workspaces/spl_freethrow_biomechanics_analysis_ml_prediction/data/model' using model name 'XGBoost'.
+2025-04-07 14:12:43,197 - DataPreprocessor - INFO - Starting: Final Preprocessing Pipeline in 'predict' mode.
+2025-04-07 14:12:43,199 - DataPreprocessor - INFO - Step: filter_columns
+2025-04-07 14:12:43,201 - DataPreprocessor - INFO - ✅ Filtered DataFrame to include only specified features. Shape: (125, 14)
+2025-04-07 14:12:43,203 - DataPreprocessor - INFO - ✅ Column filtering completed successfully.
+2025-04-07 14:12:43,206 - DataPreprocessor - INFO - Step: Preprocess Predict
+2025-04-07 14:12:43,208 - DataPreprocessor - INFO - Step: Load Transformers
+2025-04-07 14:12:43,220 - DataPreprocessor - INFO - Transformers loaded successfully from '/workspaces/spl_freethrow_biomechanics_analysis_ml_prediction/data/preprocessor/transformers/transformers.pkl'.
+2025-04-07 14:12:43,222 - DataPreprocessor - INFO - Step: filter_columns
+2025-04-07 14:12:43,224 - DataPreprocessor - INFO - ✅ Filtered DataFrame to include only specified features. Shape: (125, 14)
+2025-04-07 14:12:43,227 - DataPreprocessor - INFO - Step: Handle Missing Values
+2025-04-07 14:12:43,251 - DataPreprocessor - INFO - Step: Generate Preprocessor Recommendations
+2025-04-07 14:12:43,253 - DataPreprocessor - INFO - Preprocessing Recommendations generated.
+2025-04-07 14:12:43,254 - DataPreprocessor - INFO - Step 'Generate Preprocessor Recommendations' completed: Recommendations generated.
+2025-04-07 14:12:43,256 - DataPreprocessor - INFO - ✅ Preprocessing completed successfully in predict mode.
+2025-04-07 14:12:43,257 - ml.shap.shap_utils - INFO - Preprocessing completed successfully in predict mode.
+2025-04-07 14:12:43,274 - PredictAndAttachLogger - INFO - ✅ Predictions made successfully.
+2025-04-07 14:12:43,288 - PredictAndAttachLogger - INFO - ✅ Prediction probabilities computed successfully.
+2025-04-07 14:12:43,299 - ml.shap.shap_utils - INFO - Predictions generated and attached to the dataset.
+2025-04-07 14:12:43,300 - ml.shap.shap_utils - INFO - Initializing SHAP explainer...
+2025-04-07 14:12:43,356 - ml.shap.shap_utils - INFO - SHAP values computed successfully.
+2025-04-07 14:12:43,358 - ml.shap.shap_utils - INFO - [Step A] Generating feedback for each trial with detailed debug information.
+2025-04-07 14:12:43,483 - ml.shap.shap_utils - INFO - [Step B] Computing original metric error with corrected feature extraction.
+2025-04-07 14:12:43,484 - ml.shap.shap_utils - INFO - [Step C] Computing original metric error with corrected feature extraction.
+2025-04-07 14:12:43,521 - ml.shap.shap_utils - INFO - Feedback generation and metric threshold application completed.
+2025-04-07 14:12:43,522 - ml.shap.shap_utils - INFO - Generating SHAP summary plot...
+2025-04-07 14:12:43,804 - ml.shap.shap_utils - INFO - SHAP summary plot generated successfully.
+2025-04-07 14:12:43,805 - ml.shap.shap_utils - INFO - SHAP summary plot saved at /workspaces/spl_freethrow_biomechanics_analysis_ml_prediction/data/predictions/shap_results/XGBoost/shap_summary.png.
+2025-04-07 14:12:43,806 - ml.shap.shap_utils - INFO - Generating feature importance based on SHAP values...
+2025-04-07 14:12:43,822 - ml.shap.shap_utils - INFO - Generating SHAP dependence plot for feature 'num__release_ball_direction_y'...
+2025-04-07 14:12:43,927 - ml.shap.shap_utils - INFO - SHAP dependence plot for feature 'num__release_ball_direction_y' generated successfully.
+2025-04-07 14:12:43,928 - ml.shap.shap_utils - INFO - Generating SHAP dependence plot for feature 'num__R_ELBOW_max_angle'...
+2025-04-07 14:12:44,022 - ml.shap.shap_utils - INFO - SHAP dependence plot for feature 'num__R_ELBOW_max_angle' generated successfully.
+2025-04-07 14:12:44,024 - ml.shap.shap_utils - INFO - Generating SHAP dependence plot for feature 'num__R_WRIST_release_angle'...
+2025-04-07 14:12:44,120 - ml.shap.shap_utils - INFO - SHAP dependence plot for feature 'num__R_WRIST_release_angle' generated successfully.
+2025-04-07 14:12:44,121 - ml.shap.shap_utils - INFO - Generating SHAP dependence plot for feature 'num__calculated_release_angle'...
+2025-04-07 14:12:44,212 - ml.shap.shap_utils - INFO - SHAP dependence plot for feature 'num__calculated_release_angle' generated successfully.
+2025-04-07 14:12:44,213 - ml.shap.shap_utils - INFO - Generating SHAP dependence plot for feature 'num__R_KNEE_max_angle'...
+2025-04-07 14:12:44,311 - ml.shap.shap_utils - INFO - SHAP dependence plot for feature 'num__R_KNEE_max_angle' generated successfully.
+2025-04-07 14:12:44,313 - ml.shap.shap_utils - INFO - Generating SHAP dependence plot for feature 'num__R_ELBOW_release_angle'...
+2025-04-07 14:12:44,425 - ml.shap.shap_utils - INFO - SHAP dependence plot for feature 'num__R_ELBOW_release_angle' generated successfully.
+2025-04-07 14:12:44,427 - ml.shap.shap_utils - INFO - Generating SHAP dependence plot for feature 'num__R_WRIST_max_angle'...
+2025-04-07 14:12:44,387 - ml.shap.shap_utils - INFO - SHAP dependence plot for feature 'num__R_WRIST_max_angle' generated successfully.
+2025-04-07 14:12:44,388 - ml.shap.shap_utils - INFO - Generating SHAP dependence plot for feature 'num__release_ball_velocity_z'...
+2025-04-07 14:12:42,317 - ml.shap.shap_utils - INFO - SHAP dependence plot for feature 'num__release_ball_velocity_z' generated successfully.
+2025-04-07 14:12:42,318 - ml.shap.shap_utils - INFO - Generating SHAP dependence plot for feature 'num__R_KNEE_release_angle'...
+2025-04-07 14:12:42,414 - ml.shap.shap_utils - INFO - SHAP dependence plot for feature 'num__R_KNEE_release_angle' generated successfully.
+2025-04-07 14:12:42,415 - ml.shap.shap_utils - INFO - Generating SHAP dependence plot for feature 'num__release_ball_speed'...
+2025-04-07 14:12:42,509 - ml.shap.shap_utils - INFO - SHAP dependence plot for feature 'num__release_ball_speed' generated successfully.
+2025-04-07 14:12:42,510 - ml.shap.shap_utils - INFO - SHAP dependence plots saved at /workspaces/spl_freethrow_biomechanics_analysis_ml_prediction/data/predictions/shap_results/XGBoost/shap_dependence_plots.
+2025-04-07 14:12:42,514 - ml.shap.shap_utils - INFO - Generating SHAP force plot for trial 0...
+2025-04-07 14:12:42,523 - ml.shap.shap_utils - INFO - SHAP force plot for trial 0 generated successfully.
+2025-04-07 14:12:42,524 - ml.shap.shap_utils - INFO - SHAP force plots saved at /workspaces/spl_freethrow_biomechanics_analysis_ml_prediction/data/predictions/shap_results/XGBoost/shap_force_plots.
+2025-04-07 14:12:42,524 - ml.shap.shap_utils - INFO - Adding columns from df_input to final_df: ['trial_id']
+2025-04-07 14:12:42,526 - ml.shap.shap_utils - INFO - Columns added successfully: ['trial_id']
+2025-04-07 14:12:42,526 - ml.shap.shap_utils - INFO - Saving final dataset with SHAP annotations to /workspaces/spl_freethrow_biomechanics_analysis_ml_prediction/data/predictions/shap_results/XGBoost/final_predictions_with_shap.csv.
+2025-04-07 14:12:42,558 - ml.shap.shap_utils - INFO - Final dataset and global recommendations saved.
+2025-04-07 14:12:42,559 - ml.shap.shap_utils - INFO - Predict+SHAP pipeline completed successfully.
+2025-04-07 14:12:42,561 - ml.shap.shap_utils - INFO - Unified predict_and_shap function executed successfully for model XGBoost.
+2025-04-07 14:12:42,587 - ml.shap.shap_utils - INFO - Overriding best model selection; using model: Random Forest
+2025-04-07 14:12:42,595 - ml.train_utils.train_utils - INFO - Model loaded from /workspaces/spl_freethrow_biomechanics_analysis_ml_prediction/data/model/Random Forest_model.pkl
+2025-04-07 14:12:42,596 - ml.shap.shap_utils - INFO - Trained model loaded from '/workspaces/spl_freethrow_biomechanics_analysis_ml_prediction/data/model' using model name 'Random Forest'.
+2025-04-07 14:12:42,609 - ml.shap.shap_utils - WARNING - Unable to infer model type. Defaulting to 'tree'.
+2025-04-07 14:12:42,611 - DataPreprocessor - INFO - Starting: Final Preprocessing Pipeline in 'predict' mode.
+2025-04-07 14:12:42,611 - DataPreprocessor - INFO - Step: filter_columns
+2025-04-07 14:12:42,613 - DataPreprocessor - INFO - ✅ Filtered DataFrame to include only specified features. Shape: (125, 14)
+2025-04-07 14:12:42,614 - DataPreprocessor - INFO - ✅ Column filtering completed successfully.
+2025-04-07 14:12:42,616 - DataPreprocessor - INFO - Step: Preprocess Predict
+2025-04-07 14:12:42,618 - DataPreprocessor - INFO - Step: Load Transformers
+2025-04-07 14:12:42,627 - DataPreprocessor - INFO - Transformers loaded successfully from '/workspaces/spl_freethrow_biomechanics_analysis_ml_prediction/data/preprocessor/transformers/transformers.pkl'.
+2025-04-07 14:12:42,629 - DataPreprocessor - INFO - Step: filter_columns
+2025-04-07 14:12:42,631 - DataPreprocessor - INFO - ✅ Filtered DataFrame to include only specified features. Shape: (125, 14)
+2025-04-07 14:12:42,633 - DataPreprocessor - INFO - Step: Handle Missing Values
+2025-04-07 14:12:42,658 - DataPreprocessor - INFO - Step: Generate Preprocessor Recommendations
+2025-04-07 14:12:42,660 - DataPreprocessor - INFO - Preprocessing Recommendations generated.
+2025-04-07 14:12:42,661 - DataPreprocessor - INFO - Step 'Generate Preprocessor Recommendations' completed: Recommendations generated.
+2025-04-07 14:12:42,662 - DataPreprocessor - INFO - ✅ Preprocessing completed successfully in predict mode.
+2025-04-07 14:12:42,664 - ml.shap.shap_utils - INFO - Preprocessing completed successfully in predict mode.
+2025-04-07 14:12:42,665 - PredictAndAttachLogger - ERROR - ❌ Prediction failed: The feature names should match those that were passed during fit.
+Feature names unseen at fit time:
+- num__R_ELBOW_max_angle
+- num__R_ELBOW_release_angle
+- num__R_KNEE_max_angle
+- num__R_KNEE_release_angle
+- num__R_WRIST_max_angle
+- ...
+Feature names seen at fit time, yet now missing:
+- num__elbow_max_angle
+- num__elbow_release_angle
+- num__knee_max_angle
+- num__knee_release_angle
+- num__wrist_max_angle
+- ...
+
+2025-04-07 14:12:42,666 - ml.shap.shap_utils - ERROR - Unified predict_and_shap function failed for model Random Forest: cannot unpack non-iterable NoneType object
+2025-04-07 14:12:42,679 - ml.shap.shap_utils - INFO - Overriding best model selection; using model: CatBoost
+2025-04-07 14:12:42,686 - ml.train_utils.train_utils - INFO - Model loaded from /workspaces/spl_freethrow_biomechanics_analysis_ml_prediction/data/model/CatBoost_model.pkl
+2025-04-07 14:12:42,687 - ml.shap.shap_utils - INFO - Trained model loaded from '/workspaces/spl_freethrow_biomechanics_analysis_ml_prediction/data/model' using model name 'CatBoost'.
+2025-04-07 14:12:42,708 - ml.shap.shap_utils - WARNING - Unable to infer model type. Defaulting to 'tree'.
+2025-04-07 14:12:42,711 - DataPreprocessor - INFO - Starting: Final Preprocessing Pipeline in 'predict' mode.
+2025-04-07 14:12:42,713 - DataPreprocessor - INFO - Step: filter_columns
+2025-04-07 14:12:42,715 - DataPreprocessor - INFO - ✅ Filtered DataFrame to include only specified features. Shape: (125, 14)
+2025-04-07 14:12:42,718 - DataPreprocessor - INFO - ✅ Column filtering completed successfully.
+2025-04-07 14:12:42,722 - DataPreprocessor - INFO - Step: Preprocess Predict
+2025-04-07 14:12:42,726 - DataPreprocessor - INFO - Step: Load Transformers
+2025-04-07 14:12:42,740 - DataPreprocessor - INFO - Transformers loaded successfully from '/workspaces/spl_freethrow_biomechanics_analysis_ml_prediction/data/preprocessor/transformers/transformers.pkl'.
+2025-04-07 14:12:42,741 - DataPreprocessor - INFO - Step: filter_columns
+2025-04-07 14:12:42,743 - DataPreprocessor - INFO - ✅ Filtered DataFrame to include only specified features. Shape: (125, 14)
+2025-04-07 14:12:42,746 - DataPreprocessor - INFO - Step: Handle Missing Values
+2025-04-07 14:12:42,771 - DataPreprocessor - INFO - Step: Generate Preprocessor Recommendations
+2025-04-07 14:12:42,773 - DataPreprocessor - INFO - Preprocessing Recommendations generated.
+2025-04-07 14:12:42,775 - DataPreprocessor - INFO - Step 'Generate Preprocessor Recommendations' completed: Recommendations generated.
+2025-04-07 14:12:42,777 - DataPreprocessor - INFO - ✅ Preprocessing completed successfully in predict mode.
+2025-04-07 14:12:42,778 - ml.shap.shap_utils - INFO - Preprocessing completed successfully in predict mode.
+2025-04-07 14:12:42,780 - PredictAndAttachLogger - ERROR - ❌ Prediction failed: catboost/libs/data/model_dataset_compatibility.cpp:81: At position 3 should be feature with name num__elbow_release_angle (found num__R_ELBOW_release_angle).
+2025-04-07 14:12:42,782 - ml.shap.shap_utils - ERROR - Unified predict_and_shap function failed for model CatBoost: cannot unpack non-iterable NoneType object
+2025-04-07 17:00:41,178 - ml.shap.shap_utils - INFO - Starting prediction module (unified predict_and_shap).
+2025-04-07 17:00:41,195 - ml.shap.shap_utils - INFO - Prediction input data loaded from /workspaces/spl_freethrow_biomechanics_analysis_ml_prediction/data/preprocessor/../../data/processed/final_ml_dataset.csv.
+2025-04-07 17:00:41,204 - ml.shap.shap_utils - INFO - Overriding best model selection; using model: XGBoost
+2025-04-07 17:00:41,223 - ml.train_utils.train_utils - INFO - Model loaded from /workspaces/spl_freethrow_biomechanics_analysis_ml_prediction/data/model/XGBoost_model.pkl
+2025-04-07 17:00:41,224 - ml.shap.shap_utils - INFO - Trained model loaded from '/workspaces/spl_freethrow_biomechanics_analysis_ml_prediction/data/model' using model name 'XGBoost'.
+2025-04-07 17:00:41,236 - DataPreprocessor - INFO - Starting: Final Preprocessing Pipeline in 'predict' mode.
+2025-04-07 17:00:41,238 - DataPreprocessor - INFO - Step: filter_columns
+2025-04-07 17:00:41,240 - DataPreprocessor - INFO - ✅ Filtered DataFrame to include only specified features. Shape: (125, 14)
+2025-04-07 17:00:41,241 - DataPreprocessor - INFO - ✅ Column filtering completed successfully.
+2025-04-07 17:00:41,243 - DataPreprocessor - INFO - Step: Preprocess Predict
+2025-04-07 17:00:41,244 - DataPreprocessor - INFO - Step: Load Transformers
+2025-04-07 17:00:41,253 - DataPreprocessor - INFO - Transformers loaded successfully from '/workspaces/spl_freethrow_biomechanics_analysis_ml_prediction/data/preprocessor/transformers/transformers.pkl'.
+2025-04-07 17:00:41,254 - DataPreprocessor - INFO - Step: filter_columns
+2025-04-07 17:00:41,256 - DataPreprocessor - INFO - ✅ Filtered DataFrame to include only specified features. Shape: (125, 14)
+2025-04-07 17:00:41,258 - DataPreprocessor - INFO - Step: Handle Missing Values
+2025-04-07 17:00:41,277 - DataPreprocessor - INFO - Step: Generate Preprocessor Recommendations
+2025-04-07 17:00:41,279 - DataPreprocessor - INFO - Preprocessing Recommendations generated.
+2025-04-07 17:00:41,280 - DataPreprocessor - INFO - Step 'Generate Preprocessor Recommendations' completed: Recommendations generated.
+2025-04-07 17:00:41,282 - DataPreprocessor - INFO - ✅ Preprocessing completed successfully in predict mode.
+2025-04-07 17:00:41,283 - ml.shap.shap_utils - INFO - Preprocessing completed successfully in predict mode.
+2025-04-07 17:00:41,291 - PredictAndAttachLogger - INFO - ✅ Predictions made successfully.
+2025-04-07 17:00:41,303 - PredictAndAttachLogger - INFO - ✅ Prediction probabilities computed successfully.
+2025-04-07 17:00:41,312 - ml.shap.shap_utils - INFO - Predictions generated and attached to the dataset.
+2025-04-07 17:00:41,313 - ml.shap.shap_utils - INFO - Initializing SHAP explainer...
+2025-04-07 17:00:41,563 - ml.shap.shap_utils - INFO - SHAP values computed successfully.
+2025-04-07 17:00:41,564 - ml.shap.shap_utils - INFO - [Step A] Generating feedback for each trial with detailed debug information.
+2025-04-07 17:00:41,682 - ml.shap.shap_utils - INFO - [Step B] Computing original metric error with corrected feature extraction.
+2025-04-07 17:00:41,683 - ml.shap.shap_utils - INFO - [Step C] Computing original metric error with corrected feature extraction.
+2025-04-07 17:00:41,719 - ml.shap.shap_utils - INFO - Feedback generation and metric threshold application completed.
+2025-04-07 17:00:41,720 - ml.shap.shap_utils - INFO - Generating SHAP summary plot...
+2025-04-07 17:00:41,983 - ml.shap.shap_utils - INFO - SHAP summary plot generated successfully.
+2025-04-07 17:00:41,984 - ml.shap.shap_utils - INFO - SHAP summary plot saved at /workspaces/spl_freethrow_biomechanics_analysis_ml_prediction/data/predictions/shap_results/XGBoost/shap_summary.png.
+2025-04-07 17:00:41,985 - ml.shap.shap_utils - INFO - Generating feature importance based on SHAP values...
+2025-04-07 17:00:41,996 - ml.shap.shap_utils - INFO - Generating SHAP dependence plot for feature 'num__release_ball_direction_y'...
+2025-04-07 17:00:42,093 - ml.shap.shap_utils - INFO - SHAP dependence plot for feature 'num__release_ball_direction_y' generated successfully.
+2025-04-07 17:00:42,094 - ml.shap.shap_utils - INFO - Generating SHAP dependence plot for feature 'num__R_ELBOW_max_angle'...
+2025-04-07 17:00:42,180 - ml.shap.shap_utils - INFO - SHAP dependence plot for feature 'num__R_ELBOW_max_angle' generated successfully.
+2025-04-07 17:00:42,181 - ml.shap.shap_utils - INFO - Generating SHAP dependence plot for feature 'num__R_WRIST_release_angle'...
+2025-04-07 17:00:42,273 - ml.shap.shap_utils - INFO - SHAP dependence plot for feature 'num__R_WRIST_release_angle' generated successfully.
+2025-04-07 17:00:42,275 - ml.shap.shap_utils - INFO - Generating SHAP dependence plot for feature 'num__calculated_release_angle'...
+2025-04-07 17:00:42,364 - ml.shap.shap_utils - INFO - SHAP dependence plot for feature 'num__calculated_release_angle' generated successfully.
+2025-04-07 17:00:42,365 - ml.shap.shap_utils - INFO - Generating SHAP dependence plot for feature 'num__R_KNEE_max_angle'...
+2025-04-07 17:00:42,455 - ml.shap.shap_utils - INFO - SHAP dependence plot for feature 'num__R_KNEE_max_angle' generated successfully.
+2025-04-07 17:00:42,456 - ml.shap.shap_utils - INFO - Generating SHAP dependence plot for feature 'num__R_ELBOW_release_angle'...
+2025-04-07 17:00:42,556 - ml.shap.shap_utils - INFO - SHAP dependence plot for feature 'num__R_ELBOW_release_angle' generated successfully.
+2025-04-07 17:00:42,558 - ml.shap.shap_utils - INFO - Generating SHAP dependence plot for feature 'num__R_WRIST_max_angle'...
+2025-04-07 17:00:42,650 - ml.shap.shap_utils - INFO - SHAP dependence plot for feature 'num__R_WRIST_max_angle' generated successfully.
+2025-04-07 17:00:42,651 - ml.shap.shap_utils - INFO - Generating SHAP dependence plot for feature 'num__release_ball_velocity_z'...
+2025-04-07 17:00:42,735 - ml.shap.shap_utils - INFO - SHAP dependence plot for feature 'num__release_ball_velocity_z' generated successfully.
+2025-04-07 17:00:42,736 - ml.shap.shap_utils - INFO - Generating SHAP dependence plot for feature 'num__R_KNEE_release_angle'...
+2025-04-07 17:00:42,819 - ml.shap.shap_utils - INFO - SHAP dependence plot for feature 'num__R_KNEE_release_angle' generated successfully.
+2025-04-07 17:00:42,820 - ml.shap.shap_utils - INFO - Generating SHAP dependence plot for feature 'num__release_ball_speed'...
+2025-04-07 17:00:42,907 - ml.shap.shap_utils - INFO - SHAP dependence plot for feature 'num__release_ball_speed' generated successfully.
+2025-04-07 17:00:42,908 - ml.shap.shap_utils - INFO - SHAP dependence plots saved at /workspaces/spl_freethrow_biomechanics_analysis_ml_prediction/data/predictions/shap_results/XGBoost/shap_dependence_plots.
+2025-04-07 17:00:42,911 - ml.shap.shap_utils - INFO - Generating SHAP force plot for trial 0...
+2025-04-07 17:00:42,918 - ml.shap.shap_utils - INFO - SHAP force plot for trial 0 generated successfully.
+2025-04-07 17:00:42,919 - ml.shap.shap_utils - INFO - SHAP force plots saved at /workspaces/spl_freethrow_biomechanics_analysis_ml_prediction/data/predictions/shap_results/XGBoost/shap_force_plots.
+2025-04-07 17:00:42,919 - ml.shap.shap_utils - INFO - Adding columns from df_input to final_df: ['trial_id']
+2025-04-07 17:00:42,920 - ml.shap.shap_utils - INFO - Columns added successfully: ['trial_id']
+2025-04-07 17:00:42,921 - ml.shap.shap_utils - INFO - Saving final dataset with SHAP annotations to /workspaces/spl_freethrow_biomechanics_analysis_ml_prediction/data/predictions/shap_results/XGBoost/final_predictions_with_shap.csv.
+2025-04-07 17:00:42,949 - ml.shap.shap_utils - INFO - Final dataset and global recommendations saved.
+2025-04-07 17:00:42,950 - ml.shap.shap_utils - INFO - Predict+SHAP pipeline completed successfully.
+2025-04-07 17:00:42,952 - ml.shap.shap_utils - INFO - Unified predict_and_shap function executed successfully for model XGBoost.
+2025-04-07 17:00:42,980 - ml.shap.shap_utils - INFO - Overriding best model selection; using model: Random Forest
+2025-04-07 17:00:42,990 - ml.train_utils.train_utils - INFO - Model loaded from /workspaces/spl_freethrow_biomechanics_analysis_ml_prediction/data/model/Random Forest_model.pkl
+2025-04-07 17:00:42,991 - ml.shap.shap_utils - INFO - Trained model loaded from '/workspaces/spl_freethrow_biomechanics_analysis_ml_prediction/data/model' using model name 'Random Forest'.
+2025-04-07 17:00:43,001 - ml.shap.shap_utils - WARNING - Unable to infer model type. Defaulting to 'tree'.
+2025-04-07 17:00:43,002 - DataPreprocessor - INFO - Starting: Final Preprocessing Pipeline in 'predict' mode.
+2025-04-07 17:00:43,003 - DataPreprocessor - INFO - Step: filter_columns
+2025-04-07 17:00:43,004 - DataPreprocessor - INFO - ✅ Filtered DataFrame to include only specified features. Shape: (125, 14)
+2025-04-07 17:00:43,006 - DataPreprocessor - INFO - ✅ Column filtering completed successfully.
+2025-04-07 17:00:43,008 - DataPreprocessor - INFO - Step: Preprocess Predict
+2025-04-07 17:00:43,009 - DataPreprocessor - INFO - Step: Load Transformers
+2025-04-07 17:00:43,016 - DataPreprocessor - INFO - Transformers loaded successfully from '/workspaces/spl_freethrow_biomechanics_analysis_ml_prediction/data/preprocessor/transformers/transformers.pkl'.
+2025-04-07 17:00:43,017 - DataPreprocessor - INFO - Step: filter_columns
+2025-04-07 17:00:43,019 - DataPreprocessor - INFO - ✅ Filtered DataFrame to include only specified features. Shape: (125, 14)
+2025-04-07 17:00:43,021 - DataPreprocessor - INFO - Step: Handle Missing Values
+2025-04-07 17:00:43,042 - DataPreprocessor - INFO - Step: Generate Preprocessor Recommendations
+2025-04-07 17:00:43,044 - DataPreprocessor - INFO - Preprocessing Recommendations generated.
+2025-04-07 17:00:43,044 - DataPreprocessor - INFO - Step 'Generate Preprocessor Recommendations' completed: Recommendations generated.
+2025-04-07 17:00:43,046 - DataPreprocessor - INFO - ✅ Preprocessing completed successfully in predict mode.
+2025-04-07 17:00:43,047 - ml.shap.shap_utils - INFO - Preprocessing completed successfully in predict mode.
+2025-04-07 17:00:43,048 - PredictAndAttachLogger - ERROR - ❌ Prediction failed: The feature names should match those that were passed during fit.
+Feature names unseen at fit time:
+- num__R_ELBOW_max_angle
+- num__R_ELBOW_release_angle
+- num__R_KNEE_max_angle
+- num__R_KNEE_release_angle
+- num__R_WRIST_max_angle
+- ...
+Feature names seen at fit time, yet now missing:
+- num__elbow_max_angle
+- num__elbow_release_angle
+- num__knee_max_angle
+- num__knee_release_angle
+- num__wrist_max_angle
+- ...
+
+2025-04-07 17:00:43,050 - ml.shap.shap_utils - ERROR - Unified predict_and_shap function failed for model Random Forest: cannot unpack non-iterable NoneType object
+2025-04-07 17:00:43,060 - ml.shap.shap_utils - INFO - Overriding best model selection; using model: CatBoost
+2025-04-07 17:00:43,066 - ml.train_utils.train_utils - INFO - Model loaded from /workspaces/spl_freethrow_biomechanics_analysis_ml_prediction/data/model/CatBoost_model.pkl
+2025-04-07 17:00:43,067 - ml.shap.shap_utils - INFO - Trained model loaded from '/workspaces/spl_freethrow_biomechanics_analysis_ml_prediction/data/model' using model name 'CatBoost'.
+2025-04-07 17:00:43,079 - ml.shap.shap_utils - WARNING - Unable to infer model type. Defaulting to 'tree'.
+2025-04-07 17:00:43,081 - DataPreprocessor - INFO - Starting: Final Preprocessing Pipeline in 'predict' mode.
+2025-04-07 17:00:43,082 - DataPreprocessor - INFO - Step: filter_columns
+2025-04-07 17:00:43,084 - DataPreprocessor - INFO - ✅ Filtered DataFrame to include only specified features. Shape: (125, 14)
+2025-04-07 17:00:43,085 - DataPreprocessor - INFO - ✅ Column filtering completed successfully.
+2025-04-07 17:00:43,087 - DataPreprocessor - INFO - Step: Preprocess Predict
+2025-04-07 17:00:43,089 - DataPreprocessor - INFO - Step: Load Transformers
+2025-04-07 17:00:43,098 - DataPreprocessor - INFO - Transformers loaded successfully from '/workspaces/spl_freethrow_biomechanics_analysis_ml_prediction/data/preprocessor/transformers/transformers.pkl'.
+2025-04-07 17:00:43,099 - DataPreprocessor - INFO - Step: filter_columns
+2025-04-07 17:00:43,101 - DataPreprocessor - INFO - ✅ Filtered DataFrame to include only specified features. Shape: (125, 14)
+2025-04-07 17:00:43,104 - DataPreprocessor - INFO - Step: Handle Missing Values
+2025-04-07 17:00:43,128 - DataPreprocessor - INFO - Step: Generate Preprocessor Recommendations
+2025-04-07 17:00:43,130 - DataPreprocessor - INFO - Preprocessing Recommendations generated.
+2025-04-07 17:00:43,131 - DataPreprocessor - INFO - Step 'Generate Preprocessor Recommendations' completed: Recommendations generated.
+2025-04-07 17:00:43,133 - DataPreprocessor - INFO - ✅ Preprocessing completed successfully in predict mode.
+2025-04-07 17:00:43,134 - ml.shap.shap_utils - INFO - Preprocessing completed successfully in predict mode.
+2025-04-07 17:00:43,136 - PredictAndAttachLogger - ERROR - ❌ Prediction failed: catboost/libs/data/model_dataset_compatibility.cpp:81: At position 3 should be feature with name num__elbow_release_angle (found num__R_ELBOW_release_angle).
+2025-04-07 17:00:43,137 - ml.shap.shap_utils - ERROR - Unified predict_and_shap function failed for model CatBoost: cannot unpack non-iterable NoneType object

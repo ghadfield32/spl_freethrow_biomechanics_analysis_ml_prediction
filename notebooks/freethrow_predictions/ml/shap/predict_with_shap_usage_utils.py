@@ -2,7 +2,7 @@ import pandas as pd
 import logging
 import numpy as np
 from pathlib import Path
-from typing import Any, Dict, Optional, List
+from typing import Any, Dict, Optional,  List
 from ml.config.config_models import AppConfig
 from ml.config.config_loader import load_config
 

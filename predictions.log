@@ -6772,3 +6772,102 @@
 2025-02-10 11:15:20,144 - PredictAndAttachLogger - DEBUG - Attached column: Probability_1
 2025-02-10 11:15:20,152 - PredictAndAttachLogger - DEBUG - Final shape of X_inversed: (125, 17)
 2025-02-10 11:15:20,152 - PredictAndAttachLogger - DEBUG - Final columns in X_inversed: ['release_ball_direction_x', 'release_ball_direction_z', 'release_ball_direction_y', 'elbow_release_angle', 'elbow_max_angle', 'wrist_release_angle', 'wrist_max_angle', 'knee_release_angle', 'knee_max_angle', 'release_ball_speed', 'calculated_release_angle', 'release_ball_velocity_x', 'release_ball_velocity_y', 'release_ball_velocity_z', 'Prediction', 'Probability_0', 'Probability_1']
+2025-04-04 22:12:49,285 - PredictAndAttachLogger - ERROR - ❌ Prediction failed: feature_names mismatch: ['num__release_ball_direction_x', 'num__release_ball_direction_z', 'num__release_ball_direction_y', 'num__elbow_release_angle', 'num__elbow_max_angle', 'num__wrist_release_angle', 'num__wrist_max_angle', 'num__knee_release_angle', 'num__knee_max_angle', 'num__release_ball_speed', 'num__calculated_release_angle', 'num__release_ball_velocity_x', 'num__release_ball_velocity_y', 'num__release_ball_velocity_z'] ['num__release_ball_direction_x', 'num__release_ball_direction_z', 'num__release_ball_direction_y', 'num__R_ELBOW_release_angle', 'num__R_ELBOW_max_angle', 'num__R_WRIST_release_angle', 'num__R_WRIST_max_angle', 'num__R_KNEE_release_angle', 'num__R_KNEE_max_angle', 'num__release_ball_speed', 'num__calculated_release_angle', 'num__release_ball_velocity_x', 'num__release_ball_velocity_y', 'num__release_ball_velocity_z']
+expected num__wrist_max_angle, num__elbow_max_angle, num__knee_max_angle, num__wrist_release_angle, num__elbow_release_angle, num__knee_release_angle in input data
+training data did not have the following fields: num__R_KNEE_max_angle, num__R_WRIST_max_angle, num__R_ELBOW_release_angle, num__R_WRIST_release_angle, num__R_KNEE_release_angle, num__R_ELBOW_max_angle
+2025-04-07 14:11:20,680 - PredictAndAttachLogger - INFO - ✅ Predictions made successfully.
+2025-04-07 14:11:20,680 - PredictAndAttachLogger - INFO - ✅ Predictions made successfully.
+2025-04-07 14:11:20,684 - PredictAndAttachLogger - DEBUG - Predictions sample: [0 1 0 0 0]
+2025-04-07 14:11:20,684 - PredictAndAttachLogger - DEBUG - Predictions sample: [0 1 0 0 0]
+2025-04-07 14:11:20,701 - PredictAndAttachLogger - INFO - ✅ Prediction probabilities computed successfully.
+2025-04-07 14:11:20,701 - PredictAndAttachLogger - INFO - ✅ Prediction probabilities computed successfully.
+2025-04-07 14:11:20,702 - PredictAndAttachLogger - DEBUG - Prediction probabilities sample:
+[[0.9195519  0.08044808]
+ [0.0504244  0.9495756 ]]
+2025-04-07 14:11:20,702 - PredictAndAttachLogger - DEBUG - Prediction probabilities sample:
+[[0.9195519  0.08044808]
+ [0.0504244  0.9495756 ]]
+2025-04-07 14:11:20,704 - PredictAndAttachLogger - DEBUG - Predictions attached to inverse-transformed DataFrame.
+2025-04-07 14:11:20,704 - PredictAndAttachLogger - DEBUG - Predictions attached to inverse-transformed DataFrame.
+2025-04-07 14:11:20,704 - PredictAndAttachLogger - DEBUG - Prediction probabilities attached to inverse-transformed DataFrame.
+2025-04-07 14:11:20,704 - PredictAndAttachLogger - DEBUG - Prediction probabilities attached to inverse-transformed DataFrame.
+2025-04-07 14:11:20,706 - PredictAndAttachLogger - DEBUG - Attached column: Probability_0
+2025-04-07 14:11:20,706 - PredictAndAttachLogger - DEBUG - Attached column: Probability_0
+2025-04-07 14:11:20,707 - PredictAndAttachLogger - DEBUG - Attached column: Probability_1
+2025-04-07 14:11:20,707 - PredictAndAttachLogger - DEBUG - Attached column: Probability_1
+2025-04-07 14:11:20,708 - PredictAndAttachLogger - DEBUG - Final shape of X_inversed: (125, 17)
+2025-04-07 14:11:20,708 - PredictAndAttachLogger - DEBUG - Final shape of X_inversed: (125, 17)
+2025-04-07 14:11:20,709 - PredictAndAttachLogger - DEBUG - Final columns in X_inversed: ['release_ball_direction_x', 'release_ball_direction_z', 'release_ball_direction_y', 'R_ELBOW_release_angle', 'R_ELBOW_max_angle', 'R_WRIST_release_angle', 'R_WRIST_max_angle', 'R_KNEE_release_angle', 'R_KNEE_max_angle', 'release_ball_speed', 'calculated_release_angle', 'release_ball_velocity_x', 'release_ball_velocity_y', 'release_ball_velocity_z', 'Prediction', 'Probability_0', 'Probability_1']
+2025-04-07 14:11:20,709 - PredictAndAttachLogger - DEBUG - Final columns in X_inversed: ['release_ball_direction_x', 'release_ball_direction_z', 'release_ball_direction_y', 'R_ELBOW_release_angle', 'R_ELBOW_max_angle', 'R_WRIST_release_angle', 'R_WRIST_max_angle', 'R_KNEE_release_angle', 'R_KNEE_max_angle', 'release_ball_speed', 'calculated_release_angle', 'release_ball_velocity_x', 'release_ball_velocity_y', 'release_ball_velocity_z', 'Prediction', 'Probability_0', 'Probability_1']
+2025-04-07 17:12:47,724 - PredictAndAttachLogger - INFO - ✅ Predictions made successfully.
+2025-04-07 17:12:47,728 - PredictAndAttachLogger - DEBUG - Predictions sample: [0 1 0 0 0]
+2025-04-07 17:12:47,732 - PredictAndAttachLogger - INFO - ✅ Prediction probabilities computed successfully.
+2025-04-07 17:12:47,733 - PredictAndAttachLogger - DEBUG - Prediction probabilities sample:
+[[0.9195519  0.08044808]
+ [0.0504244  0.9495756 ]]
+2025-04-07 17:12:47,734 - PredictAndAttachLogger - DEBUG - Predictions attached to inverse-transformed DataFrame.
+2025-04-07 17:12:47,735 - PredictAndAttachLogger - DEBUG - Prediction probabilities attached to inverse-transformed DataFrame.
+2025-04-07 17:12:47,736 - PredictAndAttachLogger - DEBUG - Attached column: Probability_0
+2025-04-07 17:12:47,737 - PredictAndAttachLogger - DEBUG - Attached column: Probability_1
+2025-04-07 17:12:47,738 - PredictAndAttachLogger - DEBUG - Final shape of X_inversed: (125, 17)
+2025-04-07 17:12:47,738 - PredictAndAttachLogger - DEBUG - Final columns in X_inversed: ['release_ball_direction_x', 'release_ball_direction_z', 'release_ball_direction_y', 'R_ELBOW_release_angle', 'R_ELBOW_max_angle', 'R_WRIST_release_angle', 'R_WRIST_max_angle', 'R_KNEE_release_angle', 'R_KNEE_max_angle', 'release_ball_speed', 'calculated_release_angle', 'release_ball_velocity_x', 'release_ball_velocity_y', 'release_ball_velocity_z', 'Prediction', 'Probability_0', 'Probability_1']
+2025-04-07 17:22:24,992 - PredictAndAttachLogger - INFO - ✅ Predictions made successfully.
+2025-04-07 17:22:24,993 - PredictAndAttachLogger - DEBUG - Predictions sample: [0 1 0 0 0]
+2025-04-07 17:22:24,998 - PredictAndAttachLogger - INFO - ✅ Prediction probabilities computed successfully.
+2025-04-07 17:22:25,002 - PredictAndAttachLogger - DEBUG - Prediction probabilities sample:
+[[0.9195519  0.08044808]
+ [0.0504244  0.9495756 ]]
+2025-04-07 17:22:25,004 - PredictAndAttachLogger - DEBUG - Predictions attached to inverse-transformed DataFrame.
+2025-04-07 17:22:25,005 - PredictAndAttachLogger - DEBUG - Prediction probabilities attached to inverse-transformed DataFrame.
+2025-04-07 17:22:25,005 - PredictAndAttachLogger - DEBUG - Attached column: Probability_0
+2025-04-07 17:22:25,006 - PredictAndAttachLogger - DEBUG - Attached column: Probability_1
+2025-04-07 17:22:25,006 - PredictAndAttachLogger - DEBUG - Final shape of X_inversed: (125, 17)
+2025-04-07 17:22:25,007 - PredictAndAttachLogger - DEBUG - Final columns in X_inversed: ['release_ball_direction_x', 'release_ball_direction_z', 'release_ball_direction_y', 'R_ELBOW_release_angle', 'R_ELBOW_max_angle', 'R_WRIST_release_angle', 'R_WRIST_max_angle', 'R_KNEE_release_angle', 'R_KNEE_max_angle', 'release_ball_speed', 'calculated_release_angle', 'release_ball_velocity_x', 'release_ball_velocity_y', 'release_ball_velocity_z', 'Prediction', 'Probability_0', 'Probability_1']
+2025-04-07 17:23:57,631 - PredictAndAttachLogger - INFO - ✅ Predictions made successfully.
+2025-04-07 17:23:57,635 - PredictAndAttachLogger - DEBUG - Predictions sample: [0 1 0 0 0]
+2025-04-07 17:23:57,645 - PredictAndAttachLogger - INFO - ✅ Prediction probabilities computed successfully.
+2025-04-07 17:23:57,646 - PredictAndAttachLogger - DEBUG - Prediction probabilities sample:
+[[0.9195519  0.08044808]
+ [0.0504244  0.9495756 ]]
+2025-04-07 17:23:57,646 - PredictAndAttachLogger - DEBUG - Predictions attached to inverse-transformed DataFrame.
+2025-04-07 17:23:57,647 - PredictAndAttachLogger - DEBUG - Prediction probabilities attached to inverse-transformed DataFrame.
+2025-04-07 17:23:57,648 - PredictAndAttachLogger - DEBUG - Attached column: Probability_0
+2025-04-07 17:23:57,649 - PredictAndAttachLogger - DEBUG - Attached column: Probability_1
+2025-04-07 17:23:57,650 - PredictAndAttachLogger - DEBUG - Final shape of X_inversed: (125, 17)
+2025-04-07 17:23:57,650 - PredictAndAttachLogger - DEBUG - Final columns in X_inversed: ['release_ball_direction_x', 'release_ball_direction_z', 'release_ball_direction_y', 'R_ELBOW_release_angle', 'R_ELBOW_max_angle', 'R_WRIST_release_angle', 'R_WRIST_max_angle', 'R_KNEE_release_angle', 'R_KNEE_max_angle', 'release_ball_speed', 'calculated_release_angle', 'release_ball_velocity_x', 'release_ball_velocity_y', 'release_ball_velocity_z', 'Prediction', 'Probability_0', 'Probability_1']
+2025-04-07 17:24:03,664 - PredictAndAttachLogger - INFO - ✅ Predictions made successfully.
+2025-04-07 17:24:03,667 - PredictAndAttachLogger - DEBUG - Predictions sample: [0 1 0 0 0]
+2025-04-07 17:24:03,671 - PredictAndAttachLogger - INFO - ✅ Prediction probabilities computed successfully.
+2025-04-07 17:24:03,673 - PredictAndAttachLogger - DEBUG - Prediction probabilities sample:
+[[0.9195519  0.08044808]
+ [0.0504244  0.9495756 ]]
+2025-04-07 17:24:03,674 - PredictAndAttachLogger - DEBUG - Predictions attached to inverse-transformed DataFrame.
+2025-04-07 17:24:03,674 - PredictAndAttachLogger - DEBUG - Prediction probabilities attached to inverse-transformed DataFrame.
+2025-04-07 17:24:03,675 - PredictAndAttachLogger - DEBUG - Attached column: Probability_0
+2025-04-07 17:24:03,676 - PredictAndAttachLogger - DEBUG - Attached column: Probability_1
+2025-04-07 17:24:03,677 - PredictAndAttachLogger - DEBUG - Final shape of X_inversed: (125, 17)
+2025-04-07 17:24:03,677 - PredictAndAttachLogger - DEBUG - Final columns in X_inversed: ['release_ball_direction_x', 'release_ball_direction_z', 'release_ball_direction_y', 'R_ELBOW_release_angle', 'R_ELBOW_max_angle', 'R_WRIST_release_angle', 'R_WRIST_max_angle', 'R_KNEE_release_angle', 'R_KNEE_max_angle', 'release_ball_speed', 'calculated_release_angle', 'release_ball_velocity_x', 'release_ball_velocity_y', 'release_ball_velocity_z', 'Prediction', 'Probability_0', 'Probability_1']
+2025-04-07 21:33:20,760 - PredictAndAttachLogger - INFO - ✅ Predictions made successfully.
+2025-04-07 21:33:20,763 - PredictAndAttachLogger - DEBUG - Predictions sample: [0 1 0 0 0]
+2025-04-07 21:33:20,771 - PredictAndAttachLogger - INFO - ✅ Prediction probabilities computed successfully.
+2025-04-07 21:33:20,772 - PredictAndAttachLogger - DEBUG - Prediction probabilities sample:
+[[0.9195519  0.08044808]
+ [0.0504244  0.9495756 ]]
+2025-04-07 21:33:20,773 - PredictAndAttachLogger - DEBUG - Predictions attached to inverse-transformed DataFrame.
+2025-04-07 21:33:20,774 - PredictAndAttachLogger - DEBUG - Prediction probabilities attached to inverse-transformed DataFrame.
+2025-04-07 21:33:20,775 - PredictAndAttachLogger - DEBUG - Attached column: Probability_0
+2025-04-07 21:33:20,775 - PredictAndAttachLogger - DEBUG - Attached column: Probability_1
+2025-04-07 21:33:20,776 - PredictAndAttachLogger - DEBUG - Final shape of X_inversed: (125, 17)
+2025-04-07 21:33:20,776 - PredictAndAttachLogger - DEBUG - Final columns in X_inversed: ['release_ball_direction_x', 'release_ball_direction_z', 'release_ball_direction_y', 'R_ELBOW_release_angle', 'R_ELBOW_max_angle', 'R_WRIST_release_angle', 'R_WRIST_max_angle', 'R_KNEE_release_angle', 'R_KNEE_max_angle', 'release_ball_speed', 'calculated_release_angle', 'release_ball_velocity_x', 'release_ball_velocity_y', 'release_ball_velocity_z', 'Prediction', 'Probability_0', 'Probability_1']
+2025-04-07 21:33:26,706 - PredictAndAttachLogger - INFO - ✅ Predictions made successfully.
+2025-04-07 21:33:26,706 - PredictAndAttachLogger - DEBUG - Predictions sample: [0 1 0 0 0]
+2025-04-07 21:33:26,709 - PredictAndAttachLogger - INFO - ✅ Prediction probabilities computed successfully.
+2025-04-07 21:33:26,713 - PredictAndAttachLogger - DEBUG - Prediction probabilities sample:
+[[0.9195519  0.08044808]
+ [0.0504244  0.9495756 ]]
+2025-04-07 21:33:26,713 - PredictAndAttachLogger - DEBUG - Predictions attached to inverse-transformed DataFrame.
+2025-04-07 21:33:26,714 - PredictAndAttachLogger - DEBUG - Prediction probabilities attached to inverse-transformed DataFrame.
+2025-04-07 21:33:26,715 - PredictAndAttachLogger - DEBUG - Attached column: Probability_0
+2025-04-07 21:33:26,715 - PredictAndAttachLogger - DEBUG - Attached column: Probability_1
+2025-04-07 21:33:26,716 - PredictAndAttachLogger - DEBUG - Final shape of X_inversed: (125, 17)
+2025-04-07 21:33:26,716 - PredictAndAttachLogger - DEBUG - Final columns in X_inversed: ['release_ball_direction_x', 'release_ball_direction_z', 'release_ball_direction_y', 'R_ELBOW_release_angle', 'R_ELBOW_max_angle', 'R_WRIST_release_angle', 'R_WRIST_max_angle', 'R_KNEE_release_angle', 'R_KNEE_max_angle', 'release_ball_speed', 'calculated_release_angle', 'release_ball_velocity_x', 'release_ball_velocity_y', 'release_ball_velocity_z', 'Prediction', 'Probability_0', 'Probability_1']

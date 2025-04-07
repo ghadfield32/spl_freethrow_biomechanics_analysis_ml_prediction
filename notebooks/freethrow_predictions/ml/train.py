@@ -70,6 +70,11 @@ def main():
     loaded = manage_features(mode='load', paths=feature_paths)
     if loaded:
         y_var = loaded.get('y_variable')
+        numericals = loaded.get('numericals')
+        print(f"Numericals: {numericals}")
+        print(f"Ordinal Categoricals: {loaded.get('ordinal_categoricals')}")
+        print(f"Nominal Categoricals: {loaded.get('nominal_categoricals')}")
+        print(f"Y Variable: {y_var}")
     else:
         logger.error("❌ Failed to load feature metadata.")
         return

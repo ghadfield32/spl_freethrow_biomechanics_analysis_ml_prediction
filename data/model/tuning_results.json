@@ -1,24 +1,24 @@
 {
     "XGBoost": {
         "Best Params": {
-            "colsample_bytree": 0.8204062477979053,
+            "colsample_bytree": 0.759111701219239,
             "gamma": 0.0,
-            "learning_rate": 0.29999999999999993,
+            "learning_rate": 0.021372574929018073,
             "max_depth": 6,
             "min_child_weight": 1,
             "n_estimators": 500,
-            "reg_alpha": 1.0,
-            "reg_lambda": 0.0007950554976545644,
-            "subsample": 0.8647446418873381
+            "reg_alpha": 1e-08,
+            "reg_lambda": 1.0,
+            "subsample": 1.0
         },
-        "Best CV Score": 0.7857142857142858,
+        "Best CV Score": 0.7757142857142857,
         "Evaluation Metrics": {
-            "Accuracy": 0.72,
-            "Precision": 0.7040000000000001,
-            "Recall": 0.72,
-            "F1 Score": 0.7108624708624709,
-            "ROC AUC": 0.6491228070175439,
-            "Log Loss": 0.6448498467934677
+            "Accuracy": 0.8,
+            "Precision": 0.8126984126984127,
+            "Recall": 0.8,
+            "F1 Score": 0.8049896049896051,
+            "ROC AUC": 0.7017543859649122,
+            "Log Loss": 0.6264862180977435
         }
     },
     "Random Forest": {
@@ -61,26 +61,26 @@
     },
     "CatBoost": {
         "Best Params": {
-            "bagging_temperature": 0.6886339372123115,
-            "border_count": 39,
+            "bagging_temperature": 0.0,
+            "border_count": 38,
             "depth": 6,
-            "iterations": 199,
-            "l2_leaf_reg": 1.8685607895167105,
-            "learning_rate": 0.12123333562326334
+            "iterations": 282,
+            "l2_leaf_reg": 1.6305415573022148,
+            "learning_rate": 0.10232573483248794
         },
-        "Best CV Score": 0.8342857142857142,
+        "Best CV Score": 0.8047619047619048,
         "Evaluation Metrics": {
             "Accuracy": 0.68,
             "Precision": 0.7546666666666667,
             "Recall": 0.68,
             "F1 Score": 0.7011764705882352,
-            "ROC AUC": 0.6929824561403509,
-            "Log Loss": 0.6694514642704685
+            "ROC AUC": 0.7456140350877193,
+            "Log Loss": 0.7782311596930017
         }
     },
     "Best Model": {
         "model_name": "XGBoost",
-        "metric_value": 0.72,
-        "path": "C:\\Users\\ghadf\\vscode_projects\\docker_projects\\spl_freethrow_biomechanics_analysis_ml_prediction\\data\\model\\XGBoost\\trained_model.pkl"
+        "metric_value": 0.8,
+        "path": "/workspaces/spl_freethrow_biomechanics_analysis_ml_prediction/data/model/XGBoost/trained_model.pkl"
     }
 }

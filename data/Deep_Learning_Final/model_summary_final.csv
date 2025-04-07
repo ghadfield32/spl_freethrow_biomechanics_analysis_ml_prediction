@@ -1,0 +1,3 @@
+Model,Type,MSE,MAE,R2 Score,Accuracy,Precision,Recall,F1 Score
+Exhaustion Model,Regression,0.004347392682694217,0.04220367902142798,0.6565079664023592,,,,
+Injury Model,Classification,,,,0.8,0.8,1.0,0.8888888888888888

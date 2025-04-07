@@ -297,7 +297,7 @@ if __name__ == "__main__":
     # **Load Configuration and Initialize Logger**
     config_path = Path('../../data/model/preprocessor_config/preprocessor_config.yaml')
     model = 'Random Forest' #XGBoost, CatBoost, Random Forest
-    try:
+    try: 
         config = load_configuration(config_path)
         print(f"✅ Configuration loaded successfully from {config_path}.")
     except Exception as e:

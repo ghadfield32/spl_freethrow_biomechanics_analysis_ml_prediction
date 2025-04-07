@@ -36,12 +36,12 @@ features:
     - release_ball_direction_x
     - release_ball_direction_z
     - release_ball_direction_y
-    - elbow_release_angle
-    - elbow_max_angle
-    - wrist_release_angle
-    - wrist_max_angle
-    - knee_release_angle
-    - knee_max_angle
+    - R_ELBOW_release_angle
+    - R_ELBOW_max_angle
+    - R_WRIST_release_angle
+    - R_WRIST_max_angle
+    - R_KNEE_release_angle
+    - R_KNEE_max_angle
     - release_ball_speed
     - calculated_release_angle
     - release_ball_velocity_x
