@@ -6,7 +6,7 @@ dependencies:
   - python=3.10
   - numpy=1.23.5
   - pandas
-  - scikit-learn=1.5.2        # Downgraded from 1.6.0
+  - scikit-learn=1.5.2 
   - matplotlib
   - ipympl
   - seaborn
@@ -42,8 +42,7 @@ dependencies:
       - invoke
       - tensorflow
       - keras
-      - mitosheet
-      - mito-ai
       - feature-engine
       - autots
       - darts
+      - conformal_tights
