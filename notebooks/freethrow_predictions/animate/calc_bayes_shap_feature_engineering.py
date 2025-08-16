@@ -41,14 +41,57 @@ def round_numeric_columns(df: pd.DataFrame, decimals: int = 2) -> pd.DataFrame:
 # SHOT METER FEATURE ENGINEERING FUNCTIONS
 # ------------------------------------------------------------------------------
 
-def calculate_release_angles(df: pd.DataFrame, debug: bool = False) -> pd.DataFrame:
+def calculate_release_angles(df: pd.DataFrame, handedness: str = "R", debug: bool = False) -> pd.DataFrame:
     """
     Calculate and merge release angles (mean knee, wrist, and elbow angles) based on release_point_filter.
+    For right-handed shots, uses right-side columns; for left-handed, uses left-side columns.
+    The computed release angles are aggregated by trial_id and merged back into the original dataframe.
+    
+    Parameters:
+      - df: Input DataFrame containing angle measurements and a 'release_point_filter' column.
+      - handedness: 'R' or 'L', indicating whether to use right-side or left-side measurements.
+      - debug: If True, prints debug information.
+    
+    Returns:
+      - df: DataFrame with new release angle columns merged in.
     """
+    # Check if the handedness is valid.
+    if handedness not in ['R', 'L']:
+        raise ValueError("Handedness must be 'R' for right-handed or 'L' for left-handed.")
+    
+    if debug:
+        print(f"Calculating release angles for {handedness}-handed shots.")
+    
+    # Select the appropriate columns based on handedness.
+    if handedness == 'R':
+        df['knee_angle'] = df['R_KNEE_angle']
+        df['wrist_angle'] = df['R_WRIST_angle']
+        df['elbow_angle'] = df['R_ELBOW_angle']
+    else:
+        df['knee_angle'] = df['L_KNEE_angle']
+        df['wrist_angle'] = df['L_WRIST_angle']
+        df['elbow_angle'] = df['L_ELBOW_angle']
+    
+    # Filter rows where release_point_filter == 1.
     release_df = df[df['release_point_filter'] == 1]
     if debug:
         print(f"[calculate_release_angles] release_df shape: {release_df.shape}")
-
+    
+    # Set new column names based on handedness.
+    if handedness == 'R':
+        new_names = {
+            'knee_angle': 'R_KNEE_release_angle',
+            'wrist_angle': 'R_WRIST_release_angle',
+            'elbow_angle': 'R_ELBOW_release_angle'
+        }
+    else:
+        new_names = {
+            'knee_angle': 'L_KNEE_release_angle',
+            'wrist_angle': 'L_WRIST_release_angle',
+            'elbow_angle': 'L_ELBOW_release_angle'
+        }
+    
+    # Group by trial_id and calculate the mean angles, then rename the aggregated columns.
     release_angles = (
         release_df.groupby('trial_id')
         .agg({
@@ -56,55 +99,51 @@ def calculate_release_angles(df: pd.DataFrame, debug: bool = False) -> pd.DataFr
             'wrist_angle': 'mean',
             'elbow_angle': 'mean'
         })
-        .rename(columns={
-            'knee_angle': 'release_knee_angle',
-            'wrist_angle': 'release_wrist_angle',
-            'elbow_angle': 'release_elbow_angle'
-        })
+        .rename(columns=new_names)
     )
+    
     if debug:
         print(f"[calculate_release_angles] release_angles shape: {release_angles.shape}")
         print(f"[calculate_release_angles] New columns: {list(release_angles.columns)}")
-
+    
+    # Merge the release angles back into the original DataFrame.
     df = df.merge(release_angles, on='trial_id', how='left')
+    
     if debug:
         print(f"[calculate_release_angles] Final df shape after merge: {df.shape}")
     else:
         print("[calculate_release_angles] Step completed.")
-
+    
     return df
+
 
 
 def calculate_optimal_release_angle_ranges(
     df: pd.DataFrame,
     debug: bool = False,
-    calc_feedback_range_percentile: float = 10  # new single parameter for feedback range
+    calc_feedback_range_percentile: float = 10  # single parameter for feedback range
 ) -> pd.DataFrame:
     """
-    Compute initial and filtered optimal angle ranges for knee, wrist, and elbow at the release point.
+    Calculate initial and filtered optimal angle ranges for knee, wrist, and elbow at the release point.
     
-    Instead of using two percentiles to determine the feedback range, this version uses a single 
-    parameter (calc_feedback_range_percentile). For each joint, it computes the full original range 
-    from the release data and then calculates a symmetric margin:
-    
+    For each joint, the function computes the full range from the release data and calculates a symmetric margin:
         margin = (orig_max - orig_min) * (calc_feedback_range_percentile / 100) / 2
     
-    Then, for each joint, the filtered optimal range is defined as:
-    
+    The filtered optimal range is then defined as:
         filtered_optimal_min = optimal_value - margin
         filtered_optimal_max = optimal_value + margin
     
-    The resulting boundaries are used for classifying each shot as 'Early', 'Late', or 'Good'.
+    These boundaries are later used to classify each shot as 'Early', 'Late', or 'Good'.
     """
     step = "Optimal Release Angle Ranges"
-    # Filter the release data (release_point_filter==1 and result==1)
+    # Filter for rows where release_point_filter==1 and result==1.
     release_df = df[(df['release_point_filter'] == 1) & (df['result'] == 1)]
     if debug:
         print(f"[{step}] Filtered release_df shape: {release_df.shape}")
     else:
         print(f"[{step}] Filtering completed.")
     
-    # Prepare new columns (set as NaN by default)
+    # Prepare new columns (initialize as NaN).
     new_cols = [
         'knee_release_angle_initial_optimal_min', 'knee_release_angle_initial_optimal_max',
         'wrist_release_angle_initial_optimal_min', 'wrist_release_angle_initial_optimal_max',
@@ -114,34 +153,49 @@ def calculate_optimal_release_angle_ranges(
         df[col] = float('nan')
     
     if not release_df.empty:
-        # For each joint, compute the full original range and calculate margin
-        # Also, retrieve the optimal release angle from the merged column (assumed constant across rows)
-        # Note: The optimal value is taken from the first available row for each joint.
-        # This block computes the optimal ranges for knee, wrist, and elbow.
-        # -- Knee --
+        # --- Helper: Determine the correct release angle column names for each joint ---
+        def get_release_col(joint: str) -> str:
+            # Check for generic name first; if missing, try side-specific names.
+            generic = f"release_{joint}_angle"
+            right = f"R_{joint.upper()}_release_angle"
+            left = f"L_{joint.upper()}_release_angle"
+            if generic in df.columns:
+                return generic
+            elif right in df.columns:
+                return right
+            elif left in df.columns:
+                return left
+            else:
+                raise KeyError(f"No release angle column found for joint: {joint}")
+
+        knee_release_col = get_release_col("knee")
+        wrist_release_col = get_release_col("wrist")
+        elbow_release_col = get_release_col("elbow")
+        
+        # --- Knee ---
         orig_min_knee = release_df['knee_angle'].min()
         orig_max_knee = release_df['knee_angle'].max()
         full_range_knee = orig_max_knee - orig_min_knee
         margin_knee = full_range_knee * (calc_feedback_range_percentile / 100.0) / 2.0
-        optimal_knee = df['release_knee_angle'].iloc[0]
+        optimal_knee = df[knee_release_col].iloc[0]
         knee_filtered_optimal_min = optimal_knee - margin_knee
         knee_filtered_optimal_max = optimal_knee + margin_knee
 
-        # -- Wrist --
+        # --- Wrist ---
         orig_min_wrist = release_df['wrist_angle'].min()
         orig_max_wrist = release_df['wrist_angle'].max()
         full_range_wrist = orig_max_wrist - orig_min_wrist
         margin_wrist = full_range_wrist * (calc_feedback_range_percentile / 100.0) / 2.0
-        optimal_wrist = df['release_wrist_angle'].iloc[0]
+        optimal_wrist = df[wrist_release_col].iloc[0]
         wrist_filtered_optimal_min = optimal_wrist - margin_wrist
         wrist_filtered_optimal_max = optimal_wrist + margin_wrist
 
-        # -- Elbow --
+        # --- Elbow ---
         orig_min_elbow = release_df['elbow_angle'].min()
         orig_max_elbow = release_df['elbow_angle'].max()
         full_range_elbow = orig_max_elbow - orig_min_elbow
         margin_elbow = full_range_elbow * (calc_feedback_range_percentile / 100.0) / 2.0
-        optimal_elbow = df['release_elbow_angle'].iloc[0]
+        optimal_elbow = df[elbow_release_col].iloc[0]
         elbow_filtered_optimal_min = optimal_elbow - margin_elbow
         elbow_filtered_optimal_max = optimal_elbow + margin_elbow
 
@@ -151,7 +205,7 @@ def calculate_optimal_release_angle_ranges(
             print(f"         Wrist: full_range={full_range_wrist:.2f}, margin={margin_wrist:.2f}, range=[{wrist_filtered_optimal_min:.2f}, {wrist_filtered_optimal_max:.2f}]")
             print(f"         Elbow: full_range={full_range_elbow:.2f}, margin={margin_elbow:.2f}, range=[{elbow_filtered_optimal_min:.2f}, {elbow_filtered_optimal_max:.2f}]")
         
-        # Save the filtered optimal ranges into the dataframe
+        # Save the computed optimal ranges.
         df['knee_release_angle_filtered_optimal_min'] = knee_filtered_optimal_min
         df['knee_release_angle_filtered_optimal_max'] = knee_filtered_optimal_max
         df['wrist_release_angle_filtered_optimal_min'] = wrist_filtered_optimal_min
@@ -168,15 +222,16 @@ def calculate_optimal_release_angle_ranges(
             else:
                 return "Good"
 
-        # Loop over the joints to classify the shots.
-        for joint in ['knee', 'wrist', 'elbow']:
-            # For release metrics, use the computed release value.
-            angle_col = f"release_{joint}_angle"
+        # Classify shots for each joint.
+        for joint, release_col in zip(
+            ['knee', 'wrist', 'elbow'],
+            [knee_release_col, wrist_release_col, elbow_release_col]
+        ):
             optimal_min_col = f"{joint}_release_angle_filtered_optimal_min"
             optimal_max_col = f"{joint}_release_angle_filtered_optimal_max"
             classification_col = f"{joint}_release_angle_shot_classification"
             df[classification_col] = df.apply(
-                lambda row: classify_joint(row[angle_col], row[optimal_min_col], row[optimal_max_col]),
+                lambda row: classify_joint(row[release_col], row[optimal_min_col], row[optimal_max_col]),
                 axis=1
             )
 
@@ -191,84 +246,96 @@ def calculate_optimal_release_angle_ranges(
 
 
 
+
 def calculate_optimal_max_angle_ranges(
     df: pd.DataFrame,
     output_dir: str,
     output_filename: str = "final_granular_logistic_optimized_meter_dataset.csv",
+    handedness: str = "R",  # New parameter to select side
     debug: bool = False,
-    calc_feedback_range_percentile: float = 10  # new single parameter for feedback range
+    calc_feedback_range_percentile: float = 10
 ) -> pd.DataFrame:
     """
     Calculates optimal max angle ranges (for wrist, elbow, and knee) during active shooting motion.
+    For right-handed shots, uses right-side columns; for left-handed, uses left-side columns.
     
-    Instead of using two percentiles to compute the range, this version uses a single parameter 
-    (calc_feedback_range_percentile) to calculate a symmetric feedback range. For each angle:
-    
-        full_range = max(angle) - min(angle)  (from successful shots)
-        feedback_diff = full_range * (calc_feedback_range_percentile / 100)
-        margin = feedback_diff / 2
-        
-    Then, using an "optimal" value (taken as the mean of the angle for successful shots), 
-    the filtered range is defined as:
-    
-        filtered_optimal_min = optimal_value - margin
-        filtered_optimal_max = optimal_value + margin
-    
-    These values are then used for classification.
+    The function:
+      - Selects the correct angle columns based on handedness.
+      - Filters for shooting motion rows.
+      - Computes the maximum angles per trial.
+      - Renames the columns to include a handedness prefix (e.g. "R_WRIST_max_angle").
+      - Computes symmetric feedback ranges based on a single percentile.
+      - Classifies each shot based on whether the angle is below, above, or within the computed range.
     """
     step = "Optimal Max Angle Ranges"
-    if debug:
-        print(f"[{step}] Initial df shape: {df.shape}")
-        print(f"[{step}] Columns: {df.columns.to_list()}")
-        total_trials_before = df['trial_id'].nunique()
-        print(f"[{step}] Total trials before filtering (result): {total_trials_before}")
-    else:
-        print(f"[{step}] Step started.")
     
-    # Filter the data for shooting motion.
+    # Validate handedness parameter
+    if handedness not in ['R', 'L']:
+        raise ValueError("Handedness must be 'R' for right-handed or 'L' for left-handed.")
+    
+    if debug:
+        print(f"[{step}] Calculating max angles for {handedness}-handed shots.")
+        print(f"[{step}] Initial df shape: {df.shape}")
+    
+    # Select the appropriate columns based on handedness and assign a prefix.
+    if handedness == 'R':
+        df['knee_angle'] = df['R_KNEE_angle']
+        df['wrist_angle'] = df['R_WRIST_angle']
+        df['elbow_angle'] = df['R_ELBOW_angle']
+        prefix = 'R_'
+    else:
+        df['knee_angle'] = df['L_KNEE_angle']
+        df['wrist_angle'] = df['L_WRIST_angle']
+        df['elbow_angle'] = df['L_ELBOW_angle']
+        prefix = 'L_'
+    
+    # Filter the DataFrame for rows where shooting motion is active.
     motion_df = df[df['shooting_motion'] == 1]
     if debug:
         print(f"[{step}] Motion df shape: {motion_df.shape}")
-    else:
-        print(f"[{step}] Shooting motion filtering completed.")
     
-    # Calculate max angles per trial.
+    # Calculate the maximum angles for each trial.
     max_angles_per_trial = (
         motion_df.groupby('trial_id')
         .agg({'wrist_angle': 'max', 'elbow_angle': 'max', 'knee_angle': 'max'})
         .reset_index()
     )
-    if debug:
-        print(f"[{step}] Calculated max angles per trial. Shape: {max_angles_per_trial.shape}")
     
-    merged_df = motion_df.merge(
-        max_angles_per_trial.rename(columns={
-            'wrist_angle': 'wrist_max_angle',
-            'elbow_angle': 'elbow_max_angle',
-            'knee_angle': 'knee_max_angle'
-        }),
-        on='trial_id',
-        how='left'
-    )
-    merged_df['is_wrist_max_angle'] = (merged_df['wrist_angle'] == merged_df['wrist_max_angle']).astype(int)
-    merged_df['is_elbow_max_angle'] = (merged_df['elbow_angle'] == merged_df['elbow_max_angle']).astype(int)
-    merged_df['is_knee_max_angle'] = (merged_df['knee_angle'] == merged_df['knee_max_angle']).astype(int)
-    if debug:
-        print(f"[{step}] Merged df shape after marking max points: {merged_df.shape}")
+    # Rename the aggregated columns to include the handedness prefix.
+    max_angles_per_trial.rename(columns={
+        'wrist_angle': f'{prefix}WRIST_max_angle',
+        'elbow_angle': f'{prefix}ELBOW_max_angle',
+        'knee_angle': f'{prefix}KNEE_max_angle'
+    }, inplace=True)
     
-    # Filter successful shots.
+    if debug:
+        print(f"[{step}] Max angles columns after renaming: {max_angles_per_trial.columns.tolist()}")
+    
+    # Merge the max angle values back into the motion data.
+    merged_df = motion_df.merge(max_angles_per_trial, on='trial_id', how='left')
+    
+    # Mark rows where the angle equals the computed max (for potential later use).
+    merged_df['is_wrist_max_angle'] = (merged_df['wrist_angle'] == merged_df[f'{prefix}WRIST_max_angle']).astype(int)
+    merged_df['is_elbow_max_angle'] = (merged_df['elbow_angle'] == merged_df[f'{prefix}ELBOW_max_angle']).astype(int)
+    merged_df['is_knee_max_angle'] = (merged_df['knee_angle'] == merged_df[f'{prefix}KNEE_max_angle']).astype(int)
+    
+    # Filter for successful shots.
     successful_shots_df = merged_df[merged_df['result'] == 1]
     if debug:
         print(f"[{step}] Successful shots df shape: {successful_shots_df.shape}")
-        print(f"[{step}] Trials after result filter: {successful_shots_df['trial_id'].nunique()}")
-    else:
-        print(f"[{step}] Successful shots filtering completed.")
     
-    # Dictionary to store computed optimal ranges.
+    # Dictionary to store computed optimal ranges for each joint.
     stats = {}
-    # For each angle (using the "max" prefix), compute a symmetric feedback range.
-    for joint in ['wrist', 'elbow', 'knee']:
-        angle_col = f"{joint}_max_angle"
+    for joint in ['WRIST', 'ELBOW', 'KNEE']:
+        angle_col = f"{prefix}{joint}_max_angle"
+        
+        # Check if the expected column exists.
+        if angle_col not in successful_shots_df.columns:
+            if debug:
+                print(f"[{step}] Warning: Column {angle_col} not found in successful_shots_df")
+            continue
+        
+        # Calculate the full range and derive the symmetric margin.
         orig_min = successful_shots_df[angle_col].min()
         orig_max = successful_shots_df[angle_col].max()
         full_range = orig_max - orig_min
@@ -278,17 +345,18 @@ def calculate_optimal_max_angle_ranges(
         filtered_optimal_min = optimal_value - margin
         filtered_optimal_max = optimal_value + margin
         
-        stats[f"{joint}_max_angle_filtered_optimal_min"] = filtered_optimal_min
-        stats[f"{joint}_max_angle_filtered_optimal_max"] = filtered_optimal_max
+        # Save the computed optimal range for this joint.
+        stats[f"{angle_col}_filtered_optimal_min"] = filtered_optimal_min
+        stats[f"{angle_col}_filtered_optimal_max"] = filtered_optimal_max
         
         if debug:
-            print(f"[{step}] For {angle_col}: full_range={full_range:.2f}, feedback_diff={feedback_diff:.2f}, margin={margin:.2f}, optimal={optimal_value:.2f}, range=[{filtered_optimal_min:.2f}, {filtered_optimal_max:.2f}]")
+            print(f"[{step}] For {angle_col}: full_range={full_range:.2f}, margin={margin:.2f}, range=[{filtered_optimal_min:.2f}, {filtered_optimal_max:.2f}]")
     
-    # Save the computed stats into the merged_df as constants.
+    # Insert the computed stats as constant columns in the merged DataFrame.
     for key, value in stats.items():
         merged_df[key] = value
     
-    # Define a helper function for classification.
+    # Define a helper function to classify the joint angle.
     def classify_joint(angle_value, min_val, max_val):
         if angle_value < min_val:
             return "Early"
@@ -297,36 +365,30 @@ def calculate_optimal_max_angle_ranges(
         else:
             return "Good"
     
-    # Loop over the joints to classify the shots based on max angles.
-    for joint in ['wrist', 'elbow', 'knee']:
-        classification_col = f"{joint}_max_angle_shot_classification"
-        optimal_min = stats[f"{joint}_max_angle_filtered_optimal_min"]
-        optimal_max = stats[f"{joint}_max_angle_filtered_optimal_max"]
-        # Use the original angle column (e.g., 'wrist_angle') for classification.
+    # Apply classification to each joint using the computed optimal ranges.
+    for joint in ['WRIST', 'ELBOW', 'KNEE']:
+        angle_col = f"{prefix}{joint}_max_angle"
+        classification_col = f"{angle_col}_shot_classification"
+        min_col = f"{angle_col}_filtered_optimal_min"
+        max_col = f"{angle_col}_filtered_optimal_max"
+        
+        # Only classify if the stats were computed.
+        if min_col not in stats or max_col not in stats:
+            continue
+        
         merged_df[classification_col] = merged_df.apply(
-            lambda row, min_val=optimal_min, max_val=optimal_max, joint=joint: classify_joint(row[f"{joint}_max_angle"], min_val, max_val),
+            lambda row: classify_joint(row[angle_col], stats[min_col], stats[max_col]),
             axis=1
         )
     
-    merged_df = round_numeric_columns(merged_df, decimals=2)
-    
+    # Save the updated DataFrame to CSV (useful for inspection).
     output_path = os.path.join(output_dir, output_filename)
     merged_df.to_csv(output_path, index=False)
     if debug:
-        new_cols = list(stats.keys()) + [
-            'wrist_max_angle_shot_classification',
-            'elbow_max_angle_shot_classification',
-            'knee_max_angle_shot_classification',
-            'is_wrist_max_angle', 'is_elbow_max_angle', 'is_knee_max_angle'
-        ]
         print(f"[{step}] Updated dataset saved to {output_path}")
-        print(f"[{step}] New columns added: {new_cols}")
-        print(f"[{step}] Data types of new columns:")
-        print(merged_df[new_cols].dtypes)
-    else:
-        print(f"[{step}] Step completed.")
     
     return merged_df
+
 
 
 
@@ -431,7 +493,7 @@ def add_bayesian_ranges_to_ml_dataset(
         # Map metric name (lowercase) to its bayes_optimized value.
         opt_dict = pd.Series(
             bayesian_metrics_data['bayes_optimized'].values,
-            index=bayesian_metrics_data['Parameter'].str.lower()
+            index=bayesian_metrics_data['Parameter']
         ).to_dict()
         
         if debug:
@@ -697,7 +759,8 @@ def bayesian_optimized_granular_data_main(
             max_col = f"{metric}_bayes_max"
             orig_min_col = f"{metric}_bayes_orig_min"
             orig_max_col = f"{metric}_bayes_orig_max"
-            if optimized_metric_col in merged_data.columns:
+            # Check that both the optimized and the base metric column exist
+            if optimized_metric_col in merged_data.columns and metric in merged_data.columns:
                 bayesian_metrics_dict[metric] = {
                     'bayes_optimal': merged_data.at[0, optimized_metric_col],
                     'bayes_original': merged_data.at[0, metric],
@@ -710,13 +773,13 @@ def bayesian_optimized_granular_data_main(
                 }
             else:
                 if debug:
-                    logger.warning(f"[{step}] Optimized metric column for '{metric}' not found. Skipping.")
+                    logger.warning(f"[{step}] Skipping metric '{metric}' because required columns are missing (base: '{metric}' and/or optimized: '{optimized_metric_col}').")
         no_change_list = ["calculated_release_angle", "release_angle"]
         for metric, values in bayesian_metrics_dict.items():
             filter_name = metric if metric in no_change_list else metric.replace("release_", "").replace("_max", "")
             bayesian_metrics_dict[metric]['filter_name'] = filter_name
 
-        for metric in bayesian_metrics:
+        for metric in bayesian_metrics_dict.keys():
             shap_direction_col = f"shap_{metric}_direction"
             if shap_direction_col in merged_data.columns:
                 bayesian_metrics_dict[metric]['shap_direction'] = merged_data.at[0, shap_direction_col]
@@ -726,6 +789,7 @@ def bayesian_optimized_granular_data_main(
                 if debug:
                     logger.warning(f"[{step}] Missing shap_direction column '{shap_direction_col}' for metric '{metric}'.")
                 bayesian_metrics_dict[metric]['shap_direction'] = None
+
 
         if debug:
             logger.debug(f"[{step}] Bayesian Metrics Dictionary:\n{json.dumps(bayesian_metrics_dict, indent=4)}")
@@ -743,6 +807,7 @@ def bayesian_optimized_granular_data_main(
     except Exception as e:
         logger.error(f"[{step}] Error: {e}")
         raise
+
 
 
 def automated_bayes_shap_summary(

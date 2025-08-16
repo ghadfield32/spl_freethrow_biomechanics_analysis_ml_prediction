@@ -45,4 +45,8 @@ dependencies:
       - feature-engine
       - autots
       - darts
+<<<<<<< HEAD
       - conformal_tights
+=======
+      - conformal-tights
+>>>>>>> 15c2211fa4cafd50fbfc76f7ae6e47635ebfd790

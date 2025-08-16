@@ -11,7 +11,7 @@ from ml.shap.shap_utils import load_dataset, setup_logging, load_configuration, 
 
 class ShapCalculator:
     def __init__(self, model, model_type: Optional[str] = None, logger: logging.Logger = None):
-        """
+        """        
         Initialize the ShapCalculator with a model and an optional logger.
         Detects the appropriate SHAP explainer based on model type.
         """

@@ -7,7 +7,7 @@ from typing import Any, Dict, List, Optional
 from datetime import datetime
 import numpy as np
 import joblib
-import shap
+import shap 
 import matplotlib.pyplot as plt
 import pickle
 import logging.config
@@ -32,6 +32,15 @@ from ml.shap.shap_utils import load_dataset, setup_logging, load_configuration, 
 from ml.shap.shap_calculator import ShapCalculator
 from ml.shap.shap_visualizer import ShapVisualizer
 from ml.shap.feedback_generator import FeedbackGenerator
+# Add at the top of predict_with_shap_usage.py
+import inspect
+from ml.shap import shap_utils
+
+print("Available in shap_utils:")
+for name, obj in inspect.getmembers(shap_utils):
+    if inspect.isfunction(obj):
+        print(f"  - Function: {name}")
+
 
 def convert_np_types(obj):
     if isinstance(obj, dict):
@@ -140,9 +149,6 @@ def predict_and_shap(
         y_variable_list, ordinal_categoricals, nominal_categoricals, numericals = [], [], [], []
 
     # Initialize the SHAP helper classes.
-    from ml.shap.shap_calculator import ShapCalculator  # import here if needed
-    from ml.shap.feedback_generator import FeedbackGenerator
-    from ml.shap.shap_visualizer import ShapVisualizer
     shap_calculator = ShapCalculator(model=model, logger=logger)
     feedback_generator = FeedbackGenerator(logger=logger)
     shap_visualizer = ShapVisualizer(logger=logger)
