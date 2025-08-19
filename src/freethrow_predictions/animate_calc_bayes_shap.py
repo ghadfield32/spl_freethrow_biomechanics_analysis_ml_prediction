@@ -19,16 +19,14 @@ from typing import List, Tuple, Optional
 from pathlib import Path
 
 # add for if we ever want to recalculate the shap min and max values
-from ml.config.config_loader import load_config
-from ml.config.config_models import AppConfig
-from ml.shap.shap_utils import load_dataset, setup_logging, load_configuration, initialize_logger
-from ml.shap.predict_with_shap_usage import predict_and_shap
+from .ml.config.config_loader import load_config
+from .ml.config.config_models import AppConfig
 
-from animate.court import draw_court, get_hoop_position
-from animate.viewpoints import get_viewpoint
+from .animate.court import draw_court, get_hoop_position
+from .animate.viewpoints import get_viewpoint
 from matplotlib.patches import Wedge
 
-from animate.calc_bayes_shap_feature_engineering import automated_bayes_shap_summary
+from .animate.calc_bayes_shap_feature_engineering import automated_bayes_shap_summary
 # Configure logging
 logger = logging.getLogger('bayes_animate')
 if not logger.hasHandlers():
@@ -806,349 +804,353 @@ def animate_trial_with_calc_bayes_shap_angle_meter(
             height_ratios += [gap_to_use, height_line]
         figure_height = sum(height_ratios)
 
-        # Create the figure.
+        # Create the figure with proper cleanup to prevent memory leaks.
         fig = plt.figure(figsize=(figure_width, figure_height))
-        fig.tight_layout(pad=1.0, h_pad=1.0, w_pad=1.0, rect=[0, 0, 1, 1])
-        row_count = len(height_ratios)
-        gs = GridSpec(row_count, 1, figure=fig, height_ratios=height_ratios)
+        try:
+            fig.tight_layout(pad=1.0, h_pad=1.0, w_pad=1.0, rect=[0, 0, 1, 1])
+            row_count = len(height_ratios)
+            gs = GridSpec(row_count, 1, figure=fig, height_ratios=height_ratios)
 
-        # Place subplots.
-        row_idx = 0
-        ax_3d = fig.add_subplot(gs[row_idx, 0], projection='3d')
-        ax_3d.view_init(elev=elev, azim=azim)
-        ax_3d.set_zlim([0, zlim])
-        ax_3d.set_box_aspect((2, 2, 1))
-        # Store the 3D axis in the global variable for dynamic viewpoint changes.
-        global_ax_3d = ax_3d
+            # Place subplots.
+            row_idx = 0
+            ax_3d = fig.add_subplot(gs[row_idx, 0], projection='3d')
+            ax_3d.view_init(elev=elev, azim=azim)
+            ax_3d.set_zlim([0, zlim])
+            ax_3d.set_box_aspect((2, 2, 1))
+            # Store the 3D axis in the global variable for dynamic viewpoint changes.
+            global_ax_3d = ax_3d
 
-        ax_meter = None
-        if polar_plot:
-            row_idx += 2
-            ax_meter = fig.add_subplot(gs[row_idx, 0], polar=True)
+            ax_meter = None
+            if polar_plot:
+                row_idx += 2
+                ax_meter = fig.add_subplot(gs[row_idx, 0], polar=True)
 
-        ax_bar = None
-        if bar_plot:
-            row_idx += 2
-            ax_bar = fig.add_subplot(gs[row_idx, 0])
+            ax_bar = None
+            if bar_plot:
+                row_idx += 2
+                ax_bar = fig.add_subplot(gs[row_idx, 0])
 
-        ax_line = None
-        if line_plot:
-            row_idx += 2
-            ax_line = fig.add_subplot(gs[row_idx, 0])
+            ax_line = None
+            if line_plot:
+                row_idx += 2
+                ax_line = fig.add_subplot(gs[row_idx, 0])
 
-        # Draw the court.
-        if show_court:
-            draw_court(ax_3d, court_type=court_type, units=units, debug=debug)
-            _hoopx, _hoopy, _hoopz = get_hoop_position(court_type=court_type, units=units, debug=debug)
+            # Draw the court.
+            if show_court:
+                draw_court(ax_3d, court_type=court_type, units=units, debug=debug)
+                _hoopx, _hoopy, _hoopz = get_hoop_position(court_type=court_type, units=units, debug=debug)
 
-        # NEW: After drawing the court, update axis limits using data_zoom.
-        # Get current limits (which may have been set by the court drawing)
-        x_min, x_max = ax_3d.get_xlim()
-        y_min, y_max = ax_3d.get_ylim()
-        # Apply zoom factor to x, y, and z limits.
-        ax_3d.set_xlim([x_min / data_zoom, x_max / data_zoom])
-        ax_3d.set_ylim([y_min / data_zoom, y_max / data_zoom])
-        ax_3d.set_zlim([0, zlim / data_zoom])
-        
-        # Initialize 3D elements.
-        lines, ball, release_text, motion_text, distance_text = initialize_bayes_elements(
-            ax=ax_3d,
-            connections=connections,
-            player_color=player_color,
-            player_lw=player_lw,
-            ball_color=ball_color,
-            ball_size=ball_size,
-            debug=debug
-        )
-
-        # Retrieve selected metric filter name.
-        metric_info = bayesian_metrics_dict.get(selected_metric.lower())
-        if not metric_info:
-            raise ValueError(f"Metric '{selected_metric}' not found in bayesian_metrics_dict.")
-        selected_metric_filter_name = metric_info.get("filter_name", selected_metric)
-
-        # Determine static min/max.
-        if feedback_mode.lower() == "shap":
-            shap_min_col = f"shap_{selected_metric}_min"
-            shap_max_col = f"shap_{selected_metric}_max"
-            static_min = df.at[0, shap_min_col] if shap_min_col in df.columns else 0
-            static_max = df.at[0, shap_max_col] if shap_max_col in df.columns else 180
-        elif feedback_mode.lower() == "calculated":
-            calc_min_col = f"{selected_metric}_filtered_optimal_min"
-            calc_max_col = f"{selected_metric}_filtered_optimal_max"
-            static_min = df.at[0, calc_min_col] if calc_min_col in df.columns else 0
-            static_max = df.at[0, calc_max_col] if calc_max_col in df.columns else 180
-        else:
-            static_min = metric_info.get("bayes_min", 0)
-            static_max = metric_info.get("bayes_max", 180)
-
-        # ---------- POLAR METER SETUP ----------
-        angle_meter_obj = None
-        if polar_plot and ax_meter is not None:
-            for deg in range(0, 181, 30):
-                deg_rad = np.deg2rad(deg)
-                ax_meter.plot([deg_rad, deg_rad], [0, 1],
-                              color='gray', linewidth=0.5, alpha=0.4, zorder=0)
-            if not hasattr(ax_meter, 'gauge_fill'):
-                ax_meter.gauge_fill = Wedge(center=(0, 0), r=1.0, theta1=0, theta2=0,
-                                            facecolor='red', alpha=0.3, transform=ax_meter.transData)
-                ax_meter.add_patch(ax_meter.gauge_fill)
-            needle, = ax_meter.plot([0, 0], [0, 0.8],
-                                    lw=3, color='red',
-                                    label=f"{selected_metric.lower()} Ongoing")
-            ax_meter.gauge_fill.set_zorder(1)
-            needle.set_zorder(2)
-            ax_meter.set_title(f"Polar Angle Meter: {selected_metric}", fontsize=14, pad=20)
-            one_liner = ax_meter.text(0.5, 0.25, "", transform=ax_meter.transAxes,
-                                      ha='center', va='center', fontsize=10, color='red', zorder=12)
-            ax_meter.set_theta_offset(np.pi)
-            ax_meter.set_theta_direction(-1)
-            angle_ticks = np.linspace(0, np.pi, 6)
-            angle_labels = [f'{int(deg)}°' for deg in np.linspace(0, 180, 6)]
-            ax_meter.set_xticks(angle_ticks)
-            ax_meter.set_xticklabels(angle_labels)
-            ax_meter.set_yticklabels([])
-            ax_meter.grid(False)
-            ax_meter.set_ylim(0, 1)
-            ax_meter.fill_between(np.linspace(np.pi, 2*np.pi, 100), 0, 1, color="white", zorder=10)
-            ax_meter.spines['polar'].set_visible(False)
-            ax_meter.plot([0, np.pi], [0, 1], color='black', lw=1)
-            if show_selected_metric:
-                selected_value = df[selected_metric].iloc[0]
-                selected_value_rad = selected_value * DEG_TO_RAD
-                if not hasattr(ax_meter, 'selected_metric_line'):
-                    ax_meter.selected_metric_line, = ax_meter.plot(
-                        [0, selected_value_rad], [0, 1],
-                        color='black', lw=2, linestyle='-', label=f"{selected_metric} Selected"
-                    )
-            ax_meter.legend(loc='upper right')
-            angle_meter_obj = {'ax_meter': ax_meter, 'needle': needle, 'one_liner': one_liner}
-
-        # ---------- BAR METER SETUP ----------
-        bar_container = None
-        bar_ongoing_text = None
-        if bar_plot and ax_bar is not None:
-            ax_bar.set_title(f"Bar Meter: {selected_metric}", fontsize=14, pad=30)
-            bar_ongoing_text = ax_bar.text(0.5, 1.02, "", transform=ax_bar.transAxes,
-                                           ha='center', va='bottom', fontsize=10, color='red')
-            bar_container = initialize_bar_meter(ax_bar, min_val=0, max_val=180)
-            add_bayes_optimal_lines_to_bar(ax_bar, static_min, static_max, 
-                                           selected_metric_filter_name, feedback_mode, debug)
-            bar_container[0].set_label(f"{selected_metric.lower()} Ongoing")
-            first_val = df[selected_metric].iloc[0]
-            if not hasattr(ax_bar, 'selected_metric_line'):
-                ax_bar.selected_metric_line = ax_bar.axvline(
-                    x=first_val, color='black', lw=2, linestyle='-',
-                    label=f"{selected_metric} Selected"
-                )
-            bar_handles = [bar_container[0]]
-            if hasattr(ax_bar, 'bar_min_line'):
-                bar_handles.append(ax_bar.bar_min_line)
-            if hasattr(ax_bar, 'bar_max_line'):
-                bar_handles.append(ax_bar.bar_max_line)
-            if hasattr(ax_bar, 'selected_metric_line'):
-                bar_handles.append(ax_bar.selected_metric_line)
-            ax_bar.legend(handles=bar_handles, loc='upper right')
-
-        # ---------- LINE GRAPH SETUP ----------
-        line_graph_obj = None
-        line_ongoing_text = None
-        if line_plot and ax_line is not None:
-            line_graph_obj = initialize_line_graph(ax_line, static_min, static_max,
-                                                   selected_metric_filter_name, selected_metric,
-                                                   feedback_mode, debug)
-            line_ongoing_text = ax_line.text(0.5, 1.02, "", transform=ax_line.transAxes,
-                                             ha='center', va='bottom', fontsize=10, color='red')
-            if show_selected_metric:
-                selected_value = df[selected_metric].iloc[0]
-                line_graph_obj['selected_metric_line'] = ax_line.axhline(
-                    y=selected_value, color='black', linestyle='-', lw=2, label=f"{selected_metric_filter_name} Selected"
-                )
-                line_handles = [
-                    line_graph_obj['line_min'],
-                    line_graph_obj['line_max'],
-                    line_graph_obj['line_metric'],
-                    line_graph_obj['selected_metric_line']
-                ]
-                ax_line.legend(handles=line_handles, loc='upper right')
-
-        # ---------- 3D Legend ----------
-        player_handle = Line2D([0], [0], color=player_color, lw=player_lw, label='Player')
-        ball_handle = Line2D([0], [0], marker='o', color='w', markerfacecolor=ball_color, label='Ball')
-        ax_3d.legend(handles=[player_handle, ball_handle], loc='upper right')
-
-        if release_frame < 0 or release_frame >= len(df):
-            release_frame = 0
-        if debug:
-            logger.debug(f"Final release_frame used: {release_frame}")
-
-        if 'release_point_filter' in df.columns and release_frame < len(df):
-            trial_release = (
-                df.loc[release_frame, selected_metric_filter_name] 
-                if df.loc[release_frame, 'release_point_filter'] == 1 else None
-            )
-        else:
-            trial_release = None
-
-        # ---------- Cache Frequently Accessed Data ----------
-        selected_metric_values = df[selected_metric_filter_name].to_numpy()
-        distance_to_basket = df['distance_to_basket'].to_numpy() if 'distance_to_basket' in df.columns else None
-        shooting_motion = df['shooting_motion'].to_numpy() if 'shooting_motion' in df.columns else None
-
-        # Precompute frequently built column names.
-        col_names = {}
-        if feedback_mode.lower() == "bayesian":
-            col_names["bayes_min"] = f"{selected_metric}_bayes_min"
-            col_names["bayes_max"] = f"{selected_metric}_bayes_max"
-            col_names["bayes_class"] = f"{selected_metric}_bayes_classification"
-            col_names["bayes_unit"] = f"{selected_metric}_bayes_unit_change"
-        elif feedback_mode.lower() == "shap":
-            col_names["shap_class"] = f"shap_{selected_metric}_classification"
-            col_names["shap_unit"] = f"shap_{selected_metric}_unit_change"
-            col_names["shap_direction"] = f"shap_{selected_metric}_direction"
-            col_names["shap_imp"] = f"shap_{selected_metric}_importance"
-        elif feedback_mode.lower() == "calculated":
-            col_names["shot_class"] = f"{selected_metric}_shot_classification"
-
-        # ---------- Update Function ----------
-        def update_func(frame: int):
-            # Use local variables for axes.
-            local_ax_line = ax_line
-
-            # Update 3D elements.
-            update_bayes_frame(
+            # NEW: After drawing the court, update axis limits using data_zoom.
+            # Get current limits (which may have been set by the court drawing)
+            x_min, x_max = ax_3d.get_xlim()
+            y_min, y_max = ax_3d.get_ylim()
+            # Apply zoom factor to x, y, and z limits.
+            ax_3d.set_xlim([x_min / data_zoom, x_max / data_zoom])
+            ax_3d.set_ylim([y_min / data_zoom, y_max / data_zoom])
+            ax_3d.set_zlim([0, zlim / data_zoom])
+            
+            # Initialize 3D elements.
+            lines, ball, release_text, motion_text, distance_text = initialize_bayes_elements(
                 ax=ax_3d,
-                frame=frame,
-                df=df,
-                release_frame=release_frame,
-                lines=lines,
-                ball=ball,
-                release_text=release_text,
-                motion_text=motion_text,
                 connections=connections,
+                player_color=player_color,
+                player_lw=player_lw,
                 ball_color=ball_color,
-                highlight_color=highlight_color,
-                debug=debug,
-                selected_metric=selected_metric,
-                selected_metric_filter_name=selected_metric_filter_name
+                ball_size=ball_size,
+                debug=debug
             )
-            # Update polar meter.
-            if polar_plot and angle_meter_obj is not None:
-                update_meter_with_mode(
-                    ax_meter=angle_meter_obj['ax_meter'],
-                    df=df,
-                    frame=frame,
-                    needle=angle_meter_obj['needle'],
-                    one_liner=angle_meter_obj['one_liner'],
-                    angle_key=selected_metric_filter_name,
-                    feedback_key=selected_metric,
-                    feedback_mode=feedback_mode,
-                    bayesian_metrics_dict=bayesian_metrics_dict,
-                    debug=debug
-                )
-            # Update bar meter.
-            current_val = selected_metric_values[frame]
-            if bar_container is not None:
-                update_bar_meter(bar_container, current_angle=current_val, min_val=0, max_val=180)
 
-            # Update one-liner text based on feedback mode.
-            if feedback_mode.lower() == "bayesian":
-                bayes_class = df.loc[frame, col_names.get("bayes_class", "N/A")] if col_names.get("bayes_class") in df.columns else "N/A"
-                bayes_unit = df.loc[frame, col_names.get("bayes_unit", "N/A")] if col_names.get("bayes_unit") in df.columns else "N/A"
-                one_liner_str = (f"Ongoing {selected_metric_filter_name}: {current_val:.1f}° | "
-                                 f"Bayes Class: {bayes_class} | Unit Change: {bayes_unit}")
-            elif feedback_mode.lower() == "shap":
-                shap_class = df.loc[frame, col_names.get("shap_class", "N/A")] if col_names.get("shap_class") in df.columns else "N/A"
-                shap_unit = df.loc[frame, col_names.get("shap_unit", "N/A")] if col_names.get("shap_unit") in df.columns else ""
-                shap_direction = df.loc[frame, col_names.get("shap_direction", "N/A")] if col_names.get("shap_direction") in df.columns else "N/A"
-                if col_names.get("shap_imp") in df.columns:
-                    shap_imp = df.loc[frame, col_names.get("shap_imp")]
-                    try:
-                        shap_importance = f"{float(shap_imp):.3f}"
-                    except:
-                        shap_importance = shap_imp
-                else:
-                    shap_importance = "N/A"
-                one_liner_str = (
-                    f"Ongoing {selected_metric_filter_name}: {current_val:.1f}° | "
-                    f"SHAP Class: {shap_class} | Direction: {shap_direction} | SHAP Imp: {shap_importance}"
-                )
+            # Retrieve selected metric filter name.
+            metric_info = bayesian_metrics_dict.get(selected_metric.lower())
+            if not metric_info:
+                raise ValueError(f"Metric '{selected_metric}' not found in bayesian_metrics_dict.")
+            selected_metric_filter_name = metric_info.get("filter_name", selected_metric)
+
+            # Determine static min/max.
+            if feedback_mode.lower() == "shap":
+                shap_min_col = f"shap_{selected_metric}_min"
+                shap_max_col = f"shap_{selected_metric}_max"
+                static_min = df.at[0, shap_min_col] if shap_min_col in df.columns else 0
+                static_max = df.at[0, shap_max_col] if shap_max_col in df.columns else 180
             elif feedback_mode.lower() == "calculated":
-                shot_class = df.loc[frame, col_names.get("shot_class", "N/A")] if col_names.get("shot_class") in df.columns else "N/A"
-                one_liner_str = (f"Ongoing {selected_metric_filter_name}: {current_val:.1f}° | "
-                                 f"Shot Class: {shot_class}")
+                calc_min_col = f"{selected_metric}_filtered_optimal_min"
+                calc_max_col = f"{selected_metric}_filtered_optimal_max"
+                static_min = df.at[0, calc_min_col] if calc_min_col in df.columns else 0
+                static_max = df.at[0, calc_max_col] if calc_max_col in df.columns else 180
             else:
-                one_liner_str = f"Ongoing {selected_metric_filter_name}: {current_val:.1f}°"
+                static_min = metric_info.get("bayes_min", 0)
+                static_max = metric_info.get("bayes_max", 180)
 
-            if bar_ongoing_text:
-                bar_ongoing_text.set_text(one_liner_str)
+            # ---------- POLAR METER SETUP ----------
+            angle_meter_obj = None
+            if polar_plot and ax_meter is not None:
+                for deg in range(0, 181, 30):
+                    deg_rad = np.deg2rad(deg)
+                    ax_meter.plot([deg_rad, deg_rad], [0, 1],
+                                  color='gray', linewidth=0.5, alpha=0.4, zorder=0)
+                if not hasattr(ax_meter, 'gauge_fill'):
+                    ax_meter.gauge_fill = Wedge(center=(0, 0), r=1.0, theta1=0, theta2=0,
+                                                facecolor='red', alpha=0.3, transform=ax_meter.transData)
+                    ax_meter.add_patch(ax_meter.gauge_fill)
+                needle, = ax_meter.plot([0, 0], [0, 0.8],
+                                        lw=3, color='red',
+                                        label=f"{selected_metric.lower()} Ongoing")
+                ax_meter.gauge_fill.set_zorder(1)
+                needle.set_zorder(2)
+                ax_meter.set_title(f"Polar Angle Meter: {selected_metric}", fontsize=14, pad=20)
+                one_liner = ax_meter.text(0.5, 0.25, "", transform=ax_meter.transAxes,
+                                          ha='center', va='center', fontsize=10, color='red', zorder=12)
+                ax_meter.set_theta_offset(np.pi)
+                ax_meter.set_theta_direction(-1)
+                angle_ticks = np.linspace(0, np.pi, 6)
+                angle_labels = [f'{int(deg)}°' for deg in np.linspace(0, 180, 6)]
+                ax_meter.set_xticks(angle_ticks)
+                ax_meter.set_xticklabels(angle_labels)
+                ax_meter.set_yticklabels([])
+                ax_meter.grid(False)
+                ax_meter.set_ylim(0, 1)
+                ax_meter.fill_between(np.linspace(np.pi, 2*np.pi, 100), 0, 1, color="white", zorder=10)
+                ax_meter.spines['polar'].set_visible(False)
+                ax_meter.plot([0, np.pi], [0, 1], color='black', lw=1)
+                if show_selected_metric:
+                    selected_value = df[selected_metric].iloc[0]
+                    selected_value_rad = selected_value * DEG_TO_RAD
+                    if not hasattr(ax_meter, 'selected_metric_line'):
+                        ax_meter.selected_metric_line, = ax_meter.plot(
+                            [0, selected_value_rad], [0, 1],
+                            color='black', lw=2, linestyle='-', label=f"{selected_metric} Selected"
+                        )
+                ax_meter.legend(loc='upper right')
+                angle_meter_obj = {'ax_meter': ax_meter, 'needle': needle, 'one_liner': one_liner}
 
-            if distance_to_basket is not None:
-                dist = distance_to_basket[frame]
-                distance_text.set_text(f"Distance to Basket: {dist:.2f} ft" if not np.isnan(dist) else "")
+            # ---------- BAR METER SETUP ----------
+            bar_container = None
+            bar_ongoing_text = None
+            if bar_plot and ax_bar is not None:
+                ax_bar.set_title(f"Bar Meter: {selected_metric}", fontsize=14, pad=30)
+                bar_ongoing_text = ax_bar.text(0.5, 1.02, "", transform=ax_bar.transAxes,
+                                               ha='center', va='bottom', fontsize=10, color='red')
+                bar_container = initialize_bar_meter(ax_bar, min_val=0, max_val=180)
+                add_bayes_optimal_lines_to_bar(ax_bar, static_min, static_max, 
+                                               selected_metric_filter_name, feedback_mode, debug)
+                bar_container[0].set_label(f"{selected_metric.lower()} Ongoing")
+                first_val = df[selected_metric].iloc[0]
+                if not hasattr(ax_bar, 'selected_metric_line'):
+                    ax_bar.selected_metric_line = ax_bar.axvline(
+                        x=first_val, color='black', lw=2, linestyle='-',
+                        label=f"{selected_metric} Selected"
+                    )
+                bar_handles = [bar_container[0]]
+                if hasattr(ax_bar, 'bar_min_line'):
+                    bar_handles.append(ax_bar.bar_min_line)
+                if hasattr(ax_bar, 'bar_max_line'):
+                    bar_handles.append(ax_bar.bar_max_line)
+                if hasattr(ax_bar, 'selected_metric_line'):
+                    bar_handles.append(ax_bar.selected_metric_line)
+                ax_bar.legend(handles=bar_handles, loc='upper right')
+
+            # ---------- LINE GRAPH SETUP ----------
+            line_graph_obj = None
+            line_ongoing_text = None
+            if line_plot and ax_line is not None:
+                line_graph_obj = initialize_line_graph(ax_line, static_min, static_max,
+                                                       selected_metric_filter_name, selected_metric,
+                                                       feedback_mode, debug)
+                line_ongoing_text = ax_line.text(0.5, 1.02, "", transform=ax_line.transAxes,
+                                                 ha='center', va='bottom', fontsize=10, color='red')
+                if show_selected_metric:
+                    selected_value = df[selected_metric].iloc[0]
+                    line_graph_obj['selected_metric_line'] = ax_line.axhline(
+                        y=selected_value, color='black', linestyle='-', lw=2, label=f"{selected_metric_filter_name} Selected"
+                    )
+                    line_handles = [
+                        line_graph_obj['line_min'],
+                        line_graph_obj['line_max'],
+                        line_graph_obj['line_metric'],
+                        line_graph_obj['selected_metric_line']
+                    ]
+                    ax_line.legend(handles=line_handles, loc='upper right')
+
+            # ---------- 3D Legend ----------
+            player_handle = Line2D([0], [0], color=player_color, lw=player_lw, label='Player')
+            ball_handle = Line2D([0], [0], marker='o', color='w', markerfacecolor=ball_color, label='Ball')
+            ax_3d.legend(handles=[player_handle, ball_handle], loc='upper right')
+
+            if release_frame < 0 or release_frame >= len(df):
+                release_frame = 0
+            if debug:
+                logger.debug(f"Final release_frame used: {release_frame}")
+
+            if 'release_point_filter' in df.columns and release_frame < len(df):
+                trial_release = (
+                    df.loc[release_frame, selected_metric_filter_name] 
+                    if df.loc[release_frame, 'release_point_filter'] == 1 else None
+                )
             else:
-                distance_text.set_text("")
+                trial_release = None
 
-            # Update the line graph; update y-axis limits only every 10 frames.
-            if line_graph_obj is not None:
-                frame_num = frame
-                line_graph_obj['data_frames'].append(frame_num)
-                line_graph_obj['data_values'].append(current_val)
-                line_graph_obj['line_metric'].set_data(line_graph_obj['data_frames'],
-                                                       line_graph_obj['data_values'])
-                local_ax_line.set_xlim(left=0, right=max(line_graph_obj['data_frames']) + 1)
-                if frame % 10 == 0:
-                    cmin = min(line_graph_obj['data_values']) - 5
-                    cmax = max(line_graph_obj['data_values']) + 5
-                    if cmin < line_graph_obj['current_ymin'] or cmax > line_graph_obj['current_ymax']:
-                        local_ax_line.set_ylim(cmin, cmax)
-                        line_graph_obj['current_ymin'] = cmin
-                        line_graph_obj['current_ymax'] = cmax
+            # ---------- Cache Frequently Accessed Data ----------
+            selected_metric_values = df[selected_metric_filter_name].to_numpy()
+            distance_to_basket = df['distance_to_basket'].to_numpy() if 'distance_to_basket' in df.columns else None
+            shooting_motion = df['shooting_motion'].to_numpy() if 'shooting_motion' in df.columns else None
 
-                if "max_" in selected_metric:
-                    if current_val > line_graph_obj['current_trial_max']:
-                        line_graph_obj['current_trial_max'] = current_val
-                        if not hasattr(line_graph_obj['line_trial_max'], 'xdata'):
-                            line_graph_obj['line_trial_max'].set_data([frame_num], [current_val])
-                        else:
-                            oldx = line_graph_obj['line_trial_max'].get_xdata()
-                            oldy = line_graph_obj['line_trial_max'].get_ydata()
-                            new_x = np.append(oldx, frame_num)
-                            new_y = np.append(oldy, current_val)
-                            line_graph_obj['line_trial_max'].set_data(new_x, new_y)
-                        line_graph_obj['line_trial_max'].set_visible(True)
+            # Precompute frequently built column names.
+            col_names = {}
+            if feedback_mode.lower() == "bayesian":
+                col_names["bayes_min"] = f"{selected_metric}_bayes_min"
+                col_names["bayes_max"] = f"{selected_metric}_bayes_max"
+                col_names["bayes_class"] = f"{selected_metric}_bayes_classification"
+                col_names["bayes_unit"] = f"{selected_metric}_bayes_unit_change"
+            elif feedback_mode.lower() == "shap":
+                col_names["shap_class"] = f"shap_{selected_metric}_classification"
+                col_names["shap_unit"] = f"shap_{selected_metric}_unit_change"
+                col_names["shap_direction"] = f"shap_{selected_metric}_direction"
+                col_names["shap_imp"] = f"shap_{selected_metric}_importance"
+            elif feedback_mode.lower() == "calculated":
+                col_names["shot_class"] = f"{selected_metric}_shot_classification"
+
+            # ---------- Update Function ----------
+            def update_func(frame: int):
+                # Use local variables for axes.
+                local_ax_line = ax_line
+
+                # Update 3D elements.
+                update_bayes_frame(
+                    ax=ax_3d,
+                    frame=frame,
+                    df=df,
+                    release_frame=release_frame,
+                    lines=lines,
+                    ball=ball,
+                    release_text=release_text,
+                    motion_text=motion_text,
+                    connections=connections,
+                    ball_color=ball_color,
+                    highlight_color=highlight_color,
+                    debug=debug,
+                    selected_metric=selected_metric,
+                    selected_metric_filter_name=selected_metric_filter_name
+                )
+                # Update polar meter.
+                if polar_plot and angle_meter_obj is not None:
+                    update_meter_with_mode(
+                        ax_meter=angle_meter_obj['ax_meter'],
+                        df=df,
+                        frame=frame,
+                        needle=angle_meter_obj['needle'],
+                        one_liner=angle_meter_obj['one_liner'],
+                        angle_key=selected_metric_filter_name,
+                        feedback_key=selected_metric,
+                        feedback_mode=feedback_mode,
+                        bayesian_metrics_dict=bayesian_metrics_dict,
+                        debug=debug
+                    )
+                # Update bar meter.
+                current_val = selected_metric_values[frame]
+                if bar_container is not None:
+                    update_bar_meter(bar_container, current_angle=current_val, min_val=0, max_val=180)
+
+                # Update one-liner text based on feedback mode.
+                if feedback_mode.lower() == "bayesian":
+                    bayes_class = df.loc[frame, col_names.get("bayes_class", "N/A")] if col_names.get("bayes_class") in df.columns else "N/A"
+                    bayes_unit = df.loc[frame, col_names.get("bayes_unit", "N/A")] if col_names.get("bayes_unit") in df.columns else "N/A"
+                    one_liner_str = (f"Ongoing {selected_metric_filter_name}: {current_val:.1f}° | "
+                                     f"Bayes Class: {bayes_class} | Unit Change: {bayes_unit}")
+                elif feedback_mode.lower() == "shap":
+                    shap_class = df.loc[frame, col_names.get("shap_class", "N/A")] if col_names.get("shap_class") in df.columns else "N/A"
+                    shap_unit = df.loc[frame, col_names.get("shap_unit", "N/A")] if col_names.get("shap_unit") in df.columns else ""
+                    shap_direction = df.loc[frame, col_names.get("shap_direction", "N/A")] if col_names.get("shap_direction") in df.columns else "N/A"
+                    if col_names.get("shap_imp") in df.columns:
+                        shap_imp = df.loc[frame, col_names.get("shap_imp")]
+                        try:
+                            shap_importance = f"{float(shap_imp):.3f}"
+                        except:
+                            shap_importance = shap_imp
+                    else:
+                        shap_importance = "N/A"
+                    one_liner_str = (
+                        f"Ongoing {selected_metric_filter_name}: {current_val:.1f}° | "
+                        f"SHAP Class: {shap_class} | Direction: {shap_direction} | SHAP Imp: {shap_importance}"
+                    )
+                elif feedback_mode.lower() == "calculated":
+                    shot_class = df.loc[frame, col_names.get("shot_class", "N/A")] if col_names.get("shot_class") in df.columns else "N/A"
+                    one_liner_str = (f"Ongoing {selected_metric_filter_name}: {current_val:.1f}° | "
+                                     f"Shot Class: {shot_class}")
                 else:
-                    line_graph_obj['line_trial_max'].set_visible(False)
+                    one_liner_str = f"Ongoing {selected_metric_filter_name}: {current_val:.1f}°"
 
-                if trial_release is not None and frame >= release_frame:
-                    if "release_" in selected_metric and 'trial_release_line' in line_graph_obj:
-                        line_graph_obj['trial_release_line'].set_visible(True)
+                if bar_ongoing_text:
+                    bar_ongoing_text.set_text(one_liner_str)
 
-                if line_ongoing_text:
-                    line_ongoing_text.set_text(one_liner_str)
+                if distance_to_basket is not None:
+                    dist = distance_to_basket[frame]
+                    distance_text.set_text(f"Distance to Basket: {dist:.2f} ft" if not np.isnan(dist) else "")
+                else:
+                    distance_text.set_text("")
 
-            fig.canvas.draw_idle()
+                # Update the line graph; update y-axis limits only every 10 frames.
+                if line_graph_obj is not None:
+                    frame_num = frame
+                    line_graph_obj['data_frames'].append(frame_num)
+                    line_graph_obj['data_values'].append(current_val)
+                    line_graph_obj['line_metric'].set_data(line_graph_obj['data_frames'],
+                                                           line_graph_obj['data_values'])
+                    local_ax_line.set_xlim(left=0, right=max(line_graph_obj['data_frames']) + 1)
+                    if frame % 10 == 0:
+                        cmin = min(line_graph_obj['data_values']) - 5
+                        cmax = max(line_graph_obj['data_values']) + 5
+                        if cmin < line_graph_obj['current_ymin'] or cmax > line_graph_obj['current_ymax']:
+                            local_ax_line.set_ylim(cmin, cmax)
+                            line_graph_obj['current_ymin'] = cmin
+                            line_graph_obj['current_ymax'] = cmax
 
-        # Build the animation.
-        frames_iter = frames_to_animate if frames_to_animate else range(len(df))
-        # Optionally, try blit=True if supported.
-        anim = FuncAnimation(fig, update_func, frames=frames_iter, interval=1000/30, blit=False)
-        inline_html = anim.to_jshtml() or "<p>Error: No animation output generated.</p>"
-        wrapped_html = f"""<div style="width: 100%; margin: 0; padding: 0;">{inline_html}</div>"""
+                    if "max_" in selected_metric:
+                        if current_val > line_graph_obj['current_trial_max']:
+                            line_graph_obj['current_trial_max'] = current_val
+                            if not hasattr(line_graph_obj['line_trial_max'], 'xdata'):
+                                line_graph_obj['line_trial_max'].set_data([frame_num], [current_val])
+                            else:
+                                oldx = line_graph_obj['line_trial_max'].get_xdata()
+                                oldy = line_graph_obj['line_trial_max'].get_ydata()
+                                new_x = np.append(oldx, frame_num)
+                                new_y = np.append(oldy, current_val)
+                                line_graph_obj['line_trial_max'].set_data(new_x, new_y)
+                            line_graph_obj['line_trial_max'].set_visible(True)
+                    else:
+                        line_graph_obj['line_trial_max'].set_visible(False)
 
-        if save_path is not None:
-            if save_path.endswith(".html"):
-                with open(save_path, "w", encoding="utf-8") as f:
-                    f.write(wrapped_html)
-            elif save_path.endswith(".gif"):
-                anim.save(save_path, writer='pillow')
-            elif save_path.endswith(".mp4"):
-                anim.save(save_path, writer='ffmpeg')
+                    if trial_release is not None and frame >= release_frame:
+                        if "release_" in selected_metric and 'trial_release_line' in line_graph_obj:
+                            line_graph_obj['trial_release_line'].set_visible(True)
 
-        if notebook_mode:
-            return HTML(wrapped_html)
-        else:
-            return wrapped_html
+                    if line_ongoing_text:
+                        line_ongoing_text.set_text(one_liner_str)
+
+                fig.canvas.draw_idle()
+
+            # Build the animation.
+            frames_iter = frames_to_animate if frames_to_animate else range(len(df))
+            # Optionally, try blit=True if supported.
+            anim = FuncAnimation(fig, update_func, frames=frames_iter, interval=1000/30, blit=False)
+            inline_html = anim.to_jshtml() or "<p>Error: No animation output generated.</p>"
+            wrapped_html = f"""<div style="width: 100%; margin: 0; padding: 0;">{inline_html}</div>"""
+
+            if save_path is not None:
+                if save_path.endswith(".html"):
+                    with open(save_path, "w", encoding="utf-8") as f:
+                        f.write(wrapped_html)
+                elif save_path.endswith(".gif"):
+                    anim.save(save_path, writer='pillow')
+                elif save_path.endswith(".mp4"):
+                    anim.save(save_path, writer='ffmpeg')
+
+            if notebook_mode:
+                return HTML(wrapped_html)
+            else:
+                return wrapped_html
+        finally:
+            # Ensure we close the figure to prevent memory leaks
+            plt.close(fig)
 
     except Exception as e:
         logger.error(f"Error in animate_trial_with_calc_bayes_shap_angle_meter: {e}")

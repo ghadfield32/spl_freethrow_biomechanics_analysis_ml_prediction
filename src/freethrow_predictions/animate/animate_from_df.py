@@ -179,7 +179,7 @@ def animate_trial_from_df(
                 logger.debug("Court not shown. Hoop position set to None.")
 
         # Initialize elements for animation
-        lines, ball, release_text, motion_text, distance_text = initialize_elements(
+        lines, ball, release_text, motion_text, distance_text, joint_markers = initialize_elements(
             ax, connections, player_color, player_lw, ball_color, ball_size, debug=debug
         )
 

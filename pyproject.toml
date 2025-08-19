@@ -1,6 +1,5 @@
-%%writefile pyproject.toml
 [project]
-name = "docker_dev_template"
+name = "data_science_ft_bio_predictions"
 version = "0.1.0"
 description = "Hierarchical Bayesian modeling for baseball exit velocity data"
 authors = [
@@ -10,24 +9,48 @@ license = "MIT"
 readme = "README.md"
 
 # ─── Restrict to Python 3.10–3.12 ──────────────────────────────
+
 requires-python = ">=3.10,<3.13"
 
 dependencies = [
+  # --- Core scientific stack ---
+  "numpy>=1.22,<3",
   "pandas>=2.0",
-  "numpy>=1.20,<2",
-  "matplotlib>=3.4.0",
-  "scikit-learn>=1.4.2",
-  "pymc>=5.0.0",
+  "scipy>=1.8.0",
+  "matplotlib>=3.5.0",
+
+  # --- ML libs (your stack) ---
+  "scikit-learn==1.5.2",
+  "xgboost>=1.5.0",
+  "catboost>=1.0.0",
+  "scikit-optimize>=0.10.2",
+  "joblib>=1.2.0",
+  "shap>=0.46.0",
+  "pydantic>=2.0",
+  "omegaconf>=2.3.0",
+  "IPython>=8.0",
+
+  # --- App / UI ---
+  "streamlit>=1.20.0",
+
+  # --- YAML parsing ---
+  "PyYAML>=6.0",
+
+  # --- Viz helper (basketball) ---
+  "mplbasketball>=1.0.1",
+
+  # --- Your preprocessor (VCS dep)
+  # Name must match the distribution metadata (repo package name is 'datapreprocessor')
+  # Optionally pin to a commit for reproducibility by appending @<sha>
+  "datapreprocessor @ git+https://github.com/ghadfield32/ml_preprocessor",
+
+  # --- (rest unchanged) ---
   "arviz>=0.14.0",
   "statsmodels>=0.13.0",
   "jupyterlab>=3.0.0",
   "seaborn>=0.11.0",
   "tabulate>=0.9.0",
-  "shap>=0.40.0",
-  "xgboost>=1.5.0",
   "lightgbm>=3.3.0",
-  "catboost>=1.0.0",
-  "scipy>=1.7.0",
   "shapash[report]>=2.3.0",
   "shapiq>=1.3.0",
   "explainerdashboard>=0.3.0",
@@ -40,7 +63,6 @@ dependencies = [
   "aesara>=2.9.4",
   "tqdm>=4.67.0",
   "pyarrow>=12.0.0",
-  "streamlit>=1.20.0",
   "sqlalchemy>=1.4",
   "mysql-connector-python>=8.0",
   "optuna>=4.3.0",
@@ -48,27 +70,27 @@ dependencies = [
   "pretty_errors>=1.2.0",
   "gdown>=4.0.0",
   "invoke>=2.2",
-  # ▶ Video download stack
-  #   - pytube main-branch until next PyPI release (optional fallback)
+
+  # Video tooling (optional)
   "pytube @ git+https://github.com/pytube/pytube",
   "yt-dlp>=2024.12.0",
-  #   - optional convenience wrapper (does NOT install ffmpeg binary!)
-  "ffmpeg-python >= 0.2.0",
+  "ffmpeg-python>=0.2.0",
 
-  # Ultralytics YOLO (SOTA object detection, segmentation, etc.)
-  # ▶ Computer vision
+  # Vision / YOLO stack (as you had)
   "ultralytics==8.3.158",
   "opencv-python-headless>=4.10.0",
   "roboflow>=1.0.0",
+
+  # Tracking/experiments
   "mlflow>=3.1.1,<4.0.0",
   "optuna-integration[mlflow]>=4.4.0,<5.0.0",
-  
-  # PyTorch core libraries - platform specific with PEP-508 compliant syntax
-  # CUDA wheels for Windows/Linux, CPU for macOS
-"torch>=2.0.0",
-"torchvision>=0.15.0",
-"torchaudio>=2.0.0",
+
+  # PyTorch core (uv sources map CUDA wheels below)
+  "torch>=2.0.0",
+  "torchvision>=0.15.0",
+  "torchaudio>=2.0.0",
 ]
+
 
 [project.optional-dependencies]
 dev = [

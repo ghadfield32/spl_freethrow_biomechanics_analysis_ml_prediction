@@ -19,3 +19,7 @@ data/...
 
 # Exclude any temporary or large files not needed for the image
 tmp/
+
+.env
+
+dev.env

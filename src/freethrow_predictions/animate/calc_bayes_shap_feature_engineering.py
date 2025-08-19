@@ -12,10 +12,8 @@ import numpy as np
 import pandas as pd
 
 # add for if we ever want to recalculate the shap min and max values
-from ml.config.config_loader import load_config
-from ml.config.config_models import AppConfig
-from ml.shap.shap_utils import load_dataset, setup_logging, load_configuration, initialize_logger
-from ml.shap.predict_with_shap_usage import predict_and_shap
+from ..ml.config.config_loader import load_config
+from ..ml.config.config_models import AppConfig
     
 # ------------------------------------------------------------------------------
 # Logging configuration (used by bayesian metrics functions)

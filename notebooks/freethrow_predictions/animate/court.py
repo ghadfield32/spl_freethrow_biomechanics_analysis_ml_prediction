@@ -3,8 +3,51 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 from mplbasketball.court3d import Court3D, draw_court_3d
+from typing import Dict
 
 logger = logging.getLogger(__name__)
+
+def get_court_params(court_type: str = "nba", units: str = "ft", debug: bool = False) -> Dict[str, float]:
+    """
+    Build and return court parameters directly from mplbasketball's Court3D.
+    Strictly uses the measurements provided by the library. No fallbacks.
+
+    Returns:
+        {
+            "hoop_radius": float,   # radius in the same coordinate units used by your Court3D
+        }
+    """
+    try:
+        court = Court3D(court_type=court_type, units=units)
+        court_params = court.court_parameters
+        
+        if 'hoop_radius' not in court_params:
+            # We do NOT guess; we do NOT derive from diameter, etc. Hard error.
+            raise KeyError(
+                "Court3D does not provide 'hoop_radius' in court_parameters. "
+                "Available keys: " + str(list(court_params.keys()))
+            )
+        
+        hoop_radius = float(court_params['hoop_radius'])
+        
+        if debug:
+            logger.debug(f"[court] type={court_type} units={units} hoop_radius={hoop_radius}")
+        
+        return {"hoop_radius": hoop_radius}
+    except Exception as e:
+        logger.error(f"Error getting court parameters: {e}")
+        raise
+
+def validate_court_params(court_params: Dict[str, float]) -> None:
+    """
+    Validate presence of required measurements. No defaults, no fallbacks.
+    """
+    missing = [k for k in ("hoop_radius",) if k not in court_params]
+    if missing:
+        raise KeyError(
+            f"court_params missing required key(s): {missing}. "
+            "We only use the library-provided measurements; none are inferred."
+        )
 
 def get_hoop_position(court_type: str = "nba", units: str = "ft", debug: bool = False) -> (float, float, float):
     """
@@ -39,6 +82,7 @@ def get_hoop_position(court_type: str = "nba", units: str = "ft", debug: bool = 
 def draw_court(ax: plt.Axes, court_type: str = "nba", units: str = "ft", debug: bool = False) -> None:
     """
     Draw the basketball court and hoops on the given axes.
+    Uses ONLY real measurements from mplbasketball. No fallbacks.
 
     Parameters:
     - ax (plt.Axes): The Matplotlib 3D axis object.
@@ -55,18 +99,18 @@ def draw_court(ax: plt.Axes, court_type: str = "nba", units: str = "ft", debug: 
         if debug:
             logger.debug("Court drawn successfully using mplbasketball.")
 
-        # Get court parameters
-        court = Court3D(court_type=court_type, units=units)
-        court_params = court.court_parameters
+        # Get court parameters using our validated function
+        court_params = get_court_params(court_type=court_type, units=units, debug=debug)
+        validate_court_params(court_params)
+        
         if debug:
             logger.debug(f"Court Parameters in draw_court: {court_params}")
 
         # Get hoop position
         hoop_x, hoop_y, hoop_z = get_hoop_position(court_type=court_type, units=units, debug=debug)
 
-
-        # Draw the hoop as a circle
-        hoop_radius = court_params['hoop_diameter'] / 2
+        # Draw the hoop as a circle using the actual hoop_radius from the library
+        hoop_radius = float(court_params["hoop_radius"])
         theta_circle = np.linspace(0, 2 * np.pi, 100)
         hoop_xs = hoop_x + hoop_radius * np.cos(theta_circle)
         hoop_ys = hoop_y + hoop_radius * np.sin(theta_circle)
@@ -76,8 +120,12 @@ def draw_court(ax: plt.Axes, court_type: str = "nba", units: str = "ft", debug: 
         if debug:
             logger.debug(f"Hoop drawn at position ({hoop_x}, {hoop_y}, {hoop_z}) with radius {hoop_radius}.")
 
+        # Get full court parameters for additional features
+        court = Court3D(court_type=court_type, units=units)
+        full_court_params = court.court_parameters
+
         # Plot half-court line
-        half_court_x = np.linspace(-court_params['court_dims'][0]/2, court_params['court_dims'][0]/2, 100)
+        half_court_x = np.linspace(-full_court_params['court_dims'][0]/2, full_court_params['court_dims'][0]/2, 100)
         half_court_y = np.full_like(half_court_x, 0.0)
         half_court_z = np.full_like(half_court_x, 0.0)
         ax.plot(half_court_x, half_court_y, half_court_z, c='black', lw=2, linestyle='--', label='Half-Court Line')
@@ -85,26 +133,26 @@ def draw_court(ax: plt.Axes, court_type: str = "nba", units: str = "ft", debug: 
             logger.debug("Half-court line plotted.")
 
         # Plot sidelines
-        sideline_x = np.linspace(-court_params['court_dims'][0]/2, court_params['court_dims'][0]/2, 100)
-        sideline_y_positive = np.full_like(sideline_x, court_params['court_dims'][1]/2)
+        sideline_x = np.linspace(-full_court_params['court_dims'][0]/2, full_court_params['court_dims'][0]/2, 100)
+        sideline_y_positive = np.full_like(sideline_x, full_court_params['court_dims'][1]/2)
         sideline_z = np.full_like(sideline_x, 0.0)
         ax.plot(sideline_x, sideline_y_positive, sideline_z, c='blue', lw=2, label='Sideline')
         if debug:
             logger.debug("Positive sideline plotted.")
 
-        sideline_y_negative = np.full_like(sideline_x, -court_params['court_dims'][1]/2)
+        sideline_y_negative = np.full_like(sideline_x, -full_court_params['court_dims'][1]/2)
         ax.plot(sideline_x, sideline_y_negative, sideline_z, c='blue', lw=2, label='Sideline')
         if debug:
             logger.debug("Negative sideline plotted.")
 
         # Plot baselines
-        baseline_y = np.linspace(-court_params['court_dims'][1]/2, court_params['court_dims'][1]/2, 100)
+        baseline_y = np.linspace(-full_court_params['court_dims'][1]/2, full_court_params['court_dims'][1]/2, 100)
         baseline_z = np.full_like(baseline_y, 0.0)
-        ax.plot(court_params['court_dims'][0]/2, baseline_y, baseline_z, c='green', lw=2, label='Baseline')
+        ax.plot(full_court_params['court_dims'][0]/2, baseline_y, baseline_z, c='green', lw=2, label='Baseline')
         if debug:
             logger.debug("Positive baseline plotted.")
 
-        ax.plot(-court_params['court_dims'][0]/2, baseline_y, baseline_z, c='green', lw=2, label='Baseline')
+        ax.plot(-full_court_params['court_dims'][0]/2, baseline_y, baseline_z, c='green', lw=2, label='Baseline')
         if debug:
             logger.debug("Negative baseline plotted.")
 

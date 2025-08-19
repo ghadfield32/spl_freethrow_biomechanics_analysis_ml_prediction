@@ -1,6 +1,6 @@
 from pathlib import Path
 from omegaconf import OmegaConf
-from ml.config.config_models import AppConfig
+from .config_models import AppConfig
 
 def load_config(config_path: Path) -> AppConfig:
     """

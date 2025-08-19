@@ -154,8 +154,13 @@ def draw_court(ax: plt.Axes, court_type: str = "nba", units: str = "ft", debug: 
         # Get hoop position
         hoop_x, hoop_y, hoop_z = get_hoop_position(court_type=court_type, units=units, debug=debug)
 
-        # Draw the hoop as a circle
-        hoop_radius = court_params['hoop_diameter'] / 2
+        # Draw the hoop as a circle using the actual hoop_radius from the library
+        if 'hoop_radius' not in court_params:
+            raise KeyError(
+                "Court3D does not provide 'hoop_radius' in court_parameters. "
+                "Available keys: " + str(list(court_params.keys()))
+            )
+        hoop_radius = float(court_params['hoop_radius'])
         theta_circle = np.linspace(0, 2 * np.pi, 100)
         hoop_xs = hoop_x + hoop_radius * np.cos(theta_circle)
         hoop_ys = hoop_y + hoop_radius * np.sin(theta_circle)

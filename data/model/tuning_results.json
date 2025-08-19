@@ -1,24 +1,24 @@
 {
     "XGBoost": {
         "Best Params": {
-            "colsample_bytree": 0.759111701219239,
+            "colsample_bytree": 0.5,
             "gamma": 0.0,
-            "learning_rate": 0.021372574929018073,
-            "max_depth": 6,
+            "learning_rate": 0.19299136066682088,
+            "max_depth": 11,
             "min_child_weight": 1,
-            "n_estimators": 500,
-            "reg_alpha": 1e-08,
-            "reg_lambda": 1.0,
+            "n_estimators": 100,
+            "reg_alpha": 1.0,
+            "reg_lambda": 0.0008179499757374272,
             "subsample": 1.0
         },
         "Best CV Score": 0.7757142857142857,
         "Evaluation Metrics": {
-            "Accuracy": 0.8,
-            "Precision": 0.8126984126984127,
-            "Recall": 0.8,
-            "F1 Score": 0.8049896049896051,
-            "ROC AUC": 0.7017543859649122,
-            "Log Loss": 0.6264862180977435
+            "Accuracy": 0.52,
+            "Precision": 0.6053333333333333,
+            "Recall": 0.52,
+            "F1 Score": 0.5517647058823529,
+            "ROC AUC": 0.5789473684210527,
+            "Log Loss": 0.6702387037102464
         }
     },
     "Random Forest": {
@@ -65,8 +65,8 @@
             "border_count": 38,
             "depth": 6,
             "iterations": 282,
-            "l2_leaf_reg": 1.6305415573022148,
-            "learning_rate": 0.10232573483248794
+            "l2_leaf_reg": 1.6305415572969149,
+            "learning_rate": 0.1023257348322835
         },
         "Best CV Score": 0.8047619047619048,
         "Evaluation Metrics": {
@@ -79,8 +79,8 @@
         }
     },
     "Best Model": {
-        "model_name": "XGBoost",
-        "metric_value": 0.8,
-        "path": "/workspaces/spl_freethrow_biomechanics_analysis_ml_prediction/data/model/XGBoost/trained_model.pkl"
+        "model_name": "CatBoost",
+        "metric_value": 0.68,
+        "path": "../../data/model/CatBoost/trained_model.pkl"
     }
 }
